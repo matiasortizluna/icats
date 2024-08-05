@@ -14,6 +14,7 @@
 		0F94FA782C613683009C8E27 /* iCatsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94FA772C613683009C8E27 /* iCatsUITests.swift */; };
 		0F94FA7A2C613683009C8E27 /* iCatsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94FA792C613683009C8E27 /* iCatsUITestsLaunchTests.swift */; };
 		0F94FA872C61831F009C8E27 /* iCatsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94FA862C61831F009C8E27 /* iCatsApp.swift */; };
+		0F94FA8A2C61838D009C8E27 /* CatsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94FA892C61838D009C8E27 /* CatsCard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		0F94FA772C613683009C8E27 /* iCatsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCatsUITests.swift; sourceTree = "<group>"; };
 		0F94FA792C613683009C8E27 /* iCatsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCatsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		0F94FA862C61831F009C8E27 /* iCatsApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iCatsApp.swift; sourceTree = "<group>"; };
+		0F94FA892C61838D009C8E27 /* CatsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatsCard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 		0F94FA592C613680009C8E27 /* iCats */ = {
 			isa = PBXGroup;
 			children = (
+				0F94FA882C618373009C8E27 /* Views */,
 				0F94FA862C61831F009C8E27 /* iCatsApp.swift */,
 				0F94FA5C2C613680009C8E27 /* ContentView.swift */,
 				0F94FA602C613683009C8E27 /* Assets.xcassets */,
@@ -125,6 +128,14 @@
 				0F94FA792C613683009C8E27 /* iCatsUITestsLaunchTests.swift */,
 			);
 			path = iCatsUITests;
+			sourceTree = "<group>";
+		};
+		0F94FA882C618373009C8E27 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0F94FA892C61838D009C8E27 /* CatsCard.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,6 +268,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F94FA8A2C61838D009C8E27 /* CatsCard.swift in Sources */,
 				0F94FA872C61831F009C8E27 /* iCatsApp.swift in Sources */,
 				0F94FA5D2C613680009C8E27 /* ContentView.swift in Sources */,
 			);

@@ -12,6 +12,8 @@ struct ContentView: View {
 
     var body: some View {
         Text("Hello World, this is iCats")
+        
+        CatsCard()
     }
 
 }
