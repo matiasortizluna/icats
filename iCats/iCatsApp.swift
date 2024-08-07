@@ -10,10 +10,13 @@ import SwiftData
 
 @main
 struct iCatsApp: App {
-
+    
+    @StateObject private var viewModel = CatViewModel()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(viewModel)
         }
     }
 }
