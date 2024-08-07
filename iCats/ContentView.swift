@@ -17,17 +17,17 @@ struct ContentView: View {
             .font(.headline)
             .padding()
         
-        CatsCard()
+        //CatsCard()
         
-        if viewModel.catsIDs.isEmpty {
+        if viewModel.breeds.isEmpty {
             Text("Loading...")
                 .onAppear {
                     // Perform the fetch operation
-                    viewModel.fetchCatsIDs()
+                    viewModel.fetchBreeds()
                 }
         } else {
-            ForEach(viewModel.catsIDs, id: \.self) { catID in
-                Text(catID)
+            ForEach(viewModel.breeds, id: \.id) { breed in
+                Text(breed.name)
             }
         }
     }

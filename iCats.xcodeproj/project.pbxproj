@@ -15,8 +15,9 @@
 		0F94FA7A2C613683009C8E27 /* iCatsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94FA792C613683009C8E27 /* iCatsUITestsLaunchTests.swift */; };
 		0F94FA872C61831F009C8E27 /* iCatsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94FA862C61831F009C8E27 /* iCatsApp.swift */; };
 		0F94FA8A2C61838D009C8E27 /* CatsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94FA892C61838D009C8E27 /* CatsCard.swift */; };
-		0FB7CBD12C626E6400798B53 /* Cat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB7CBD02C626E6400798B53 /* Cat.swift */; };
+		0FB7CBD12C626E6400798B53 /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB7CBD02C626E6400798B53 /* Breed.swift */; };
 		0FB7CBD32C626EF400798B53 /* CatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB7CBD22C626EF400798B53 /* CatViewModel.swift */; };
+		0FB7CBD62C63C61700798B53 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 0FB7CBD52C63C61700798B53 /* SwiftyJSON */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,7 +49,7 @@
 		0F94FA792C613683009C8E27 /* iCatsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCatsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		0F94FA862C61831F009C8E27 /* iCatsApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iCatsApp.swift; sourceTree = "<group>"; };
 		0F94FA892C61838D009C8E27 /* CatsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatsCard.swift; sourceTree = "<group>"; };
-		0FB7CBD02C626E6400798B53 /* Cat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cat.swift; sourceTree = "<group>"; };
+		0FB7CBD02C626E6400798B53 /* Breed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Breed.swift; sourceTree = "<group>"; };
 		0FB7CBD22C626EF400798B53 /* CatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -57,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FB7CBD62C63C61700798B53 /* SwiftyJSON in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,7 +149,7 @@
 		0FB7CBCE2C626E4200798B53 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				0FB7CBD02C626E6400798B53 /* Cat.swift */,
+				0FB7CBD02C626E6400798B53 /* Breed.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -176,6 +178,9 @@
 			dependencies = (
 			);
 			name = iCats;
+			packageProductDependencies = (
+				0FB7CBD52C63C61700798B53 /* SwiftyJSON */,
+			);
 			productName = iCats;
 			productReference = 0F94FA572C613680009C8E27 /* iCats.app */;
 			productType = "com.apple.product-type.application";
@@ -248,6 +253,9 @@
 				Base,
 			);
 			mainGroup = 0F94FA4E2C613680009C8E27;
+			packageReferences = (
+				0FB7CBD42C63C61700798B53 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+			);
 			productRefGroup = 0F94FA582C613680009C8E27 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -290,7 +298,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0FB7CBD12C626E6400798B53 /* Cat.swift in Sources */,
+				0FB7CBD12C626E6400798B53 /* Breed.swift in Sources */,
 				0F94FA8A2C61838D009C8E27 /* CatsCard.swift in Sources */,
 				0F94FA872C61831F009C8E27 /* iCatsApp.swift in Sources */,
 				0FB7CBD32C626EF400798B53 /* CatViewModel.swift in Sources */,
@@ -624,6 +632,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0FB7CBD42C63C61700798B53 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0FB7CBD52C63C61700798B53 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0FB7CBD42C63C61700798B53 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0F94FA4F2C613680009C8E27 /* Project object */;
 }

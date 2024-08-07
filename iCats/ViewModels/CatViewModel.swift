@@ -7,19 +7,16 @@
 
 import Foundation
 import SwiftUI
+import SwiftyJSON
 
 class CatViewModel: ObservableObject {
     
-    @Published var catsIDs: [String] = []
+    @Published var breeds: [Breed] = []
     
     let apiKey = "live_ISll8gOWarTBCiBssIqrzkvhzuez2g72xz4WzKx1BkRLXoWIlXD1GTKNklz1ERUr"
-    let urlString = "https://api.thecatapi.com/v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&order=RANDOM&page=0&limit=10"
+    let urlString = "https://api.thecatapi.com/v1/breeds?limit=10&page=0"
     
-    func getCatsIDs() -> [String] {
-        return self.catsIDs
-    }
-    
-    func fetchCatsIDs() {
+    func fetchBreeds() {
         
         guard let url = URL(string: urlString) else {
             print("Invalid URL")
@@ -49,14 +46,34 @@ class CatViewModel: ObservableObject {
             print("Data received: \(data)")
             
             do {
-                let cats = try JSONDecoder().decode([CatImage].self, from: data)
-                DispatchQueue.main.async {
-                    for cat in cats {
-                        self.catsIDs.append(cat.id)
+                let json = try JSON(data: data)
+                
+                for item in json.arrayValue {
+                    
+                    let breed = Breed(
+                        id: item["id"].stringValue,
+                        name: item["name"].stringValue,
+                        origin: item["origin"].stringValue,
+                        temperament: item["temperament"].stringValue,
+                        description: item["description"].stringValue,
+                        lifeSpan: item["life_span"].stringValue,
+                        weight: Weight(imperial: item["weight"]["imperial"].stringValue,
+                        metric: item["weight"]["metric"].stringValue),
+                        image: item["image"].exists() ? Image(
+                            id: item["image"]["id"].stringValue,
+                            width: item["image"]["width"].intValue,
+                            height: item["image"]["height"].intValue,
+                            url: item["image"]["url"].stringValue
+                        ) : nil
+                    )
+                    
+                    DispatchQueue.main.async {
+                        self.breeds.append(breed)
                     }
                 }
+                
             } catch {
-                print("JSON error: \(error.localizedDescription)")
+                print("JSON decoding error: \(error.localizedDescription)")
             }
         }
         
