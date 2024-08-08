@@ -71,7 +71,7 @@ struct CatsCard: View {
 
 #Preview {
     CatsCard(
-        breed: Breed(id: "dasdsa", name: "Default", origin: "Default", temperament: "Default", description: "Default", lifeSpan: "Default", weight: Weight(imperial: "Default", metric: "Default"), image: nil
+        breed: Breed(id: "dasdsa", name: "Default", origin: "Default", temperament: "Default", description: "Default", lifeSpan: "Default", weight: Weight(imperial: "Default", metric: "Default"), image: nil, isFavorite: false
                     ))
     .environmentObject(CatViewModel())
 }

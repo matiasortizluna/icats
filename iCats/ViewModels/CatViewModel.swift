@@ -64,7 +64,8 @@ class CatViewModel: ObservableObject {
                             width: item["image"]["width"].intValue,
                             height: item["image"]["height"].intValue,
                             url: item["image"]["url"].stringValue
-                        ) : nil
+                        ) : nil,
+                        isFavorite: false
                     )
                     
                     DispatchQueue.main.async {

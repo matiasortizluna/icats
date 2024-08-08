@@ -16,6 +16,7 @@ struct Breed: Identifiable {
     let lifeSpan: String
     let weight: Weight
     let image: CatImage?
+    let isFavorite : Bool?
 }
 
 struct Weight {

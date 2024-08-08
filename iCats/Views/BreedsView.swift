@@ -1,10 +1,3 @@
-//
-//  BreedsView.swift
-//  iCats
-//
-//  Created by Matias Luna on 08/08/2024.
-//
-
 import SwiftUI
 
 struct BreedsView: View {
@@ -25,15 +18,16 @@ struct BreedsView: View {
                         viewModel.fetchBreeds()
                     }
             } else {
-                ScrollView() {
+                ScrollView {
                     LazyVGrid(columns: columns, spacing: 20) {
                         ForEach(viewModel.breeds, id: \.id) { breed in
-                            CatsCard(breed: breed)
+                            NavigationLink(destination: BreedsDetailView(breed: breed)) {
+                                CatsCard(breed: breed)
+                            }
                         }
                     }
                     .padding()
                 }
-                
                 .navigationTitle("Breeds")
                 .navigationBarTitleDisplayMode(.large)
             }
