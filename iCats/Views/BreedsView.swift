@@ -17,20 +17,25 @@ struct BreedsView: View {
     ]
     
     var body: some View {
-        if viewModel.breeds.isEmpty {
-            Text("Loading...")
-                .onAppear {
-                    // Perform the fetch operation
-                    viewModel.fetchBreeds()
-                }
-        } else {
-            ScrollView() {
-                LazyVGrid(columns: columns, spacing: 20) {
-                    ForEach(viewModel.breeds, id: \.id) { breed in
-                        CatsCard(breed: breed)
+        NavigationView {
+            if viewModel.breeds.isEmpty {
+                Text("Loading...")
+                    .onAppear {
+                        // Perform the fetch operation
+                        viewModel.fetchBreeds()
                     }
+            } else {
+                ScrollView() {
+                    LazyVGrid(columns: columns, spacing: 20) {
+                        ForEach(viewModel.breeds, id: \.id) { breed in
+                            CatsCard(breed: breed)
+                        }
+                    }
+                    .padding()
                 }
-                .padding()
+                
+                .navigationTitle("Breeds")
+                .navigationBarTitleDisplayMode(.large)
             }
         }
     }

@@ -9,7 +9,12 @@ import SwiftUI
 
 struct FavoriteBreedsView: View {
     var body: some View {
-        Text("This is the Favorites Breed View")
+        NavigationView {
+            Text("This is the Favorites Breed View")
+            
+                .navigationTitle("Favorite Breeds")
+                .navigationBarTitleDisplayMode(.large)
+        }
     }
 }
 

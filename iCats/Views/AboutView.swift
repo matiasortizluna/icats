@@ -9,7 +9,13 @@ import SwiftUI
 
 struct AboutView: View {
     var body: some View {
-        Text("This is the About View")
+        
+        NavigationView {
+            Text("This is the About View")
+            
+                .navigationTitle("About")
+                .navigationBarTitleDisplayMode(.large)
+        }
     }
 }
 
