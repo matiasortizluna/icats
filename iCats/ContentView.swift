@@ -12,12 +12,15 @@ struct ContentView: View {
     
     @EnvironmentObject private var viewModel: CatViewModel
     
+    let columns = [
+            GridItem(.flexible()),
+            GridItem(.flexible())
+        ]
+    
     var body: some View {
         Text("Hello World, this is iCats")
             .font(.headline)
             .padding()
-        
-        //CatsCard()
         
         if viewModel.breeds.isEmpty {
             Text("Loading...")
@@ -26,8 +29,13 @@ struct ContentView: View {
                     viewModel.fetchBreeds()
                 }
         } else {
-            ForEach(viewModel.breeds, id: \.id) { breed in
-                Text(breed.name)
+            ScrollView() {
+                LazyVGrid(columns: columns, spacing: 20) {
+                    ForEach(viewModel.breeds, id: \.id) { breed in
+                        CatsCard()
+                    }
+                }
+                .padding()
             }
         }
     }

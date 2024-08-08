@@ -15,7 +15,7 @@ struct Breed: Identifiable {
     let description: String
     let lifeSpan: String
     let weight: Weight
-    let image: Image?
+    let image: CatImage?
 }
 
 struct Weight {
@@ -23,7 +23,7 @@ struct Weight {
     let metric: String
 }
 
-struct Image {
+struct CatImage {
     let id: String
     let width: Int
     let height: Int

@@ -14,7 +14,7 @@ class CatViewModel: ObservableObject {
     @Published var breeds: [Breed] = []
     
     let apiKey = "live_ISll8gOWarTBCiBssIqrzkvhzuez2g72xz4WzKx1BkRLXoWIlXD1GTKNklz1ERUr"
-    let urlString = "https://api.thecatapi.com/v1/breeds?limit=10&page=0"
+    let urlString = "https://api.thecatapi.com/v1/breeds?limit=20&page=0"
     
     func fetchBreeds() {
         
@@ -59,7 +59,7 @@ class CatViewModel: ObservableObject {
                         lifeSpan: item["life_span"].stringValue,
                         weight: Weight(imperial: item["weight"]["imperial"].stringValue,
                         metric: item["weight"]["metric"].stringValue),
-                        image: item["image"].exists() ? Image(
+                        image: item["image"].exists() ? CatImage(
                             id: item["image"]["id"].stringValue,
                             width: item["image"]["width"].intValue,
                             height: item["image"]["height"].intValue,
