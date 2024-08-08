@@ -32,7 +32,7 @@ struct ContentView: View {
             ScrollView() {
                 LazyVGrid(columns: columns, spacing: 20) {
                     ForEach(viewModel.breeds, id: \.id) { breed in
-                        CatsCard()
+                        CatsCard(breed: breed)
                     }
                 }
                 .padding()

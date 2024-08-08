@@ -9,13 +9,13 @@ import SwiftUI
 
 struct CatsCard: View {
     @State private var isFavorite: Bool = false
-    @EnvironmentObject private var viewModel: CatViewModel
+    var breed : Breed
     
     var body: some View {
         ZStack {
             VStack {
                 ZStack(alignment: .topTrailing) {
-                    if let url = viewModel.breeds.first?.image?.url {
+                    if let url = breed.image?.url {
                         AsyncImage(url: URL(string: url)) { image in
                             image
                                 .resizable()
@@ -54,20 +54,11 @@ struct CatsCard: View {
                     }
                 }
                 
-                if let breedName = viewModel.breeds.first?.name {
-                    Text(breedName)
-                        .font(.system(size: 15))
-                        .foregroundColor(.black)
-                        .multilineTextAlignment(.center)
-                        .lineLimit(2)
-                } else {
-                    Text("Cat's Breed Name")
-                        .foregroundColor(.black)
-                        .font(.system(size: 15))
-                        .foregroundColor(.black)
-                        .multilineTextAlignment(.center)
-                        .lineLimit(2)
-                }
+                Text(breed.name)
+                    .font(.system(size: 15))
+                    .foregroundColor(.black)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
                 
             }
             .padding()
@@ -79,5 +70,8 @@ struct CatsCard: View {
 }
 
 #Preview {
-    CatsCard().environmentObject(CatViewModel())
+    CatsCard(
+        breed: Breed(id: "dasdsa", name: "Default", origin: "Default", temperament: "Default", description: "Default", lifeSpan: "Default", weight: Weight(imperial: "Default", metric: "Default"), image: nil
+                    ))
+    .environmentObject(CatViewModel())
 }
