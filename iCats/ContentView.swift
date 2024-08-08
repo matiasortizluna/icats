@@ -6,42 +6,34 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct ContentView: View {
     
-    @EnvironmentObject private var viewModel: CatViewModel
-    
-    let columns = [
-            GridItem(.flexible()),
-            GridItem(.flexible())
-        ]
-    
     var body: some View {
-        Text("Hello World, this is iCats")
-            .font(.headline)
-            .padding()
         
-        if viewModel.breeds.isEmpty {
-            Text("Loading...")
-                .onAppear {
-                    // Perform the fetch operation
-                    viewModel.fetchBreeds()
+        TabView() {
+            FavoriteBreedsView()
+                .tabItem {
+                    Label("Favorites", systemImage: "heart")
                 }
-        } else {
-            ScrollView() {
-                LazyVGrid(columns: columns, spacing: 20) {
-                    ForEach(viewModel.breeds, id: \.id) { breed in
-                        CatsCard(breed: breed)
-                    }
+            
+            BreedsView()
+                .tabItem {
+                    Label("Breeds", systemImage: "cat")
                 }
-                .padding()
-            }
+            
+            AboutView()
+                .tabItem {
+                    Label("About", systemImage: "person")
+                }
         }
+        .accentColor(Color(.yellow))
     }
+    
+    
 }
 
 #Preview {
     ContentView()
-        .environmentObject(CatViewModel()) // Provide the view model in the preview
+        .environmentObject(CatViewModel())
 }
