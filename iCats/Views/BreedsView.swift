@@ -108,7 +108,6 @@ struct BreedsView: View {
 
 struct BreedsView_Previews: PreviewProvider {
     static var previews: some View {
-        // Create a mock ModelContainer for the preview
         let previewModelContainer = try! ModelContainer(for: Breed.self, Weight.self, CatImage.self)
         
         BreedsView()
