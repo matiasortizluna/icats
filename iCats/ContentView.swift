@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     
@@ -36,6 +37,11 @@ struct ContentView: View {
     
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        let previewModelContainer = try! ModelContainer(for: Breed.self, Weight.self, CatImage.self)
+        
+        ContentView()
+            .modelContainer(previewModelContainer)
+    }
 }

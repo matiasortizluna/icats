@@ -17,7 +17,6 @@ struct BreedsView: View {
             if breeds.isEmpty {
                 Text("Loading...")
                     .onAppear {
-                        // Perform the fetch operation
                         self.fetchBreeds()
                     }
             } else {
@@ -107,6 +106,12 @@ struct BreedsView: View {
     }
 }
 
-#Preview {
-    BreedsView()
+struct BreedsView_Previews: PreviewProvider {
+    static var previews: some View {
+        // Create a mock ModelContainer for the preview
+        let previewModelContainer = try! ModelContainer(for: Breed.self, Weight.self, CatImage.self)
+        
+        BreedsView()
+            .modelContainer(previewModelContainer)
+    }
 }
