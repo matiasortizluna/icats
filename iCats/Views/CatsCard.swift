@@ -31,13 +31,6 @@ struct CatsCard: View {
                                 .padding(5)
                         }
                         
-                    } else {
-                        Image("9rm")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 120, height: 100)
-                            .clipShape(RoundedRectangle(cornerRadius: 15))
-                            .padding(5)
                     }
                     
                     Button(action: {
