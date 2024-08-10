@@ -2,7 +2,6 @@ import SwiftUI
 
 struct BreedsDetailView: View {
     
-    @State private var isFavorite: Bool = false
     var breed: Breed
     
     var body: some View {
@@ -34,7 +33,7 @@ struct BreedsDetailView: View {
                     
                     Image(systemName: "star.fill")
                         .font(.system(size: 20.0))
-                        .foregroundColor(isFavorite ? .yellow : .gray)
+                        .foregroundColor(breed.isFavorite ? .yellow : .gray)
                         .padding(5)
                         .background(
                             Circle()
@@ -76,7 +75,7 @@ struct BreedsDetailView: View {
                         .font(.system(size: 15.0))
                         .fontWeight(.bold)
                     
-                    Text(breed.description)
+                    Text(breed.breedDescription)
                         .font(.system(size: 15.0))
                         .lineLimit(nil)
                         .padding()
@@ -90,9 +89,9 @@ struct BreedsDetailView: View {
                 
                 
                 Button(action: {
-                    isFavorite.toggle()
+                    breed.isFavorite.toggle()
                 }) {
-                    Text(isFavorite ? "Remove From Favorites" : "Add To Favorites")
+                    Text(breed.isFavorite ? "Remove From Favorites" : "Add To Favorites")
                         .font(.headline)
                         .foregroundColor(.black)
                         .padding()

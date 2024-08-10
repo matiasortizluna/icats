@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CatsCard: View {
-    @State private var isFavorite: Bool = false
+    @Environment(\.modelContext) private var modelContext
     var breed : Breed
     
     var body: some View {
@@ -40,11 +41,12 @@ struct CatsCard: View {
                     }
                     
                     Button(action: {
-                        self.isFavorite.toggle()
+                        breed.isFavorite.toggle()
+                        
                     }) {
                         Image(systemName: "star.fill")
                             .font(.system(size: 20.0))
-                            .foregroundColor(isFavorite ? .yellow : .gray)
+                            .foregroundColor(breed.isFavorite ? .yellow : .gray)
                             .padding(5)
                             .background(
                                 Circle()
@@ -73,5 +75,4 @@ struct CatsCard: View {
     CatsCard(
         breed: Breed(id: "dasdsa", name: "Default", origin: "Default", temperament: "Default", description: "Default", lifeSpan: "Default", weight: Weight(imperial: "Default", metric: "Default"), image: nil, isFavorite: false
                     ))
-    .environmentObject(CatViewModel())
 }

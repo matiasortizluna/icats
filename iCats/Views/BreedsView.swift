@@ -1,8 +1,11 @@
 import SwiftUI
+import SwiftyJSON
+import SwiftData
 
 struct BreedsView: View {
     
-    @EnvironmentObject private var viewModel: CatViewModel
+    @Environment(\.modelContext) private var modelContext
+    @Query private var breeds: [Breed]
     
     let columns = [
         GridItem(.flexible()),
@@ -11,16 +14,16 @@ struct BreedsView: View {
     
     var body: some View {
         NavigationView {
-            if viewModel.breeds.isEmpty {
+            if breeds.isEmpty {
                 Text("Loading...")
                     .onAppear {
                         // Perform the fetch operation
-                        viewModel.fetchBreeds()
+                        self.fetchBreeds()
                     }
             } else {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(viewModel.breeds, id: \.id) { breed in
+                        ForEach(breeds, id: \.id) { breed in
                             NavigationLink(destination: BreedsDetailView(breed: breed)) {
                                 CatsCard(breed: breed)
                             }
@@ -33,9 +36,77 @@ struct BreedsView: View {
             }
         }
     }
+    
+    private func fetchBreeds() {
+        
+        let apiKey = "live_ISll8gOWarTBCiBssIqrzkvhzuez2g72xz4WzKx1BkRLXoWIlXD1GTKNklz1ERUr"
+        let urlString = "https://api.thecatapi.com/v1/breeds?limit=20&page=0"
+        
+        guard let url = URL(string: urlString) else {
+            print("Invalid URL")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            defer {
+                semaphore.signal()
+            }
+            
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received")
+                return
+            }
+            print("Data received: \(data)")
+            
+            do {
+                let json = try JSON(data: data)
+                
+                for item in json.arrayValue {
+                    
+                    let breed = Breed(
+                        id: item["id"].stringValue,
+                        name: item["name"].stringValue,
+                        origin: item["origin"].stringValue,
+                        temperament: item["temperament"].stringValue,
+                        description: item["description"].stringValue,
+                        lifeSpan: item["life_span"].stringValue,
+                        weight: Weight(imperial: item["weight"]["imperial"].stringValue,
+                                       metric: item["weight"]["metric"].stringValue),
+                        image: item["image"].exists() ? CatImage(
+                            id: item["image"]["id"].stringValue,
+                            width: item["image"]["width"].intValue,
+                            height: item["image"]["height"].intValue,
+                            url: item["image"]["url"].stringValue
+                        ) : nil,
+                        isFavorite: false
+                    )
+                    
+                    DispatchQueue.main.async {
+                        self.modelContext.insert(breed)
+                    }
+                }
+                
+            } catch {
+                print("JSON decoding error: \(error.localizedDescription)")
+            }
+        }
+        
+        task.resume()
+        semaphore.wait()
+    }
 }
 
 #Preview {
     BreedsView()
-        .environmentObject(CatViewModel())
 }

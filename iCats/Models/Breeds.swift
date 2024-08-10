@@ -15,11 +15,11 @@ class Breed {
     let temperament: String
     let breedDescription: String
     let lifeSpan: String
-    let weight: Weight
-    let image: CatImage?
-    var isFavorite: Bool
+    let weight: WeightJSON
+    let image: CatImageJSON?
+    let isFavorite: Bool
     
-    init(id: String, name: String, origin: String, temperament: String, description: String, lifeSpan: String, weight: Weight, image: CatImage?, isFavorite: Bool) {
+    init(id: String, name: String, origin: String, temperament: String, description: String, lifeSpan: String, weight: WeightJSON, image: CatImageJSON?, isFavorite: Bool) {
         self.id = id
         self.name = name
         self.origin = origin
@@ -30,11 +30,10 @@ class Breed {
         self.image = image
         self.isFavorite = isFavorite
     }
-    
 }
 
 @Model
-class Weight {
+class Weights {
     let imperial: String
     let metric: String
     
@@ -45,7 +44,7 @@ class Weight {
 }
 
 @Model
-class CatImage {
+class CatImages {
     let id: String
     let width: Int
     let height: Int

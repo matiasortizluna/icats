@@ -11,12 +11,12 @@ import SwiftData
 @main
 struct iCatsApp: App {
     
-    @StateObject private var viewModel = CatViewModel()
+    var modelContainer = try! ModelContainer(for: Breed.self, Weight.self, CatImage.self)
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(viewModel)
+                .modelContainer(modelContainer)
         }
     }
 }
