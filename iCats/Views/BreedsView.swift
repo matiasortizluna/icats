@@ -7,6 +7,16 @@ struct BreedsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var breeds: [Breed]
     
+    @State private var searchQuery: String = ""
+    
+    var filteredBreeds: [Breed] {
+        if searchQuery.isEmpty {
+            return breeds
+        } else {
+            return breeds.filter { $0.name.lowercased().contains(searchQuery.lowercased()) }
+        }
+    }
+    
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -22,7 +32,7 @@ struct BreedsView: View {
             } else {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(breeds, id: \.id) { breed in
+                        ForEach(filteredBreeds, id: \.id) { breed in
                             NavigationLink(destination: BreedsDetailView(breed: breed)) {
                                 CatsCard(breed: breed)
                             }
@@ -32,6 +42,7 @@ struct BreedsView: View {
                 }
                 .navigationTitle("Breeds")
                 .navigationBarTitleDisplayMode(.large)
+                .searchable(text: $searchQuery)
             }
         }
     }
