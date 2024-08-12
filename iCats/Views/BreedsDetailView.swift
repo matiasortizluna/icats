@@ -1,4 +1,5 @@
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct BreedsDetailView: View {
     
@@ -9,19 +10,12 @@ struct BreedsDetailView: View {
             ScrollView {
                 ZStack(alignment: .topTrailing) {
                     if let url = breed.image?.url {
-                        AsyncImage(url: URL(string: url)) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 200, height: 200)
-                                .clipShape(RoundedRectangle(cornerRadius: 15))
-                                .padding(5)
-                        } placeholder: {
-                            Color.gray
-                                .frame(width: 200, height: 200)
-                                .clipShape(RoundedRectangle(cornerRadius: 15))
-                                .padding(5)
-                        }
+                        WebImage(url: URL(string: url)).resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 200, height: 200)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                            .padding(5)
+                        
                     } else {
                         Image("9rm")
                             .resizable()
