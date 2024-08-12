@@ -7,9 +7,9 @@
 
 import SwiftUI
 import SwiftData
+import SDWebImageSwiftUI
 
 struct CatsCard: View {
-    @Environment(\.modelContext) private var modelContext
     var breed : Breed
     
     var body: some View {
@@ -17,20 +17,11 @@ struct CatsCard: View {
             VStack {
                 ZStack(alignment: .topTrailing) {
                     if let url = breed.image?.url {
-                        AsyncImage(url: URL(string: url)) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 120, height: 100)
-                                .clipShape(RoundedRectangle(cornerRadius: 15))
-                                .padding(5)
-                        } placeholder: {
-                            Color.gray
-                                .frame(width: 120, height: 100)
-                                .clipShape(RoundedRectangle(cornerRadius: 15))
-                                .padding(5)
-                        }
-                        
+                        WebImage(url: URL(string: url)).resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 120, height: 100)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                            .padding(5)
                     }
                     
                     Button(action: {
