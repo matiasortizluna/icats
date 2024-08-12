@@ -8,6 +8,7 @@ struct BreedsView: View {
     @Query private var breeds: [Breed]
     
     @State private var searchQuery: String = ""
+    @State private var errorMessage: String?
     
     var filteredBreeds: [Breed] {
         if searchQuery.isEmpty {
@@ -24,6 +25,18 @@ struct BreedsView: View {
     
     var body: some View {
         NavigationView {
+            if let errorMessage = errorMessage {
+                VStack {
+                    Text("Error: \(errorMessage)")
+                        .foregroundColor(.red)
+                        .padding()
+                    Button(action: fetchBreeds) {
+                        Text("Retry")
+                            .foregroundColor(.blue)
+                    }
+                }
+                .navigationTitle("Error")
+            } else
             if breeds.isEmpty {
                 Text("Loading...")
                     .onAppear {
@@ -53,6 +66,7 @@ struct BreedsView: View {
         let urlString = "https://api.thecatapi.com/v1/breeds?limit=20&page=0"
         
         guard let url = URL(string: urlString) else {
+            self.errorMessage = "Invalid URL"
             print("Invalid URL")
             return
         }
@@ -69,11 +83,17 @@ struct BreedsView: View {
             }
             
             if let error = error {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Network error: \(error.localizedDescription)"
+                }
                 print("Error: \(error.localizedDescription)")
                 return
             }
             
             guard let data = data else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "No data received"
+                }
                 print("No data received")
                 return
             }
@@ -107,7 +127,14 @@ struct BreedsView: View {
                     }
                 }
                 
+                DispatchQueue.main.async {
+                    self.errorMessage = nil
+                }
+                
             } catch {
+                DispatchQueue.main.async {
+                    self.errorMessage = "JSON decoding error: \(error.localizedDescription)"
+                }
                 print("JSON decoding error: \(error.localizedDescription)")
             }
         }
