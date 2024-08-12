@@ -11,11 +11,25 @@ import SwiftData
 @main
 struct iCatsApp: App {
     
-    var modelContainer = try! ModelContainer(for: Breed.self, Weight.self, CatImage.self)
+    private var modelContainer: ModelContainer
+    @StateObject private var viewModel: BreedsViewModel
+    
+    init() {
+        // Initialize ModelContainer
+        modelContainer = try! ModelContainer(for: Breed.self, Weight.self, CatImage.self)
+        
+        // Extract ModelContext from ModelContainer
+        let modelContext = modelContainer.mainContext
+        
+        // Initialize the view model with the ModelContext
+        _viewModel = StateObject(wrappedValue: BreedsViewModel(modelContext: modelContext))
+    }
+    
     
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(viewModel)
                 .modelContainer(modelContainer)
         }
     }

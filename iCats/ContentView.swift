@@ -10,16 +10,20 @@ import SwiftData
 
 struct ContentView: View {
     
+    @EnvironmentObject var viewModel: BreedsViewModel
+    
     var body: some View {
         TabView(selection: .constant(2)) {
             
             FavoriteBreedsView()
+                .environmentObject(viewModel)
                 .tabItem {
                     Label("Favorites", systemImage: "heart")
                 }
                 .tag(1)
             
             BreedsView()
+                .environmentObject(viewModel)
                 .tabItem {
                     Label("Breeds", systemImage: "cat")
                 }
