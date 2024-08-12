@@ -32,29 +32,3 @@ class Breed {
     }
     
 }
-
-@Model
-class Weight {
-    let imperial: String
-    let metric: String
-    
-    init(imperial: String, metric: String) {
-        self.imperial = imperial
-        self.metric = metric
-    }
-}
-
-@Model
-class CatImage {
-    let id: String
-    let width: Int
-    let height: Int
-    let url: String
-    
-    init(id: String, width: Int, height: Int, url: String) {
-        self.id = id
-        self.width = width
-        self.height = height
-        self.url = url
-    }
-}

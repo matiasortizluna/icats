@@ -18,6 +18,8 @@
 		0F94FA7A2C613683009C8E27 /* iCatsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94FA792C613683009C8E27 /* iCatsUITestsLaunchTests.swift */; };
 		0F94FA872C61831F009C8E27 /* iCatsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94FA862C61831F009C8E27 /* iCatsApp.swift */; };
 		0F94FA8A2C61838D009C8E27 /* CatsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F94FA892C61838D009C8E27 /* CatsCard.swift */; };
+		0F9D696B2C6A3A3700849F38 /* Weight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9D696A2C6A3A3700849F38 /* Weight.swift */; };
+		0F9D696D2C6A3A5300849F38 /* CatImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9D696C2C6A3A5300849F38 /* CatImage.swift */; };
 		0FA316512C679B1F00928F58 /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA316502C679B1F00928F58 /* Breed.swift */; };
 		0FB7CBD62C63C61700798B53 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 0FB7CBD52C63C61700798B53 /* SwiftyJSON */; };
 		0FF0C8242C653E64006DE8DF /* BreedsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF0C8232C653E64006DE8DF /* BreedsDetailView.swift */; };
@@ -55,6 +57,8 @@
 		0F94FA792C613683009C8E27 /* iCatsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCatsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		0F94FA862C61831F009C8E27 /* iCatsApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iCatsApp.swift; sourceTree = "<group>"; };
 		0F94FA892C61838D009C8E27 /* CatsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatsCard.swift; sourceTree = "<group>"; };
+		0F9D696A2C6A3A3700849F38 /* Weight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weight.swift; sourceTree = "<group>"; };
+		0F9D696C2C6A3A5300849F38 /* CatImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatImage.swift; sourceTree = "<group>"; };
 		0FA316502C679B1F00928F58 /* Breed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Breed.swift; sourceTree = "<group>"; };
 		0FF0C8232C653E64006DE8DF /* BreedsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedsDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -159,6 +163,8 @@
 			isa = PBXGroup;
 			children = (
 				0FA316502C679B1F00928F58 /* Breed.swift */,
+				0F9D696A2C6A3A3700849F38 /* Weight.swift */,
+				0F9D696C2C6A3A5300849F38 /* CatImage.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -303,10 +309,12 @@
 				0F57A9072C6532DD00471F56 /* AboutView.swift in Sources */,
 				0FF0C8242C653E64006DE8DF /* BreedsDetailView.swift in Sources */,
 				0F57A9032C65327500471F56 /* BreedsView.swift in Sources */,
+				0F9D696D2C6A3A5300849F38 /* CatImage.swift in Sources */,
 				0F94FA8A2C61838D009C8E27 /* CatsCard.swift in Sources */,
 				0F94FA872C61831F009C8E27 /* iCatsApp.swift in Sources */,
 				0F57A9052C6532CB00471F56 /* FavoriteBreedsView.swift in Sources */,
 				0F94FA5D2C613680009C8E27 /* ContentView.swift in Sources */,
+				0F9D696B2C6A3A3700849F38 /* Weight.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
