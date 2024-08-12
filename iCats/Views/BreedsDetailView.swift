@@ -25,15 +25,20 @@ struct BreedsDetailView: View {
                             .padding(5)
                     }
                     
-                    Image(systemName: "star.fill")
-                        .font(.system(size: 20.0))
-                        .foregroundColor(breed.isFavorite ? .yellow : .gray)
-                        .padding(5)
-                        .background(
-                            Circle()
-                                .foregroundColor(.black.opacity(0.2))
-                        )
-                        .offset(x: -10, y: 10)
+                    Button(action: {
+                        breed.isFavorite.toggle()
+                        
+                    }) {
+                        Image(systemName: "star.fill")
+                            .font(.system(size: 20.0))
+                            .foregroundColor(breed.isFavorite ? .yellow : .gray)
+                            .padding(5)
+                            .background(
+                                Circle()
+                                    .foregroundColor(.black.opacity(0.2))
+                            )
+                            .offset(x: -10, y: 10)
+                    }
                 }
                 .padding()
                 .background(Color.gray.opacity(0.1))
