@@ -11,10 +11,25 @@ struct AboutView: View {
     var body: some View {
         
         NavigationView {
-            Text("This is the About View")
-            
-                .navigationTitle("About")
-                .navigationBarTitleDisplayMode(.large)
+            VStack() {
+                Text("This app was developed by Matias Luna on August 2024 as a Swift Challenge for the Mobile Engineer Trainee Role at Sword Health.")
+                    .foregroundColor(.black)
+                    .padding()
+                
+                Text("Thanks for downloading and testing.")
+                    .foregroundColor(.black)
+                    .padding()
+                
+                Text("For inquiries please contact the developer at:")
+                    .foregroundColor(.black)
+                    .padding()
+                
+                Text("matiasortizluna.contacto@gmail.com")
+                    .foregroundColor(.black)
+                    .padding()
+            }
+            .navigationTitle("About")
+            .navigationBarTitleDisplayMode(.large)
         }
     }
 }
