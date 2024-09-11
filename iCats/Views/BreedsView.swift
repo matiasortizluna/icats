@@ -75,7 +75,7 @@ struct BreedsView: View {
         request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
         
         let semaphore = DispatchSemaphore(value: 0)
-        
+		
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             
             defer {

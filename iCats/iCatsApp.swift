@@ -12,8 +12,9 @@ import SwiftData
 struct iCatsApp: App {
     
     var modelContainer = try! ModelContainer(for: Breed.self, Weight.self, CatImage.self)
-    
+
     var body: some Scene {
+
         WindowGroup {
             ContentView()
                 .modelContainer(modelContainer)
