@@ -7,13 +7,16 @@
 
 import SwiftUI
 import SwiftyJSON
+import SwiftData
 
 struct AboutView: View {
 	
 	@Environment(\.modelContext) private var modelContext
 	@State private var errorMessage: String?
+	
+	@Query private var breeds: [Breed]
 
-	let networkService = NetworkService(baseNetworkRequest: {request in
+	let baseNetworkService = BaseNetworkService(baseNetworkRequest: {request in
 		return try await URLSession.shared.data(for: request)
 	})
 
@@ -36,31 +39,15 @@ struct AboutView: View {
 				Text("matiasortizluna.contacto@gmail.com")
 					.foregroundColor(.black)
 					.padding()
-
-				Button(action: {
-					Task {
-						// This implementation should be done on the ViewModel
-						let response : Data = try await self.networkService.call(.breeds)
-						print(response)
-					}
-				}) {
-					Text("Request with Network Service")
-						.font(.system(size: 20.0))
-						.foregroundColor(.blue)
-						.padding(5)
-						.background(
-							Rectangle()
-								.foregroundColor(.black.opacity(0.2))
-								.blur(radius: 20.0)
-						)
-				}
+				
+				Divider()
 
 				Button(action: {
 					Task {
 						self.fetchBreeds()
 					}
 				}) {
-					Text("Request without Network Service")
+					Text("Request without Base Network Service (Breeds)")
 						.font(.system(size: 20.0))
 						.foregroundColor(.blue)
 						.padding(5)
@@ -70,6 +57,108 @@ struct AboutView: View {
 								.blur(radius: 20.0)
 						)
 				}
+
+				Button(action: {
+					Task {
+						// This implementation should be done on the ViewModel
+						let response : Data = try await self.baseNetworkService.call(.breeds)
+						print(response)
+					}
+				}) {
+					Text("Request with Base Network Service (Breeds)")
+						.font(.system(size: 20.0))
+						.foregroundColor(.blue)
+						.padding(5)
+						.background(
+							Rectangle()
+								.foregroundColor(.black.opacity(0.2))
+								.blur(radius: 20.0)
+						)
+				}
+
+				Button(action: {
+					Task {
+						guard let imageID = breeds.first?.image?.id else {
+							print("Error")
+							return
+						}
+						// This implementation should be done on the ViewModel
+						let response : Data = try await self.baseNetworkService.call(.images(imageID))
+						print(response)
+					}
+				}) {
+					Text("Request with Base Network Service (Images)")
+						.font(.system(size: 20.0))
+						.foregroundColor(.blue)
+						.padding(5)
+						.background(
+							Rectangle()
+								.foregroundColor(.black.opacity(0.2))
+								.blur(radius: 20.0)
+						)
+				}
+
+				Divider()
+
+				Button(action: {
+					Task {
+						let breedsNetworkService = BreedsNetworkService.live(baseNetworkService:baseNetworkService)
+						let result = try await breedsNetworkService.fetchBreeds()
+						print(result)
+					}
+				}) {
+					Text("Request with Breeds Network Service ")
+						.font(.system(size: 20.0))
+						.foregroundColor(.blue)
+						.padding(5)
+						.background(
+							Rectangle()
+								.foregroundColor(.black.opacity(0.2))
+								.blur(radius: 20.0)
+						)
+				}
+
+				Button(action: {
+					Task {
+						guard let imageID = breeds.first?.image?.id else {
+							print("Error")
+							return
+						}
+
+						let imagesNetworkService = ImagesNetworkService.live(baseNetworkService:baseNetworkService)
+						let result = try await imagesNetworkService.fetchImage(imageID)
+						print(result)
+					}
+				}) {
+					Text("Request with Images Network Service ")
+						.font(.system(size: 20.0))
+						.foregroundColor(.blue)
+						.padding(5)
+						.background(
+							Rectangle()
+								.foregroundColor(.black.opacity(0.2))
+								.blur(radius: 20.0)
+						)
+				}
+
+				Divider()
+
+				Button(action: {
+					for breed in breeds {
+						modelContext.delete(breed)
+					}
+				}) {
+					Text("Delete All")
+						.font(.system(size: 20.0))
+						.foregroundColor(.red)
+						.padding(5)
+						.background(
+							Rectangle()
+								.foregroundColor(.black.opacity(0.2))
+								.blur(radius: 20.0)
+						)
+				}
+
             }
             .navigationTitle("About")
             .navigationBarTitleDisplayMode(.large)

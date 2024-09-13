@@ -38,10 +38,13 @@ struct BreedsView: View {
                 .navigationTitle("Error")
             } else
             if breeds.isEmpty {
-                Text("Loading...")
-                    .onAppear {
-                        self.fetchBreeds()
-                    }
+				Button(
+				action: {
+					self.fetchBreeds()
+				}, label: {
+					Text("Try Again")
+				}
+				)
             } else {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 20) {

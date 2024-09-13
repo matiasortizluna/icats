@@ -8,14 +8,12 @@
 import Foundation
 
 /// Definition of protocol
-public protocol NetworkProtocol {
+public protocol BaseNetworkProtocol {
 	func call<T : Decodable> (_ endpoint: Endpoints) async throws -> T
 }
 
 /// Definition of struct
-struct NetworkService : NetworkProtocol{
-
-	let decoder = JSONDecoder()
+struct BaseNetworkService : BaseNetworkProtocol{
 
 	/// Implementation of the protocol's method
 	func call<T>(_ endpoint: Endpoints) async throws -> T where T : Decodable {
@@ -28,17 +26,21 @@ struct NetworkService : NetworkProtocol{
 		/// Trigger URL Request
 		let (data, response) = try await baseNetworkRequest(request)
 
+		/// Transform URLResponse as HTTPURLResponse to obtain status code after HTTP Request
 		guard let httpResponse = response as? HTTPURLResponse else {
 			throw NetworkErrors.invalidHTTPResponse
 		}
 
+		/// Trigger error if HTTP Response status code is <200 and >300
 		guard (200..<300).contains(httpResponse.statusCode) else {
 			throw NetworkErrors.serverError(httpResponse.statusCode)
 		}
 
+		/// Decode data response after HTTP Request.
+		let decoder = JSONDecoder()
 		let result = try decoder.decode(T.self, from: data)
-
-		/// Return data response from URL Request
+		
+		/// Return data response from HTTP Request
 		return result
 	}
 
@@ -58,7 +60,7 @@ private extension String {
 	static var centralURL : Self = "https://api.thecatapi.com"
 }
 
-extension NetworkService {
+extension BaseNetworkService {
 	/// Here are defined the helper private functions of the struct.
 
 	/// Method that takes and endpoint and generates the final URL request to be used
@@ -86,14 +88,6 @@ extension NetworkService {
 			/// Return URL Request with all neeeded information.
 			return request
 
-		} catch NetworkErrors.invalidBaseURL {
-			/// Handle NetworkErrors.invalidBaseURL  errors
-			print(NetworkErrors.invalidBaseURL.localizedDescription)
-
-		} catch NetworkErrors.invalidQueryItems {
-			/// Handle NetworkErrors.invalidQueryItems  errors
-			print(NetworkErrors.invalidQueryItems.localizedDescription)
-
 		} catch NetworkErrors.invalidURL {
 			/// Handle NetworkErrors.invalidURL  errors
 			print(NetworkErrors.invalidURL.localizedDescription)
@@ -107,19 +101,29 @@ extension NetworkService {
 
 		/// Retrieve constant value of central URL to be used accross all requests.
 		guard var baseURL = URL(string: .centralURL) else {
-			throw NetworkErrors.invalidBaseURL
+			throw NetworkErrors.invalidURL
 		}
+
+		/// Add to baseURL the API version path to the URL.
+		baseURL = baseURL.appendingPathComponent(endpoint.version)
 
 		/// Add to baseURL the endpoint path to the URL.
 		baseURL = baseURL.appendingPathComponent(endpoint.path)
+
+		/// If there are no queryItems associated with the endpoint, then return the URL already.
+		if (endpoint.queryItems.isEmpty) {
+			return baseURL
+		}
+
+		/// Create final URL by joinning baseURL with Query Items.
+		guard var urlComponents = URLComponents(string: baseURL.absoluteString) else {
+			throw NetworkErrors.invalidURL
+		}
 
 		/// Transform from APIQueryItems to URLQueryItems.
 		let urlQueryItems : [URLQueryItem] = endpoint.queryItems.map(makeQueryItem(_:))
 
 		/// Create final URL by joinning baseURL with Query Items.
-		guard var urlComponents = URLComponents(string: baseURL.absoluteString) else {
-			throw NetworkErrors.invalidQueryItems
-		}
 		urlComponents.queryItems = urlQueryItems
 
 		/// Retrieve final URL that contains baseURL.

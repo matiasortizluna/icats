@@ -10,7 +10,7 @@ import CoreFoundation
 
 public enum Endpoints {
 
-	case images
+	case images(String)
 	case breeds
 
 	var method : HTTPMethod {
@@ -22,17 +22,20 @@ public enum Endpoints {
 		}
 	}
 
+	var version : String {
+		"v1"
+	}
+
 	var path : String {
 		switch self {
-		case .images : return "v1/images"
-		case .breeds : return "v1/breeds"
+		case .images(let id) : return "images/\(id)"
+		case .breeds : return "breeds"
 		}
 	}
 
 	var queryItems : [APIQueryItem] {
 		switch self {
-		case .images : return [.keyValue(key: "limit", value: "20"), .keyValue(key: "page", value: "0")]
-			/// "favourites", "votes", "breeds", "facts" have other queryItems types.
+		case .images : return []
 		case .breeds : return [.keyValue(key: "limit", value: "20"), .keyValue(key: "page", value: "0")]
 		}
 	}
@@ -52,8 +55,7 @@ enum NetworkErrors : Error {
 	case unhandledHTTPStatus(Int)
 	case invalidHTTPResponse
 	case invalidURL
-	case invalidBaseURL
-	case invalidQueryItems
+	case dataConversionFailure
 }
 
 enum APIQueryItem {
