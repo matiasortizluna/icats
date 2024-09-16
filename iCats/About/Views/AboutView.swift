@@ -40,59 +40,38 @@ struct AboutView: View {
 				
 				Divider()
 
-				Button(action: {
-					Task {
+				TextButton(
+					label: "Request without Network Service",
+					labelColor: .blue,
+					rectangleColor: .black.opacity(0.2),
+					action: {
 						self.fetchBreeds()
 					}
-				}) {
-					Text("Request without Base Network Service (Breeds)")
-						.font(.system(size: 20.0))
-						.foregroundColor(.blue)
-						.padding(5)
-						.background(
-							Rectangle()
-								.foregroundColor(.black.opacity(0.2))
-								.blur(radius: 20.0)
-						)
-				}
+				)
 
-				Divider()
-
-				Button(action: {
-					Task {
-						let breedsNetworkService = BreedsNetworkService.live(networkService: networkService)
-						let result = try await breedsNetworkService.fetchBreeds()
-						print(result)
+				TextButton(
+					label: "Request with Breeds Network Service",
+					labelColor: .blue,
+					rectangleColor: .black.opacity(0.2),
+					action: {
+						Task {
+							let breedsNetworkService = BreedsNetworkService.live(networkService: networkService)
+							let result = try await breedsNetworkService.fetchBreeds()
+							print(result)
+						}
 					}
-				}) {
-					Text("Request with Breeds Network Service ")
-						.font(.system(size: 20.0))
-						.foregroundColor(.blue)
-						.padding(5)
-						.background(
-							Rectangle()
-								.foregroundColor(.black.opacity(0.2))
-								.blur(radius: 20.0)
-						)
-				}
+				)
 
-				Divider()
-
-				Button(action: {
-					for breed in breeds {
-						modelContext.delete(breed)
+				TextButton(
+					label: "Delete All",
+					labelColor: .red,
+					rectangleColor: .black.opacity(0.2),
+					action: {
+						for breed in breeds {
+							modelContext.delete(breed)
+						}
 					}
-				}) {
-					Text("Delete All")
-						.font(.system(size: 20.0))
-						.foregroundColor(.red)
-						.padding(5)
-						.background(
-							Rectangle()
-								.foregroundColor(.black.opacity(0.2))
-								.blur(radius: 20.0)
-						)
-				}
+				)
 
             }
             .navigationTitle("About")

@@ -37,6 +37,7 @@ final class BreedsNetworkServiceTests: XCTestCase {
 
 		do {
 			let response : [BreedsData] = try await sut.fetchBreeds()
+			print(response)
 			XCTFail("This service call should throw an error instead.")
 
 		} catch {

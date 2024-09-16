@@ -30,20 +30,29 @@ struct BreedsView: View {
                     Text("Error: \(errorMessage)")
                         .foregroundColor(.red)
                         .padding()
-                    Button(action: fetchBreeds) {
-                        Text("Retry")
-                            .foregroundColor(.blue)
-                    }
+					TextButton(
+						label: "Tap to Try Again",
+						labelColor: .black,
+						rectangleColor: .purple,
+						action: {
+							Task {
+								self.fetchBreeds()
+							}
+						}
+					)
                 }
                 .navigationTitle("Error")
             } else
             if breeds.isEmpty {
-				Button(
-				action: {
-					self.fetchBreeds()
-				}, label: {
-					Text("Try Again")
-				}
+				TextButton(
+					label: "Tap to Try Again",
+					labelColor: .white,
+					rectangleColor: .purple,
+					action: {
+						Task {
+							self.fetchBreeds()
+						}
+					}
 				)
             } else {
                 ScrollView {

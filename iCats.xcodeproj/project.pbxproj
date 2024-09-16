@@ -28,6 +28,8 @@
 		0FB7CBD62C63C61700798B53 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 0FB7CBD52C63C61700798B53 /* SwiftyJSON */; };
 		0FEAB70D2C98382600F694F7 /* BreedsNetworkServiceRequestMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA48F042C9453380078CB0D /* BreedsNetworkServiceRequestMock.swift */; };
 		0FEAB70F2C983B5100F694F7 /* NetworkServiceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA48F062C9467B20078CB0D /* NetworkServiceResponse.swift */; };
+		0FEAB7122C98610400F694F7 /* TextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEAB7112C98610400F694F7 /* TextButton.swift */; };
+		0FEAB7142C98659700F694F7 /* SymbolButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEAB7132C98659700F694F7 /* SymbolButton.swift */; };
 		0FF0C8242C653E64006DE8DF /* BreedsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF0C8232C653E64006DE8DF /* BreedsDetailView.swift */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +66,8 @@
 		0FA48F0A2C94933E0078CB0D /* BreedsNetworkServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedsNetworkServiceTests.swift; sourceTree = "<group>"; };
 		0FAA43BB2C91EC670051E904 /* JSONDecoder+Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+Shared.swift"; sourceTree = "<group>"; };
 		0FEAB7102C983C7900F694F7 /* iCats.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = iCats.xctestplan; sourceTree = "<group>"; };
+		0FEAB7112C98610400F694F7 /* TextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextButton.swift; sourceTree = "<group>"; };
+		0FEAB7132C98659700F694F7 /* SymbolButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolButton.swift; sourceTree = "<group>"; };
 		0FF0C8232C653E64006DE8DF /* BreedsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedsDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -156,6 +160,8 @@
 			isa = PBXGroup;
 			children = (
 				0F94FA892C61838D009C8E27 /* CatsCard.swift */,
+				0FEAB7112C98610400F694F7 /* TextButton.swift */,
+				0FEAB7132C98659700F694F7 /* SymbolButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -391,6 +397,7 @@
 				0FAA43BC2C91EC670051E904 /* JSONDecoder+Shared.swift in Sources */,
 				0F57A9032C65327500471F56 /* BreedsView.swift in Sources */,
 				0F9D696D2C6A3A5300849F38 /* CatImage.swift in Sources */,
+				0FEAB7142C98659700F694F7 /* SymbolButton.swift in Sources */,
 				0F94FA8A2C61838D009C8E27 /* CatsCard.swift in Sources */,
 				0F94FA872C61831F009C8E27 /* iCatsApp.swift in Sources */,
 				0FA48EFE2C932A350078CB0D /* BreedsNetworkService.swift in Sources */,
@@ -399,6 +406,7 @@
 				0F94FA5D2C613680009C8E27 /* ContentView.swift in Sources */,
 				0F3E010B2C9063780009804F /* Endpoint.swift in Sources */,
 				0F9D696B2C6A3A3700849F38 /* Weight.swift in Sources */,
+				0FEAB7122C98610400F694F7 /* TextButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

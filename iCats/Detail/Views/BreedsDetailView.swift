@@ -25,20 +25,14 @@ struct BreedsDetailView: View {
                             .padding(5)
                     }
                     
-                    Button(action: {
-                        breed.isFavorite.toggle()
-                        
-                    }) {
-                        Image(systemName: "star.fill")
-                            .font(.system(size: 20.0))
-                            .foregroundColor(breed.isFavorite ? .yellow : .gray)
-                            .padding(5)
-                            .background(
-                                Circle()
-                                    .foregroundColor(.black.opacity(0.2))
-                            )
-                            .offset(x: -10, y: 10)
-                    }
+					SymbolButton(
+						symbolLabel: "star.fill",
+						symbolColor: breed.isFavorite ? .yellow : .gray,
+						backgroundColor: .black.opacity(0.2),
+						action: {
+							breed.isFavorite.toggle()
+						}
+					)
                 }
                 .padding()
                 .background(Color.gray.opacity(0.1))
@@ -86,22 +80,15 @@ struct BreedsDetailView: View {
                 
                 Spacer()
                 
-                
-                Button(action: {
-                    breed.isFavorite.toggle()
-                }) {
-                    Text(breed.isFavorite ? "Remove From Favorites" : "Add To Favorites")
-                        .font(.headline)
-                        .foregroundColor(.black)
-                        .padding()
-                        .background(
-                            Rectangle()
-                                .foregroundColor(.yellow)
-                                .cornerRadius(15.0)
-                        )
-                }
-                .cornerRadius(15.0)
-                .padding()
+				TextButton(
+					label: breed.isFavorite ? "Remove From Favorites" : "Add To Favorites",
+					labelColor: .black,
+					rectangleColor: .yellow,
+					action: {
+						breed.isFavorite.toggle()
+					}
+				)
+
             }
         }
         .padding(.horizontal)

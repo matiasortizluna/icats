@@ -22,21 +22,15 @@ struct CatsCard: View {
                             .clipShape(RoundedRectangle(cornerRadius: 15))
                             .padding(5)
                     }
-                    
-                    Button(action: {
-                        breed.isFavorite.toggle()
-                        
-                    }) {
-                        Image(systemName: "star.fill")
-                            .font(.system(size: 20.0))
-                            .foregroundColor(breed.isFavorite ? .yellow : .gray)
-                            .padding(5)
-                            .background(
-                                Circle()
-                                    .foregroundColor(.black.opacity(0.2))
-                            )
-                            .offset(x: -10, y: 10)
-                    }
+
+					SymbolButton(
+						symbolLabel: "star.fill",
+						symbolColor: breed.isFavorite ? .yellow : .gray,
+						backgroundColor: .black.opacity(0.2),
+						action: {
+							breed.isFavorite.toggle()
+						}
+					)
                 }
                 
                 Text(breed.name)
