@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "D8576940-A89B-4FDB-8830-CA54B0541D78",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:iCats.xcodeproj",
+      "identifier" : "0F94FA562C613680009C8E27",
+      "name" : "iCats"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:iCats.xcodeproj",
+        "identifier" : "0F94FA682C613683009C8E27",
+        "name" : "iCatsTests"
+      }
+    }
+  ],
+  "version" : 1
+}

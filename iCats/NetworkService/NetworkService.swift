@@ -7,20 +7,31 @@
 
 import Foundation
 
+public typealias NetworkServiceResponse = Result<(Data, HTTPURLResponse), Error>
+
 /// Definition of protocol
-public protocol BaseNetworkProtocol {
-	func call<T : Decodable> (_ endpoint: Endpoints) async throws -> T
+public protocol NetworkProtocol {
+	func call<T : Decodable> (_ endpoint: Endpoint) async throws -> T
 }
 
 /// Definition of struct
-struct BaseNetworkService : BaseNetworkProtocol{
+struct NetworkService : NetworkProtocol{
+	// Here is defined the syntax and type of the base network request.
+	let baseNetworkRequest : (URLRequest) async throws -> (Data, URLResponse)
+
+	// Here is defined the init method of the Network Service. It assigns the baseNetworkRequest closure with the function/closure/parameter sent as argument.
+	init(
+		baseNetworkRequest : @escaping (URLRequest) async throws -> (Data, URLResponse))
+	{
+		self.baseNetworkRequest = baseNetworkRequest
+	}
 
 	/// Implementation of the protocol's method
-	func call<T>(_ endpoint: Endpoints) async throws -> T where T : Decodable {
-		
+	func call<T>(_ endpoint: Endpoint) async throws -> T where T : Decodable {
+
 		/// Generate URL Request.
 		guard let request = try generateURLRequest(endpoint) else {
-			throw NetworkErrors.invalidURL
+			throw NetworkError.invalidURL
 		}
 
 		/// Trigger URL Request
@@ -28,30 +39,37 @@ struct BaseNetworkService : BaseNetworkProtocol{
 
 		/// Transform URLResponse as HTTPURLResponse to obtain status code after HTTP Request
 		guard let httpResponse = response as? HTTPURLResponse else {
-			throw NetworkErrors.invalidHTTPResponse
+			throw NetworkError.invalidHTTPResponse
 		}
 
 		/// Trigger error if HTTP Response status code is <200 and >300
 		guard (200..<300).contains(httpResponse.statusCode) else {
-			throw NetworkErrors.serverError(httpResponse.statusCode)
+			throw NetworkError.serverError(httpResponse.statusCode)
 		}
 
 		/// Decode data response after HTTP Request.
 		let decoder = JSONDecoder()
 		let result = try decoder.decode(T.self, from: data)
-		
+
 		/// Return data response from HTTP Request
 		return result
 	}
 
-	/// Here is defined the syntax and type of the base network request.
-	let baseNetworkRequest : (URLRequest) async throws -> (Data, URLResponse)
+	public static func live() -> NetworkService {
+		.init(baseNetworkRequest: { request in
+			return try await URLSession.shared.data(for: request)
+		})
+	}
 
-	/// Here is defined the init method of the Network Service. It assigns the baseNetworkRequest closure with the function/closure/parameter sent as argument.
-	init(
-		baseNetworkRequest : @escaping (URLRequest) async throws -> (Data, URLResponse))
-	{
-		self.baseNetworkRequest = baseNetworkRequest
+	public static func mock(mockValueProvider : @escaping () -> NetworkServiceResponse) -> NetworkService {
+		.init(
+			baseNetworkRequest: { request in
+				switch mockValueProvider() {
+				case .success(let value) : return value
+				case .failure(let error) : throw error
+				}
+
+			})
 	}
 }
 
@@ -60,11 +78,11 @@ private extension String {
 	static var centralURL : Self = "https://api.thecatapi.com"
 }
 
-extension BaseNetworkService {
-	/// Here are defined the helper private functions of the struct.
+/// Here are defined the helper private functions of the struct.
+extension NetworkService {
 
 	/// Method that takes and endpoint and generates the final URL request to be used
-	private func generateURLRequest(_ endpoint: Endpoints) throws -> URLRequest? {
+	private func generateURLRequest(_ endpoint: Endpoint) throws -> URLRequest? {
 
 		do {
 			/// Generates final URL to be used. (URL, Endpoint Path and Query Items)
@@ -78,8 +96,8 @@ extension BaseNetworkService {
 
 			/// Add the default values for headers that every request needs to URL Request.
 			let headers : [String : String] = [
-				Headers.xApiKey.rawValue : HeadersValues.xApiKey.rawValue,
-				Headers.contentType.rawValue : HeadersValues.contentType.rawValue
+				Header.xApiKey.rawValue : HeaderValue.xApiKey.rawValue,
+				Header.contentType.rawValue : HeaderValue.contentType.rawValue
 			]
 			headers.forEach {
 				request.addValue($0.value, forHTTPHeaderField: $0.key)
@@ -88,20 +106,20 @@ extension BaseNetworkService {
 			/// Return URL Request with all neeeded information.
 			return request
 
-		} catch NetworkErrors.invalidURL {
+		} catch NetworkError.invalidURL {
 			/// Handle NetworkErrors.invalidURL  errors
-			print(NetworkErrors.invalidURL.localizedDescription)
+			print(NetworkError.invalidURL.localizedDescription)
 		}
 
 		return nil
 	}
 
 	/// Method that takes and endpoint and generates the final URL request to be used. (URL, Endpoint Path and Query Items)
-	private func generateFinalURL(_ endpoint : Endpoints) throws -> URL {
+	private func generateFinalURL(_ endpoint : Endpoint) throws -> URL {
 
 		/// Retrieve constant value of central URL to be used accross all requests.
 		guard var baseURL = URL(string: .centralURL) else {
-			throw NetworkErrors.invalidURL
+			throw NetworkError.invalidURL
 		}
 
 		/// Add to baseURL the API version path to the URL.
@@ -117,7 +135,7 @@ extension BaseNetworkService {
 
 		/// Create final URL by joinning baseURL with Query Items.
 		guard var urlComponents = URLComponents(string: baseURL.absoluteString) else {
-			throw NetworkErrors.invalidURL
+			throw NetworkError.invalidURL
 		}
 
 		/// Transform from APIQueryItems to URLQueryItems.
@@ -128,7 +146,7 @@ extension BaseNetworkService {
 
 		/// Retrieve final URL that contains baseURL.
 		guard let finalURL = urlComponents.url else {
-			throw NetworkErrors.invalidURL
+			throw NetworkError.invalidURL
 		}
 
 		/// Return final URL that contains baseURL.
