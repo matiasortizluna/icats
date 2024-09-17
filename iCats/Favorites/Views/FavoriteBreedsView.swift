@@ -9,12 +9,9 @@ import SwiftUI
 import SwiftData
 
 struct FavoriteBreedsView: View {
-    
-    @Environment(\.modelContext) private var modelContext
-    @Query(filter: #Predicate<Breed> { breed in
-        breed.isFavorite
-    }) var favoriteBreeds: [Breed]
-    
+
+    var favoriteBreeds: [BreedsData] = []
+
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())

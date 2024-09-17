@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    
+
     var body: some View {
         TabView(selection: .constant(2)) {
             
@@ -19,7 +19,7 @@ struct ContentView: View {
                 }
                 .tag(1)
             
-            BreedsView()
+			BreedsView()
                 .tabItem {
                     Label("Breeds", systemImage: "cat")
                 }

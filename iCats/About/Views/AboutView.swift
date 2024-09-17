@@ -56,7 +56,7 @@ struct AboutView: View {
 					action: {
 						Task {
 							let breedsNetworkService = BreedsNetworkService.live(networkService: networkService)
-							let result = try await breedsNetworkService.fetchBreeds()
+							let result = try await breedsNetworkService.fetchBreeds(8, 0)
 							print(result)
 						}
 					}

@@ -8,19 +8,19 @@
 import Foundation
 
 struct BreedsNetworkService {
-	var fetchBreeds : () async throws -> [BreedsData]
-	
+	var fetchBreeds : (_ limit: Int, _ page: Int) async throws -> [BreedsData]
+
 	static func live(networkService: NetworkService) -> Self {
 		.init(
-			fetchBreeds: {
-				try await networkService.call(.breeds)
+			fetchBreeds: { limit, page in
+				try await networkService.call(.breeds(limit, page))
 			}
 		)
 	}
 	
 	static func mock(networkService: NetworkService, response : NetworkServiceResponse) -> Self {
 		.init(
-			fetchBreeds: {
+			fetchBreeds: { limit, page in
 				fatalError("Unimplemented submit closure")
 			}
 		)

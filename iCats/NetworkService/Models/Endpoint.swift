@@ -11,8 +11,8 @@ import CoreFoundation
 public enum Endpoint {
 	
 	case images(String)
-	case breeds
-	
+	case breeds(Int, Int)
+
 	var method : HTTPMethod {
 		switch self {
 			/// "images" endpoint can also handle post, and delete HTTP methods.
@@ -36,7 +36,7 @@ public enum Endpoint {
 	var queryItems : [APIQueryItem] {
 		switch self {
 		case .images : return []
-		case .breeds : return [.keyValue(key: "limit", value: "20"), .keyValue(key: "page", value: "0")]
+		case .breeds(let limit, let page) : return [.keyValue(key: "limit", value: String(limit)), .keyValue(key: "page", value: String(page))]
 		}
 	}
 }

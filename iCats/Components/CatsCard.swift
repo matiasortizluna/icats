@@ -9,33 +9,33 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct CatsCard: View {
-    var breed : Breed
-    
+    var breed : BreedsData
+
     var body: some View {
         ZStack {
             VStack {
                 ZStack(alignment: .topTrailing) {
-                    if let url = breed.image?.url {
-                        WebImage(url: URL(string: url)).resizable()
+//                    if let url = breed.image.url {
+                        WebImage(url: URL(string: breed.image.url)).resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 120, height: 100)
                             .clipShape(RoundedRectangle(cornerRadius: 15))
                             .padding(5)
-                    } else {
-						Image(systemName: "cat.fill")
-							.resizable()
-							.aspectRatio(contentMode: .fill)
-							.frame(width: 120, height: 100)
-							.clipShape(RoundedRectangle(cornerRadius: 15))
-							.padding(5)
-					}
+//                    } else {
+//						Image(systemName: "cat.fill")
+//							.resizable()
+//							.aspectRatio(contentMode: .fill)
+//							.frame(width: 120, height: 100)
+//							.clipShape(RoundedRectangle(cornerRadius: 15))
+//							.padding(5)
+//					}
 
 					SymbolButton(
 						symbolLabel: "star.fill",
-						symbolColor: breed.isFavorite ? .yellow : .gray,
+						symbolColor: .gray,
 						backgroundColor: .black.opacity(0.2),
 						action: {
-							breed.isFavorite.toggle()
+//							breed.isFavorite.toggle()
 						}
 					)
                 }
@@ -57,6 +57,5 @@ struct CatsCard: View {
 
 #Preview {
     CatsCard(
-        breed: Breed(id: "dasdsa", name: "Default", origin: "Default", temperament: "Default", description: "Default", lifeSpan: "Default", weight: Weight(imperial: "Default", metric: "Default"), image: nil, isFavorite: false
-                    ))
+		breed: [BreedsData].breedsMock.first!)
 }
