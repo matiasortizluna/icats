@@ -21,7 +21,14 @@ struct CatsCard: View {
                             .frame(width: 120, height: 100)
                             .clipShape(RoundedRectangle(cornerRadius: 15))
                             .padding(5)
-                    }
+                    } else {
+						Image(systemName: "cat.fill")
+							.resizable()
+							.aspectRatio(contentMode: .fill)
+							.frame(width: 120, height: 100)
+							.clipShape(RoundedRectangle(cornerRadius: 15))
+							.padding(5)
+					}
 
 					SymbolButton(
 						symbolLabel: "star.fill",

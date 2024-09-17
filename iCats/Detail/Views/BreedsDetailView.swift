@@ -17,7 +17,7 @@ struct BreedsDetailView: View {
                             .padding(5)
                         
                     } else {
-                        Image("9rm")
+                        Image(systemName: "cat.fill")
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 200, height: 200)

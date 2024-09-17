@@ -9,7 +9,9 @@ struct BreedsView: View {
     
     @State private var searchQuery: String = ""
     @State private var errorMessage: String?
-    
+
+	@State var page : Int = 0
+
     var filteredBreeds: [Breed] {
         if searchQuery.isEmpty {
             return breeds
@@ -36,7 +38,7 @@ struct BreedsView: View {
 						rectangleColor: .purple,
 						action: {
 							Task {
-								self.fetchBreeds()
+								self.fetchBreeds(limit: 8, page: 0)
 							}
 						}
 					)
@@ -50,7 +52,7 @@ struct BreedsView: View {
 					rectangleColor: .purple,
 					action: {
 						Task {
-							self.fetchBreeds()
+							self.fetchBreeds(limit: 8, page: 0)
 						}
 					}
 				)
@@ -64,6 +66,19 @@ struct BreedsView: View {
                         }
                     }
                     .padding()
+
+					TextButton(
+						label: "Load more",
+						labelColor: .white,
+						rectangleColor: .blue,
+						action: {
+							Task {
+								self.fetchBreeds(limit: 8, page: self.page)
+								self.page+=1
+							}
+						}
+					)
+					.padding()
                 }
                 .navigationTitle("Breeds")
                 .navigationBarTitleDisplayMode(.large)
@@ -72,11 +87,11 @@ struct BreedsView: View {
         }
     }
     
-    private func fetchBreeds() {
-        
+	private func fetchBreeds(limit: Int, page: Int) {
+
         let apiKey = "live_ISll8gOWarTBCiBssIqrzkvhzuez2g72xz4WzKx1BkRLXoWIlXD1GTKNklz1ERUr"
-        let urlString = "https://api.thecatapi.com/v1/breeds?limit=20&page=0"
-        
+        let urlString = "https://api.thecatapi.com/v1/breeds?limit=\(limit)&page=\(page)"
+
         guard let url = URL(string: urlString) else {
             self.errorMessage = "Invalid URL"
             print("Invalid URL")
