@@ -1,14 +1,7 @@
-//
-//  NetworkService.swift
-//  iCats
-//
-//  Created by Matias Luna on 12/09/2024.
-//
-
 import Foundation
 
-struct BreedsNetworkService {
-	var fetchBreeds : (_ limit: Int, _ page: Int) async throws -> [BreedsData]
+struct BreedsListNetworkService {
+	var fetchBreeds : (_ limit: Int, _ page: Int) async throws -> [BreedAPI]
 
 	static func live(networkService: NetworkService) -> Self {
 		.init(
@@ -22,6 +15,14 @@ struct BreedsNetworkService {
 		.init(
 			fetchBreeds: { limit, page in
 				fatalError("Unimplemented submit closure")
+			}
+		)
+	}
+
+	static func mockPreview() -> Self {
+		.init(
+			fetchBreeds: { limit, page in
+				return [BreedAPI].breedsMock
 			}
 		)
 	}

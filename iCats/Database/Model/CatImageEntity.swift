@@ -8,7 +8,7 @@
 import SwiftData
 
 @Model
-class CatImage {
+class CatImageEntity {
     let id: String
     let width: Int
     let height: Int

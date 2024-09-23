@@ -12,11 +12,11 @@ final class BreedsNetworkServiceTests: XCTestCase {
 
 		let networkService  = NetworkService.mock(mockValueProvider: { mockResponse })
 
-		let sut = BreedsNetworkService.live(networkService: networkService)
+		let sut = BreedsListNetworkService.live(networkService: networkService)
 
 		do {
-			let response = try await sut.fetchBreeds()
-			XCTAssertEqual(response, [BreedsData].breedsMock)
+			let response = try await sut.fetchBreeds(3, 0)
+			XCTAssertEqual(response, [BreedAPI].breedsMock)
 
 		} catch {
 			XCTFail("Expected Data Conversion to [BreedsData] failed")
@@ -33,10 +33,10 @@ final class BreedsNetworkServiceTests: XCTestCase {
 
 		let networkService  = NetworkService.mock(mockValueProvider: { mockResponse })
 
-		let sut = BreedsNetworkService.live(networkService: networkService)
+		let sut = BreedsListNetworkService.live(networkService: networkService)
 
 		do {
-			let response : [BreedsData] = try await sut.fetchBreeds()
+			let response : [BreedAPI] = try await sut.fetchBreeds(3, 0)
 			print(response)
 			XCTFail("This service call should throw an error instead.")
 

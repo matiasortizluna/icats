@@ -1,16 +1,9 @@
-//
-//  FavoriteBreedsView.swift
-//  iCats
-//
-//  Created by Matias Luna on 08/08/2024.
-//
-
 import SwiftUI
 import SwiftData
 
-struct FavoriteBreedsView: View {
+struct BreedsFavoritesView: View {
 
-    var favoriteBreeds: [BreedsData] = []
+    var favoriteBreeds: [BreedModel] = []
 
     let columns = [
         GridItem(.flexible()),
@@ -25,9 +18,9 @@ struct FavoriteBreedsView: View {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 20) {
                         ForEach(favoriteBreeds, id: \.id) { breed in
-                            NavigationLink(destination: BreedsDetailView(breed: breed)) {
-                                CatsCard(breed: breed)
-                            }
+							//NavigationLink(destination: BreedsDetailView(model: breed)) {
+                                CatCard(breed: breed)
+                            //}
                         }
                     }
                     .padding()
@@ -40,5 +33,5 @@ struct FavoriteBreedsView: View {
 }
 
 #Preview {
-    FavoriteBreedsView()
+    BreedsFavoritesView()
 }

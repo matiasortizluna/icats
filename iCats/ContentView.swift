@@ -1,25 +1,19 @@
-//
-//  ContentView.swift
-//  iCats
-//
-//  Created by Matias Luna on 05/08/2024.
-//
-
 import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+	let model : BreedsListViewModel
 
     var body: some View {
         TabView(selection: .constant(2)) {
             
-            FavoriteBreedsView()
+            BreedsFavoritesView()
                 .tabItem {
                     Label("Favorites", systemImage: "heart")
                 }
                 .tag(1)
-            
-			BreedsView()
+
+			BreedsListView(model: self.model)
                 .tabItem {
                     Label("Breeds", systemImage: "cat")
                 }
@@ -39,9 +33,9 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let previewModelContainer = try! ModelContainer(for: Breed.self, Weight.self, CatImage.self)
+        let previewModelContainer = try! ModelContainer(for: BreedEntity.self, CatImageEntity.self)
         
-        ContentView()
+		ContentView(model: BreedsListViewModel(breedsNetworkService: BreedsListNetworkService.mockPreview()))
             .modelContainer(previewModelContainer)
     }
 }

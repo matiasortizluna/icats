@@ -9,30 +9,28 @@ import Foundation
 import CoreFoundation
 
 public enum Endpoint {
-	
+
 	case images(String)
 	case breeds(Int, Int)
 
 	var method : HTTPMethod {
 		switch self {
-			/// "images" endpoint can also handle post, and delete HTTP methods.
 		case .images : .get
-			
 		case .breeds : .get
 		}
 	}
-	
+
 	var version : String {
 		"v1"
 	}
-	
+
 	var path : String {
 		switch self {
 		case .images(let id) : return "images/\(id)"
 		case .breeds : return "breeds"
 		}
 	}
-	
+
 	var queryItems : [APIQueryItem] {
 		switch self {
 		case .images : return []

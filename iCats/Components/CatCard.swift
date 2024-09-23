@@ -8,15 +8,15 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct CatsCard: View {
-    var breed : BreedsData
+struct CatCard: View {
+    var breed : BreedModel
 
     var body: some View {
         ZStack {
             VStack {
                 ZStack(alignment: .topTrailing) {
 //                    if let url = breed.image.url {
-                        WebImage(url: URL(string: breed.image.url)).resizable()
+					WebImage(url: URL(string: self.breed.image!.url)).resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 120, height: 100)
                             .clipShape(RoundedRectangle(cornerRadius: 15))
@@ -55,7 +55,7 @@ struct CatsCard: View {
     }
 }
 
-#Preview {
-    CatsCard(
-		breed: [BreedsData].breedsMock.first!)
-}
+//#Preview {
+////    CatsCard(
+////		breed: [BreedsAPI].breedsMock.first!)
+//}
