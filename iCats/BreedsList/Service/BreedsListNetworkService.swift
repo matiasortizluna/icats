@@ -1,6 +1,8 @@
 import Foundation
 
 struct BreedsListNetworkService {
+	// TODO: could you remove the spaces between the name and the colon : ?
+	// Here and other places in the app
 	var fetchBreeds : (_ limit: Int, _ page: Int) async throws -> [BreedJSON]
 
 	static func live(networkService: NetworkService) -> Self {

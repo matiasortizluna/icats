@@ -9,7 +9,7 @@ import Foundation
 
 @Observable
 final class BreedDetailViewModel {
-
+	// TODO: delete this line
 	var breed : BreedModel
 
 	func addFavorites() {
@@ -19,5 +19,5 @@ final class BreedDetailViewModel {
 	init(breed: BreedModel) {
 		self.breed = breed
 	}
-
+	// TODO: delete this line
 }

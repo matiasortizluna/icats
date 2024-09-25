@@ -1,5 +1,7 @@
 import Foundation
 
+// TODO: Since these models (BreedModel, CatImageModel and LifespanModel are shared between the whole app
+// It is a good idea to have a "SharedModels" folder
 struct BreedModel {
 	let id: String
 	let name: String
@@ -8,8 +10,9 @@ struct BreedModel {
 	let breedDescription: String
 	let lifeSpan: LifespanModel?
 	let image: CatImageModel?
-	var isFavorite : Bool
+	var isFavorite: Bool
 
+	// TODO: could you break the line and ident here?
 	init(id: String, name: String, origin: String, temperament: String, breedDescription: String, lifeSpan: LifespanModel, image: CatImageModel?) {
 		self.id = id
 		self.name = name

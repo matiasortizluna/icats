@@ -125,24 +125,10 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		0F86A0732C9C5C3A00F3D14D /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		0F86A0752C9C5C4400F3D14D /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				0F86A07E2C9DB0E200F3D14D /* BreedDetailViewModel.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		0F86A0772C9C5C4F00F3D14D /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -284,7 +270,6 @@
 			isa = PBXGroup;
 			children = (
 				0FEAB7062C9835BF00F694F7 /* View */,
-				0F86A0732C9C5C3A00F3D14D /* ViewModel */,
 			);
 			path = BreedsFavorites;
 			sourceTree = "<group>";
@@ -318,7 +303,6 @@
 			isa = PBXGroup;
 			children = (
 				0FEAB70A2C98363A00F694F7 /* View */,
-				0F86A0772C9C5C4F00F3D14D /* ViewModel */,
 			);
 			path = About;
 			sourceTree = "<group>";

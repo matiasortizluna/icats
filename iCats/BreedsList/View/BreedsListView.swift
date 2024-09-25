@@ -8,7 +8,7 @@ struct BreedsListView: View {
 		GridItem(.flexible())
 	]
 
-	@State var model : BreedsListViewModel
+	@State var model: BreedsListViewModel
 
 	var body: some View {
 		NavigationStack {
@@ -21,6 +21,9 @@ struct BreedsListView: View {
 							CatCard(breed: breed)
 						}
 						.task{
+							// TODO: this 1 can be inside an extension Int { }. Naming suggestion: "bottomThreshold".
+							// TODO: I think this inequality is inverted no? We need to fetch more content after reaching
+							// a certain level. What increases here is the index
 							if index+1 < model.filteredBreeds.count {
 								await model.bottomReached()
 							}
@@ -46,6 +49,9 @@ struct BreedsListView: View {
 		}
 	}
 }
+
+// TODO: could you add an extension String { } with the string literals in this file? Since we can reuse the strings elsewhere
+// it might be a good approach to create this extension in a separate file accessible to every view.
 
 private extension CGFloat {
 	static let gridSpacing: Self = 20

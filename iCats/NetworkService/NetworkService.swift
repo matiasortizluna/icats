@@ -11,6 +11,7 @@ public typealias NetworkServiceResponse = Result<(Data, HTTPURLResponse), Error>
 
 /// Definition of protocol
 public protocol NetworkProtocol {
+	// TODO: could you remove the spaces between the name and the colon : ?
 	func call<T : Decodable> (_ endpoint: Endpoint) async throws -> T
 }
 

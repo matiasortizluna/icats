@@ -9,10 +9,11 @@ import Foundation
 import CoreFoundation
 
 public enum Endpoint {
-
+	// TODO: could you remove this space?
 	case images(String)
 	case breeds(Int, Int)
 
+	// TODO: could you remove the spaces between the name and the colon : here and in the other lines here in this file?
 	var method : HTTPMethod {
 		switch self {
 		case .images : .get
@@ -20,6 +21,9 @@ public enum Endpoint {
 		}
 	}
 
+	// TODO: could you add these strings to a private String extension in this file?
+	// Note that these are not user readable, so they are typically not used in views (shared).
+	// Therefore, the extension can be private
 	var version : String {
 		"v1"
 	}
@@ -66,7 +70,7 @@ enum Header : String {
 }
 
 enum HeaderValue : String {
-
+	// TODO: could you remove this space?
 	case xApiKey
 	case contentType
 
