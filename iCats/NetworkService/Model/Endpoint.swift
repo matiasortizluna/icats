@@ -60,7 +60,6 @@ enum APIQueryItem {
 	case keyValue(key: String, value: String)
 }
 
-
 enum Header : String {
 	case xApiKey = "x-api-key"
 	case contentType = "Content-Type"

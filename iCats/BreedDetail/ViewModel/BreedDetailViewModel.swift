@@ -13,7 +13,7 @@ final class BreedDetailViewModel {
 	var breed : BreedModel
 
 	func addFavorites() {
-		self.breed.isFavorite.toggle()
+		breed.isFavorite.toggle()
 	}
 
 	init(breed: BreedModel) {

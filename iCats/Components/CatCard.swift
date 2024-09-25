@@ -12,11 +12,11 @@ struct CatCard: View {
     var breed : BreedModel
 
     var body: some View {
-        ZStack {
-            VStack {
+		ZStack {
+			VStack(spacing: .zero) {
                 ZStack(alignment: .topTrailing) {
 //                    if let url = breed.image.url {
-					WebImage(url: URL(string: self.breed.image!.url)).resizable()
+					WebImage(url: URL(string: breed.image!.url)).resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 120, height: 100)
                             .clipShape(RoundedRectangle(cornerRadius: 15))
@@ -39,13 +39,12 @@ struct CatCard: View {
 						}
 					)
                 }
-                
-                Text(breed.name)
+
+				Text(breed.name)
                     .font(.system(size: 15))
                     .foregroundColor(.black)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
-                
             }
             .padding()
             .background(Color.gray.opacity(0.1))
@@ -55,7 +54,7 @@ struct CatCard: View {
     }
 }
 
-//#Preview {
-////    CatsCard(
-////		breed: [BreedsAPI].breedsMock.first!)
-//}
+// #Preview {
+//    CatsCard(
+//		breed: [BreedsAPI].breedsMock.first!)
+// }

@@ -24,7 +24,6 @@ struct TextButton : View {
 		.cornerRadius(15.0)
 		.padding()
 	}
-	
 }
 
 #Preview {

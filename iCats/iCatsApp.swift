@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct iCatsApp: App {
+struct CatsApp: App {
 
 	var body: some Scene {
 

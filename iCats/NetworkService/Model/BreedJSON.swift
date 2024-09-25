@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct BreedAPI: Decodable, Equatable {
+public struct BreedJSON: Decodable, Equatable {
 	let id : String
 	let name : String
 	let temperament : String
@@ -25,9 +25,9 @@ public struct BreedAPI: Decodable, Equatable {
 	}
 }
 
-extension [BreedAPI] {
+extension [BreedJSON] {
 	static var breedsMock : Self = [
-		BreedAPI(
+		BreedJSON(
 			id: "abys",
 			name: "Abyssinian",
 			temperament: "Active, Energetic, Independent, Intelligent, Gentle",
@@ -42,7 +42,7 @@ extension [BreedAPI] {
 				url: "https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg"
 			)
 		),
-		BreedAPI(
+		BreedJSON(
 			id: "aege",
 			name: "Aegean",
 			temperament: "Affectionate, Social, Intelligent, Playful, Active",
@@ -57,7 +57,7 @@ extension [BreedAPI] {
 				url: "https://cdn2.thecatapi.com/images/ozEvzdVM-.jpg"
 			)
 		),
-		BreedAPI(
+		BreedJSON(
 			id: "char",
 			name: "Chartreux",
 			temperament: "Affectionate, Loyal, Intelligent, Social, Lively, Playful",

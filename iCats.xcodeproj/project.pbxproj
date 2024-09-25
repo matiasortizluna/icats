@@ -28,7 +28,7 @@
 		0F9D69752C6A3C4200849F38 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0F9D69742C6A3C4200849F38 /* SDWebImageSwiftUI */; };
 		0FA316512C679B1F00928F58 /* BreedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA316502C679B1F00928F58 /* BreedEntity.swift */; };
 		0FA48EFE2C932A350078CB0D /* BreedsListNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA48EFD2C932A350078CB0D /* BreedsListNetworkService.swift */; };
-		0FA48F012C932C650078CB0D /* BreedAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA48F002C932C650078CB0D /* BreedAPI.swift */; };
+		0FA48F012C932C650078CB0D /* BreedJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA48F002C932C650078CB0D /* BreedJSON.swift */; };
 		0FA48F0B2C94933E0078CB0D /* BreedsNetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA48F0A2C94933E0078CB0D /* BreedsNetworkServiceTests.swift */; };
 		0FAA43BC2C91EC670051E904 /* JSONDecoder+Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FAA43BB2C91EC670051E904 /* JSONDecoder+Shared.swift */; };
 		0FB7CBD62C63C61700798B53 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 0FB7CBD52C63C61700798B53 /* SwiftyJSON */; };
@@ -37,6 +37,7 @@
 		0FEAB7122C98610400F694F7 /* TextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEAB7112C98610400F694F7 /* TextButton.swift */; };
 		0FEAB7142C98659700F694F7 /* SymbolButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEAB7132C98659700F694F7 /* SymbolButton.swift */; };
 		0FF0C8242C653E64006DE8DF /* BreedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF0C8232C653E64006DE8DF /* BreedDetailView.swift */; };
+		0FFC4D5E2CA1D33800309B9A /* BreedsListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FFC4D5D2CA1D33800309B9A /* BreedsListViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,7 +72,7 @@
 		0F9D696C2C6A3A5300849F38 /* CatImageEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatImageEntity.swift; sourceTree = "<group>"; };
 		0FA316502C679B1F00928F58 /* BreedEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedEntity.swift; sourceTree = "<group>"; };
 		0FA48EFD2C932A350078CB0D /* BreedsListNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedsListNetworkService.swift; sourceTree = "<group>"; };
-		0FA48F002C932C650078CB0D /* BreedAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedAPI.swift; sourceTree = "<group>"; };
+		0FA48F002C932C650078CB0D /* BreedJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedJSON.swift; sourceTree = "<group>"; };
 		0FA48F042C9453380078CB0D /* BreedsNetworkServiceRequestMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedsNetworkServiceRequestMock.swift; sourceTree = "<group>"; };
 		0FA48F062C9467B20078CB0D /* NetworkServiceResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceResponse.swift; sourceTree = "<group>"; };
 		0FA48F0A2C94933E0078CB0D /* BreedsNetworkServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedsNetworkServiceTests.swift; sourceTree = "<group>"; };
@@ -80,6 +81,7 @@
 		0FEAB7112C98610400F694F7 /* TextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextButton.swift; sourceTree = "<group>"; };
 		0FEAB7132C98659700F694F7 /* SymbolButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolButton.swift; sourceTree = "<group>"; };
 		0FF0C8232C653E64006DE8DF /* BreedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedDetailView.swift; sourceTree = "<group>"; };
+		0FFC4D5D2CA1D33800309B9A /* BreedsListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedsListViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,9 +203,8 @@
 		0F94FA6C2C613683009C8E27 /* iCatsTests */ = {
 			isa = PBXGroup;
 			children = (
-				0FA48F0A2C94933E0078CB0D /* BreedsNetworkServiceTests.swift */,
-				0FA48F042C9453380078CB0D /* BreedsNetworkServiceRequestMock.swift */,
-				0FA48F062C9467B20078CB0D /* NetworkServiceResponse.swift */,
+				0FFC4D5C2CA1D31E00309B9A /* BreedsListViewModel */,
+				0FFC4D5B2CA1D30D00309B9A /* BreedsNetworkService */,
 			);
 			path = iCatsTests;
 			sourceTree = "<group>";
@@ -222,7 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				0F3E010A2C9063780009804F /* Endpoint.swift */,
-				0FA48F002C932C650078CB0D /* BreedAPI.swift */,
+				0FA48F002C932C650078CB0D /* BreedJSON.swift */,
 				0F86A06C2C9C5B3F00F3D14D /* CatImageAPI.swift */,
 			);
 			path = Model;
@@ -339,6 +340,24 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		0FFC4D5B2CA1D30D00309B9A /* BreedsNetworkService */ = {
+			isa = PBXGroup;
+			children = (
+				0FA48F0A2C94933E0078CB0D /* BreedsNetworkServiceTests.swift */,
+				0FA48F042C9453380078CB0D /* BreedsNetworkServiceRequestMock.swift */,
+				0FA48F062C9467B20078CB0D /* NetworkServiceResponse.swift */,
+			);
+			path = BreedsNetworkService;
+			sourceTree = "<group>";
+		};
+		0FFC4D5C2CA1D31E00309B9A /* BreedsListViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				0FFC4D5D2CA1D33800309B9A /* BreedsListViewModelTests.swift */,
+			);
+			path = BreedsListViewModel;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -349,6 +368,7 @@
 				0F94FA532C613680009C8E27 /* Sources */,
 				0F94FA542C613680009C8E27 /* Frameworks */,
 				0F94FA552C613680009C8E27 /* Resources */,
+				0FF144F02CA1C77000D72B73 /* SwiftLint  */,
 			);
 			buildRules = (
 			);
@@ -444,6 +464,28 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0FF144F02CA1C77000D72B73 /* SwiftLint  */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "SwiftLint ";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Adds support for Apple Silicon brew directory\nexport PATH=\"$PATH:/opt/homebrew/bin\"\n\nif which swiftlint; then\n    swiftlint —-fix && swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0F94FA532C613680009C8E27 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -467,7 +509,7 @@
 				0F86A06D2C9C5B3F00F3D14D /* CatImageAPI.swift in Sources */,
 				0F86A0602C9B213900F3D14D /* BreedModel.swift in Sources */,
 				0F86A0712C9C5BA800F3D14D /* LifespanModel.swift in Sources */,
-				0FA48F012C932C650078CB0D /* BreedAPI.swift in Sources */,
+				0FA48F012C932C650078CB0D /* BreedJSON.swift in Sources */,
 				0F94FA5D2C613680009C8E27 /* ContentView.swift in Sources */,
 				0F3E010B2C9063780009804F /* Endpoint.swift in Sources */,
 				0FEAB7122C98610400F694F7 /* TextButton.swift in Sources */,
@@ -479,6 +521,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0FA48F0B2C94933E0078CB0D /* BreedsNetworkServiceTests.swift in Sources */,
+				0FFC4D5E2CA1D33800309B9A /* BreedsListViewModelTests.swift in Sources */,
 				0FEAB70D2C98382600F694F7 /* BreedsNetworkServiceRequestMock.swift in Sources */,
 				0FEAB70F2C983B5100F694F7 /* NetworkServiceResponse.swift in Sources */,
 			);
@@ -532,7 +575,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -595,7 +638,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

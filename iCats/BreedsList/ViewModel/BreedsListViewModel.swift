@@ -1,27 +1,29 @@
 import Foundation
 import SwiftUINavigation
 
-@MainActor
 @Observable
 class BreedsListViewModel {
 	var destination: Destination? {
-		didSet { self.bind() }
+		didSet { bind() }
 	}
 
 	@CasePathable
 	enum Destination {
 		case detail(BreedDetailViewModel)
 		case information
+//		case alert(AlertAction)
 	}
-
-	private(set) var breeds : [BreedModel] = []
+//	enum AlertAction : Identifiable {
+//		case confirmRetry
+//	}
 
 	let breedsNetworkService : BreedsListNetworkService
 
-	let limitItemsPerPage = 8
 	var page : Int = 0
 
 	var searchQuery: String = ""
+
+	private var breeds : [BreedModel] = []
 	var filteredBreeds: [BreedModel] {
 		if searchQuery.isEmpty {
 			return breeds
@@ -38,53 +40,69 @@ class BreedsListViewModel {
 	}
 
 	func viewAppeared() async throws {
-		let breedsAPI = try await breedsNetworkService.fetchBreeds(limitItemsPerPage, page)
-		
-		var breedsModel : [BreedModel] = []
-
-		for breedAPI in breedsAPI {
-			breedsModel.append(
-				BreedModel(breedAPI: breedAPI)
-			)
-		}
-
-		self.updateView(breeds: breedsModel)
+		await fetchMoreContent()
 	}
 
-	func bottomReached() async {
-		
-		self.page+=1
+	func fetchBreeds() async throws -> [BreedModel] {
+		let breedsAPI = try await breedsNetworkService.fetchBreeds(.limitItemsPerPage, page)
+		return breedsAPI.map { BreedModel(breedAPI: $0) }
+	}
 
+	func fetchMoreContent() async {
 		do {
-			let breedsAPI = try await breedsNetworkService.fetchBreeds(limitItemsPerPage, page)
-
-			var breedsModel : [BreedModel] = []
-
-			for breedAPI in breedsAPI {
-				breedsModel.append(
-					BreedModel(breedAPI: breedAPI)
-				)
-			}
-
-			self.updateView(breeds: breedsModel)
+			try await updateView(breeds: fetchBreeds())
 
 		} catch {
-			print("Erro on fetchBreeds")
+			// TODO: Implement Alert
+//			self.destination = .alert(.confirmRetry)
+			print("Error on Fetching More Content")
 		}
+	}
+
+//	func alertButtonTapped(_ action: AlertAction) async {
+//		switch action {
+//		case .confirmRetry:
+//			await fetchMoreContent()
+//		}
+//	}
+
+	func bottomReached() async {
+		page+=1
+		await fetchMoreContent()
 	}
 
 	func cardTapped(breed : BreedModel) {
-		self.destination = .detail(BreedDetailViewModel(breed: breed))
+		destination = .detail(BreedDetailViewModel(breed: breed))
 	}
 
 	func infoTapped() {
 
 	}
 
+	@MainActor
 	func updateView(breeds : [BreedModel]) {
-		for breed in breeds {
-			self.breeds.append(breed)
-		}
+		_ = breeds.map { self.breeds.append($0) }
 	}
 
+}
+
+// extension AlertState where Action == BreedsListViewModel.AlertAction {
+//	static let retry = AlertState {
+//		TextState("Retry Fetching More Content?")
+//	} actions: {
+//		.init(role: .cancel,
+//			  label: {
+//			TextState(
+//				"Nevermind"
+//			)
+//		})
+//	} message: {
+//		TextState(
+//			"Are you sure you want retry to fetch more content?"
+//		)
+//	}
+// }
+
+private extension Int {
+	static let limitItemsPerPage: Self = 8
 }

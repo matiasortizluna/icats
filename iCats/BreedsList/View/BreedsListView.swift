@@ -13,44 +13,42 @@ struct BreedsListView: View {
 	var body: some View {
 		NavigationStack {
 			ScrollView {
-				HStack() {
-					Spacer()
-					Button {
-						self.model.infoTapped()
-					} label: {
-						Image(systemName: "info")
-							.padding(.horizontal, 30)
-					}
-				}
-				LazyVGrid(columns: columns, spacing: 20) {
-					ForEach(Array(self.model.filteredBreeds.enumerated()), id: \.offset) { index, breed in
+				LazyVGrid(columns: columns, spacing: .gridSpacing) {
+					ForEach(Array(model.filteredBreeds.enumerated()), id: \.offset) { index, breed in
 						Button {
-							self.model.cardTapped(breed: breed)
+							model.cardTapped(breed: breed)
 						} label: {
 							CatCard(breed: breed)
 						}
 						.task{
-							if index+1 < self.model.breeds.count {
-								await self.model.bottomReached()
+							if index+1 < model.filteredBreeds.count {
+								await model.bottomReached()
 							}
 						}
 					}
-					.navigationDestination(item: self.$model.destination.detail) { breedDetailModel in
+					.navigationDestination(item: $model.destination.detail) { breedDetailModel in
 						BreedsDetailView(model: breedDetailModel)
 					}
 				}
 				.padding()
+//				.alert(item: $model.destination.alert) { action in
+//					model.alertButtonTapped(action)
+//				}
 			}
 			.navigationTitle("Breeds")
 			.navigationBarTitleDisplayMode(.large)
-			.searchable(text: self.$model.searchQuery)
+			.searchable(text: $model.searchQuery)
 			.onAppear(perform: {
 				Task{
-					try await self.model.viewAppeared()
+					try await model.viewAppeared()
 				}
 			})
 		}
 	}
+}
+
+private extension CGFloat {
+	static let gridSpacing: Self = 20
 }
 
 struct BreedsView_Previews: PreviewProvider {

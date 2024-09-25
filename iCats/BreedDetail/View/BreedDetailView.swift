@@ -1,21 +1,19 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-
 struct BreedsDetailView: View {
-
 	@State var model: BreedDetailViewModel
 
 	var body: some View {
-		VStack() {
+		VStack(spacing: .zero) {
 			ScrollView {
 				ZStack(alignment: .topTrailing) {
 					//					if let url = breed.image.url {
-					WebImage(url: URL(string: self.model.breed.image!.url)).resizable()
+					WebImage(url: URL(string: model.breed.image!.url)).resizable()
 						.aspectRatio(contentMode: .fill)
-						.frame(width: 200, height: 200)
-						.clipShape(RoundedRectangle(cornerRadius: 15))
-						.padding(5)
+						.frame(width: .webImageWidth, height: .webImageHeight)
+						.clipShape(RoundedRectangle(cornerRadius: .webImageCornerRadius))
+						.padding(.webImagePadding)
 
 					//                    } else {
 					//                        Image(systemName: "cat.fill")
@@ -28,74 +26,98 @@ struct BreedsDetailView: View {
 
 					SymbolButton(
 						symbolLabel: "star.fill",
-						symbolColor: self.model.breed.isFavorite ? .yellow : .gray,
-						backgroundColor: .black.opacity(0.2),
+						symbolColor: model.breed.isFavorite ? .symbolFavoriteTrueColor : .symbolFavoriteFalseColor,
+						backgroundColor: .black.opacity(.symbolBackgroundOpacity),
 						action: {
-							self.model.addFavorites()
+							model.addFavorites()
 						}
 					)
 				}
 				.padding()
-				.background(Color.gray.opacity(0.1))
-				.cornerRadius(15)
-				.shadow(radius: 5)
+				.background(Color.gray.opacity(.webImageBackgroundOpacity))
+				.cornerRadius(.webImageBackgroundCornerRadius)
+				.shadow(radius: .webImageBackgroundShadow)
 
-				VStack(alignment: .leading) {
+				VStack(alignment: .leading, spacing: .zero) {
 					Text("Origin")
-						.font(.system(size: 15.0))
+						.font(.system(size: .elementFontSize))
 						.fontWeight(.bold)
 
-					Text(self.model.breed.origin)
-						.font(.system(size: 15.0))
+					Text(model.breed.origin)
+						.font(.system(size: .elementFontSize))
 						.lineLimit(nil)
 						.padding()
-						.background(Color.gray.opacity(0.1))
-						.cornerRadius(15)
-						.shadow(radius: 5)
+						.background(Color.gray.opacity(.textBackgroundOpacity))
+						.cornerRadius(.textBackgroundCornerRadius)
+						.shadow(radius: .textBackgroundShadow)
 
 					Text("Temperament")
-						.font(.system(size: 15.0))
+						.font(.system(size: .elementFontSize))
 						.fontWeight(.bold)
 
-					Text(self.model.breed.temperament)
-						.font(.system(size: 15.0))
+					Text(model.breed.temperament)
+						.font(.system(size: .elementFontSize))
 						.lineLimit(nil)
 						.padding()
-						.background(Color.gray.opacity(0.1))
-						.cornerRadius(15)
-						.shadow(radius: 5)
+						.background(Color.gray.opacity(.textBackgroundOpacity))
+						.cornerRadius(.textBackgroundCornerRadius)
+						.shadow(radius: .textBackgroundShadow)
 
 					Text("Description")
-						.font(.system(size: 15.0))
+						.font(.system(size: .elementFontSize))
 						.fontWeight(.bold)
 
-					Text(self.model.breed.breedDescription)
-						.font(.system(size: 15.0))
+					Text(model.breed.breedDescription)
+						.font(.system(size: .elementFontSize))
 						.lineLimit(nil)
 						.padding()
-						.background(Color.gray.opacity(0.1))
-						.cornerRadius(15)
-						.shadow(radius: 5)
+						.background(Color.gray.opacity(.textBackgroundOpacity))
+						.cornerRadius(.textBackgroundCornerRadius)
+						.shadow(radius: .textBackgroundShadow)
 				}
-
 
 				Spacer()
 
 				TextButton(
-					label: self.model.breed.isFavorite ? "Remove from Favorites" : "Add To Favorites",
-					labelColor: .black,
-					rectangleColor: .yellow,
+					label: model.breed.isFavorite ? "Remove from Favorites" : "Add To Favorites",
+					labelColor: .buttonAddFavoriteLabelColor,
+					rectangleColor: .buttonAddFavoriteBackgroundColor,
 					action: {
-						self.model.addFavorites()
+						model.addFavorites()
 					}
 				)
 
 			}
 		}
 		.padding(.horizontal)
-		.navigationTitle(self.model.breed.name)
+		.navigationTitle(model.breed.name)
 		.navigationBarTitleDisplayMode(.large)
 	}
+}
+
+private extension Color {
+	static let symbolFavoriteTrueColor: Self = .yellow
+	static let symbolFavoriteFalseColor: Self = .gray
+	static let buttonAddFavoriteBackgroundColor: Self = .yellow
+	static let buttonAddFavoriteLabelColor: Self = .black
+}
+
+private extension CGFloat {
+	static let webImageWidth: Self = 200
+	static let webImageHeight: Self = 200
+	static let webImageCornerRadius: Self = 15
+	static let webImagePadding: Self = 5
+	static let webImageBackgroundCornerRadius: Self = 15
+	static let webImageBackgroundShadow: Self = 5
+	static let elementFontSize: Self = 15.0
+	static let textBackgroundCornerRadius: Self = 15
+	static let textBackgroundShadow: Self = 5
+}
+
+private extension Double {
+	static let symbolBackgroundOpacity: Self = 0.2
+	static let webImageBackgroundOpacity: Self = 0.1
+	static let textBackgroundOpacity: Self = 0.1
 }
 
 #Preview {

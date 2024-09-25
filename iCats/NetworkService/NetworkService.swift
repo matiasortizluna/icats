@@ -63,7 +63,7 @@ struct NetworkService : NetworkProtocol{
 
 	public static func mock(mockValueProvider : @escaping () -> NetworkServiceResponse) -> NetworkService {
 		.init(
-			baseNetworkRequest: { request in
+			baseNetworkRequest: { _ in
 				switch mockValueProvider() {
 				case .success(let value) : return value
 				case .failure(let error) : throw error

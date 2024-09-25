@@ -9,18 +9,18 @@ struct BreedsFavoritesView: View {
         GridItem(.flexible()),
         GridItem(.flexible())
     ]
-    
+
     var body: some View {
         NavigationView {
             if favoriteBreeds.isEmpty {
                 Text("You have not selected any favorite breeds yet.")
             } else {
                 ScrollView {
-                    LazyVGrid(columns: columns, spacing: 20) {
+					LazyVGrid(columns: columns, spacing: .gridSpacing) {
                         ForEach(favoriteBreeds, id: \.id) { breed in
-							//NavigationLink(destination: BreedsDetailView(model: breed)) {
+//							NavigationLink(destination: BreedsDetailView(model: breed)) {
                                 CatCard(breed: breed)
-                            //}
+//                            }
                         }
                     }
                     .padding()
@@ -30,6 +30,10 @@ struct BreedsFavoritesView: View {
             }
         }
     }
+}
+
+private extension CGFloat {
+	static let gridSpacing: Self = 20
 }
 
 #Preview {

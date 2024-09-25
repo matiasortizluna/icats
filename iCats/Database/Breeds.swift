@@ -18,8 +18,18 @@ class Breed {
     let weight: WeightJSON
     let image: CatImageJSON?
     let isFavorite: Bool
-    
-    init(id: String, name: String, origin: String, temperament: String, description: String, lifeSpan: String, weight: WeightJSON, image: CatImageJSON?, isFavorite: Bool) {
+
+	init(
+		id: String,
+		name: String,
+		origin: String,
+		temperament: String,
+		description: String,
+		lifeSpan: String,
+		weight: WeightJSON,
+		image: CatImageJSON?,
+		isFavorite: Bool
+	) {
         self.id = id
         self.name = name
         self.origin = origin
@@ -36,7 +46,7 @@ class Breed {
 class Weights {
     let imperial: String
     let metric: String
-    
+
     init(imperial: String, metric: String) {
         self.imperial = imperial
         self.metric = metric
@@ -49,7 +59,7 @@ class CatImages {
     let width: Int
     let height: Int
     let url: String
-    
+
     init(id: String, width: Int, height: Int, url: String) {
         self.id = id
         self.width = width

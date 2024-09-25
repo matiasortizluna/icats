@@ -6,7 +6,7 @@ struct BreedModel {
 	let origin: String
 	let temperament: String
 	let breedDescription: String
-	let lifeSpan: LifespanModel
+	let lifeSpan: LifespanModel?
 	let image: CatImageModel?
 	var isFavorite : Bool
 
@@ -18,23 +18,23 @@ struct BreedModel {
 		self.breedDescription = breedDescription
 		self.lifeSpan = lifeSpan
 		self.image = image
-		self.isFavorite = false
+		isFavorite = false
 	}
 
-	init(breedAPI : BreedAPI) {
-		self.id = breedAPI.id
-		self.name = breedAPI.name
-		self.origin = breedAPI.origin
-		self.temperament = breedAPI.temperament
-		self.breedDescription = breedAPI.description
-		self.lifeSpan = LifespanModel(string: breedAPI.lifeSpan)
-		self.image = CatImageModel(
+	init(breedAPI : BreedJSON) {
+		id = breedAPI.id
+		name = breedAPI.name
+		origin = breedAPI.origin
+		temperament = breedAPI.temperament
+		breedDescription = breedAPI.description
+		lifeSpan = LifespanModel(string: breedAPI.lifeSpan)
+		image = CatImageModel(
 			id: breedAPI.image.id,
 			width: breedAPI.image.width,
 			height: breedAPI.image.height,
 			url: breedAPI.image.url
 		)
-		self.isFavorite = false
+		isFavorite = false
 	}
 }
 

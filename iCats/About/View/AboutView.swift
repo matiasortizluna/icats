@@ -1,16 +1,14 @@
 import SwiftUI
 
 struct AboutView: View {
-	
 	@Environment(\.modelContext) private var modelContext
 	@State private var errorMessage: String?
 
 	let networkService = NetworkService.live()
 
     var body: some View {
-        
         NavigationView {
-			VStack() {
+			VStack(spacing: .zero) {
 				Text("This app was developed by Matias Luna on August 2024 as a Swift Challenge for the Mobile Engineer Trainee Role at Sword Health.")
 					.foregroundColor(.black)
 					.padding()
@@ -26,7 +24,6 @@ struct AboutView: View {
 				Text("matiasortizluna.contacto@gmail.com")
 					.foregroundColor(.black)
 					.padding()
-				
 				Divider()
 
 //				TextButton(
@@ -34,7 +31,7 @@ struct AboutView: View {
 //					labelColor: .blue,
 //					rectangleColor: .black.opacity(0.2),
 //					action: {
-//						self.fetchBreeds()
+//						fetchBreeds()
 //					}
 //				)
 //
