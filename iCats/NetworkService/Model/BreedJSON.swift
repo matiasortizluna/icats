@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: Maybe this model is more suited to the in the BreedsList/Service folder
 public struct BreedJSON: Decodable, Equatable {
 	let id : String
 	let name : String
@@ -26,6 +27,7 @@ public struct BreedJSON: Decodable, Equatable {
 }
 
 extension [BreedJSON] {
+	// TODO: you can add a command: swiftlint:disable line_length to disable this warning
 	static var breedsMock : Self = [
 		BreedJSON(
 			id: "abys",
@@ -73,4 +75,5 @@ extension [BreedJSON] {
 			)
 		)
 	]
+	// TODO: then, re enable it here swiftlint:enable line_length
 }

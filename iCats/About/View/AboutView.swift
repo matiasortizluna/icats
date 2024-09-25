@@ -55,6 +55,9 @@ struct AboutView: View {
     }
 }
 
+// TODO: could you add a extension String { } with the string literals in this file? Since we can reuse the strings elsewhere
+// it might be a good approach to create this extension in a separate file accessible to every view.
+
 #Preview {
 	AboutView()
 }

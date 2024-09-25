@@ -114,6 +114,9 @@ private extension CGFloat {
 	static let textBackgroundShadow: Self = 5
 }
 
+// TODO: could you add a extension String { } with the string literals in this file? Since we can reuse the strings elsewhere
+// it might be a good approach to create this extension in a separate file accessible to every view.
+
 private extension Double {
 	static let symbolBackgroundOpacity: Self = 0.2
 	static let webImageBackgroundOpacity: Self = 0.1
