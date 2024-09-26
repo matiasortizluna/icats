@@ -1,34 +1,26 @@
-//
-//  NetworkService.swift
-//  iCats
-//
-//  Created by Matias Luna on 10/09/2024.
-//
-
 import Foundation
 
 public typealias NetworkServiceResponse = Result<(Data, HTTPURLResponse), Error>
 
 /// Definition of protocol
 public protocol NetworkProtocol {
-	// TODO: could you remove the spaces between the name and the colon : ?
-	func call<T : Decodable> (_ endpoint: Endpoint) async throws -> T
+	func call<T: Decodable> (_ endpoint: Endpoint) async throws -> T
 }
 
 /// Definition of struct
-struct NetworkService : NetworkProtocol{
+struct NetworkService: NetworkProtocol{
 	// Here is defined the syntax and type of the base network request.
-	let baseNetworkRequest : (URLRequest) async throws -> (Data, URLResponse)
+	let baseNetworkRequest: (URLRequest) async throws -> (Data, URLResponse)
 
 	// Here is defined the init method of the Network Service. It assigns the baseNetworkRequest closure with the function/closure/parameter sent as argument.
 	init(
-		baseNetworkRequest : @escaping (URLRequest) async throws -> (Data, URLResponse))
+		baseNetworkRequest: @escaping (URLRequest) async throws -> (Data, URLResponse))
 	{
 		self.baseNetworkRequest = baseNetworkRequest
 	}
 
 	/// Implementation of the protocol's method
-	func call<T>(_ endpoint: Endpoint) async throws -> T where T : Decodable {
+	func call<T>(_ endpoint: Endpoint) async throws -> T where T: Decodable {
 
 		/// Generate URL Request.
 		guard let request = try generateURLRequest(endpoint) else {
@@ -62,12 +54,12 @@ struct NetworkService : NetworkProtocol{
 		})
 	}
 
-	public static func mock(mockValueProvider : @escaping () -> NetworkServiceResponse) -> NetworkService {
+	public static func mock(mockValueProvider: @escaping () -> NetworkServiceResponse) -> NetworkService {
 		.init(
 			baseNetworkRequest: { _ in
 				switch mockValueProvider() {
-				case .success(let value) : return value
-				case .failure(let error) : throw error
+				case .success(let value): return value
+				case .failure(let error): throw error
 				}
 
 			})
@@ -76,7 +68,7 @@ struct NetworkService : NetworkProtocol{
 
 private extension String {
 	/// Here is the defined string to use as central URL for all network requests
-	static var centralURL : Self = "https://api.thecatapi.com"
+	static var centralURL: Self = "https://api.thecatapi.com"
 }
 
 /// Here are defined the helper private functions of the struct.
@@ -87,7 +79,7 @@ extension NetworkService {
 
 		do {
 			/// Generates final URL to be used. (URL, Endpoint Path and Query Items)
-			let baseURL : URL = try generateFinalURL(endpoint)
+			let baseURL: URL = try generateFinalURL(endpoint)
 
 			/// Create URL Request with the generated final URL
 			var request = URLRequest(url: baseURL)
@@ -96,9 +88,9 @@ extension NetworkService {
 			request.httpMethod = endpoint.method.rawValue
 
 			/// Add the default values for headers that every request needs to URL Request.
-			let headers : [String : String] = [
-				Header.xApiKey.rawValue : HeaderValue.xApiKey.rawValue,
-				Header.contentType.rawValue : HeaderValue.contentType.rawValue
+			let headers: [String: String] = [
+				Header.xApiKey.rawValue: HeaderValue.xApiKey.rawValue,
+				Header.contentType.rawValue: HeaderValue.contentType.rawValue
 			]
 			headers.forEach {
 				request.addValue($0.value, forHTTPHeaderField: $0.key)
@@ -116,7 +108,7 @@ extension NetworkService {
 	}
 
 	/// Method that takes and endpoint and generates the final URL request to be used. (URL, Endpoint Path and Query Items)
-	private func generateFinalURL(_ endpoint : Endpoint) throws -> URL {
+	private func generateFinalURL(_ endpoint: Endpoint) throws -> URL {
 
 		/// Retrieve constant value of central URL to be used accross all requests.
 		guard var baseURL = URL(string: .centralURL) else {
@@ -140,7 +132,7 @@ extension NetworkService {
 		}
 
 		/// Transform from APIQueryItems to URLQueryItems.
-		let urlQueryItems : [URLQueryItem] = endpoint.queryItems.map(makeQueryItem(_:))
+		let urlQueryItems: [URLQueryItem] = endpoint.queryItems.map(makeQueryItem(_:))
 
 		/// Create final URL by joinning baseURL with Query Items.
 		urlComponents.queryItems = urlQueryItems
@@ -155,7 +147,7 @@ extension NetworkService {
 	}
 
 	/// Method that transforms APIQueryItems items to URLQueryItems items
-	private func makeQueryItem(_ queryItem : APIQueryItem) -> URLQueryItem {
+	private func makeQueryItem(_ queryItem: APIQueryItem) -> URLQueryItem {
 		switch queryItem {
 		case let .keyValue(key, value) :
 			return .init(name: key, value: value)

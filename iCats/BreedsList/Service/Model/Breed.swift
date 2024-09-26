@@ -1,22 +1,14 @@
-//
-//  Breeds.swift
-//  iCats
-//
-//  Created by Matias Luna on 12/09/2024.
-//
-
 import Foundation
 
-// TODO: Maybe this model is more suited to the in the BreedsList/Service folder
-public struct BreedJSON: Decodable, Equatable {
-	let id : String
-	let name : String
-	let temperament : String
-	let origin : String
-	let description : String
-	let lifeSpan : String
-	let referenceImageID : String
-	let image: CatImageAPI
+public struct Breed: Decodable, Equatable {
+	let id: String
+	let name: String
+	let temperament: String
+	let origin: String
+	let description: String
+	let lifeSpan: String
+	let referenceImageID: String
+	let image: CatImage
 
 	enum CodingKeys: String, CodingKey {
 		case id, name, temperament, origin, description
@@ -26,10 +18,10 @@ public struct BreedJSON: Decodable, Equatable {
 	}
 }
 
-extension [BreedJSON] {
-	// TODO: you can add a command: swiftlint:disable line_length to disable this warning
-	static var breedsMock : Self = [
-		BreedJSON(
+extension [Breed] {
+	// swiftlint:disable line_length
+	static var breedsMock: Self = [
+		Breed(
 			id: "abys",
 			name: "Abyssinian",
 			temperament: "Active, Energetic, Independent, Intelligent, Gentle",
@@ -37,14 +29,14 @@ extension [BreedJSON] {
 			description: "The Abyssinian is easy to care for, and a joy to have in your home. They’re affectionate cats and love both people and other animals.",
 			lifeSpan: "14 - 15",
 			referenceImageID: "0XYvRd7oD",
-			image: CatImageAPI(
+			image: CatImage(
 				id: "0XYvRd7oD",
 				width: 1204,
 				height: 1445,
 				url: "https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg"
 			)
 		),
-		BreedJSON(
+		Breed(
 			id: "aege",
 			name: "Aegean",
 			temperament: "Affectionate, Social, Intelligent, Playful, Active",
@@ -52,14 +44,14 @@ extension [BreedJSON] {
 			description: "Native to the Greek islands known as the Cyclades in the Aegean Sea, these are natural cats, meaning they developed without humans getting involved in their breeding. As a breed, Aegean Cats are rare, although they are numerous on their home islands. They are generally friendly toward people and can be excellent cats for families with children.",
 			lifeSpan: "9 - 12",
 			referenceImageID: "ozEvzdVM-",
-			image: CatImageAPI(
+			image: CatImage(
 				id: "ozEvzdVM-",
 				width: 1200,
 				height: 800,
 				url: "https://cdn2.thecatapi.com/images/ozEvzdVM-.jpg"
 			)
 		),
-		BreedJSON(
+		Breed(
 			id: "char",
 			name: "Chartreux",
 			temperament: "Affectionate, Loyal, Intelligent, Social, Lively, Playful",
@@ -67,7 +59,7 @@ extension [BreedJSON] {
 			description: "The Chartreux is generally silent but communicative. Short play sessions, mixed with naps and meals are their perfect day. Whilst appreciating any attention you give them, they are not demanding, content instead to follow you around devotedly, sleep on your bed and snuggle with you if you’re not feeling well.",
 			lifeSpan: "12 - 15",
 			referenceImageID: "j6oFGLpRG",
-			image: CatImageAPI(
+			image: CatImage(
 				id: "j6oFGLpRG",
 				width: 768,
 				height: 1024,
@@ -75,5 +67,5 @@ extension [BreedJSON] {
 			)
 		)
 	]
-	// TODO: then, re enable it here swiftlint:enable line_length
+	// swiftlint:enable line_length
 }

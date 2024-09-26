@@ -9,14 +9,14 @@ class BreedsListViewModelTests: XCTestCase {
 
 		let breedsListNetworkService = BreedsListNetworkService.live(networkService: networkService)
 
-		let sut = await BreedsListViewModel(breedsNetworkService: breedsListNetworkService)
+		let sut = BreedsListViewModel(breedsNetworkService: breedsListNetworkService)
 
-		var breedsCount = await sut.breeds.count
+		var breedsCount = sut.filteredBreeds.count
 		XCTAssertEqual(breedsCount, 0)
 
 		try await sut.viewAppeared()
 
-		breedsCount = await sut.breeds.count
+		breedsCount = sut.filteredBreeds.count
 		XCTAssertTrue(breedsCount > 0)
 	}
 
@@ -26,16 +26,18 @@ class BreedsListViewModelTests: XCTestCase {
 
 		let breedsListNetworkService = BreedsListNetworkService.live(networkService: networkService)
 
-		let sut = await BreedsListViewModel(breedsNetworkService: breedsListNetworkService)
+		let sut = BreedsListViewModel(breedsNetworkService: breedsListNetworkService)
 		
 		try await sut.viewAppeared()
 
-		let breedsCountBefore = await sut.breeds.count
+		let breedsCountBefore = sut.filteredBreeds.count
 
 		try await sut.viewAppeared()
 
-		let breedsCountAfter = await sut.breeds.count
+		let breedsCountAfter = sut.filteredBreeds.count
 
 		XCTAssertTrue(breedsCountBefore < breedsCountAfter)
 	}
+
+	
 }

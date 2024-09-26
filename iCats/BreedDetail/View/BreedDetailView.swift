@@ -24,14 +24,7 @@ struct BreedsDetailView: View {
 					//                            .padding(5)
 					//                    }
 
-					SymbolButton(
-						symbolLabel: "star.fill",
-						symbolColor: model.breed.isFavorite ? .symbolFavoriteTrueColor : .symbolFavoriteFalseColor,
-						backgroundColor: .black.opacity(.symbolBackgroundOpacity),
-						action: {
-							model.addFavorites()
-						}
-					)
+					StarButton(model: model)
 				}
 				.padding()
 				.background(Color.gray.opacity(.webImageBackgroundOpacity))
@@ -39,7 +32,7 @@ struct BreedsDetailView: View {
 				.shadow(radius: .webImageBackgroundShadow)
 
 				VStack(alignment: .leading, spacing: .zero) {
-					Text("Origin")
+					Text(String.breedTitleOrigin)
 						.font(.system(size: .elementFontSize))
 						.fontWeight(.bold)
 
@@ -51,7 +44,7 @@ struct BreedsDetailView: View {
 						.cornerRadius(.textBackgroundCornerRadius)
 						.shadow(radius: .textBackgroundShadow)
 
-					Text("Temperament")
+					Text(String.breedTitleTemperament)
 						.font(.system(size: .elementFontSize))
 						.fontWeight(.bold)
 
@@ -63,7 +56,7 @@ struct BreedsDetailView: View {
 						.cornerRadius(.textBackgroundCornerRadius)
 						.shadow(radius: .textBackgroundShadow)
 
-					Text("Description")
+					Text(String.breedTitleDescription)
 						.font(.system(size: .elementFontSize))
 						.fontWeight(.bold)
 
@@ -79,7 +72,7 @@ struct BreedsDetailView: View {
 				Spacer()
 
 				TextButton(
-					label: model.breed.isFavorite ? "Remove from Favorites" : "Add To Favorites",
+					label: model.breed.isFavorite ? String.removeFromFavorites : String.addToFavorites,
 					labelColor: .buttonAddFavoriteLabelColor,
 					rectangleColor: .buttonAddFavoriteBackgroundColor,
 					action: {
@@ -96,8 +89,6 @@ struct BreedsDetailView: View {
 }
 
 private extension Color {
-	static let symbolFavoriteTrueColor: Self = .yellow
-	static let symbolFavoriteFalseColor: Self = .gray
 	static let buttonAddFavoriteBackgroundColor: Self = .yellow
 	static let buttonAddFavoriteLabelColor: Self = .black
 }
@@ -114,11 +105,7 @@ private extension CGFloat {
 	static let textBackgroundShadow: Self = 5
 }
 
-// TODO: could you add a extension String { } with the string literals in this file? Since we can reuse the strings elsewhere
-// it might be a good approach to create this extension in a separate file accessible to every view.
-
 private extension Double {
-	static let symbolBackgroundOpacity: Self = 0.2
 	static let webImageBackgroundOpacity: Self = 0.1
 	static let textBackgroundOpacity: Self = 0.1
 }

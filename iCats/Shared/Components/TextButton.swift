@@ -1,13 +1,13 @@
 import Foundation
 import SwiftUI
 
-struct TextButton : View {
-	let label : String
-	let labelColor : Color
-	let rectangleColor : Color
-	let action : () -> Void
+struct TextButton: View {
+	let label: String
+	let labelColor: Color
+	let rectangleColor: Color
+	let action: () -> Void
 
-	var body : some View {
+	var body: some View {
 		Button(
 			action: action
 		) {

@@ -1,10 +1,3 @@
-//
-//  CatImage.swift
-//  iCats
-//
-//  Created by Matias Luna on 12/08/2024.
-//
-
 import SwiftData
 
 @Model

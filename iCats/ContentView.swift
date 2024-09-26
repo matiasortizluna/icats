@@ -1,33 +1,44 @@
 import SwiftUI
-import SwiftData
 
 struct ContentView: View {
-	// TODO: Please remove this space between the name and the colon
-	let model : BreedsListViewModel
+	let model: BreedsListViewModel
 
     var body: some View {
-        TabView(selection: .constant(2)) {
-			// TODO: Could you add private extension to the Ints and a add the string literals to the public String extension?
+		TabView(selection: .constant(Int.tabSelection)) {
+			// Could you add private extension to the Ints and a add the string literals to the public String extension?
             BreedsFavoritesView()
                 .tabItem {
-                    Label("Favorites", systemImage: "heart")
+					Label(String.favorites, systemImage: String.tabFavoritesSymbol)
                 }
-                .tag(1)
+				.tag(Int.tabFavorites)
 
 			BreedsListView(model: model)
                 .tabItem {
-                    Label("Breeds", systemImage: "cat")
+					Label(String.breeds, systemImage: String.tabBreedsSymbol)
                 }
-                .tag(2)
+				.tag(Int.tabBreeds)
 
             AboutView()
                 .tabItem {
-                    Label("About", systemImage: "person")
+					Label(String.about, systemImage: String.tabAboutSymbol)
                 }
-                .tag(3)
+				.tag(Int.tabAbout)
         }
         .accentColor(Color(.purple))
     }
+}
+
+private extension Int {
+	static let tabFavorites: Self = 1
+	static let tabBreeds: Self = 2
+	static let tabAbout: Self = 3
+	static let tabSelection: Self = 2
+}
+
+private extension String {
+	static let tabFavoritesSymbol: Self = "heart"
+	static let tabBreedsSymbol: Self = "cat"
+	static let tabAboutSymbol: Self = "person"
 }
 
 struct ContentView_Previews: PreviewProvider {

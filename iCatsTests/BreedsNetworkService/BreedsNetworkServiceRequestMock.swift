@@ -8,7 +8,7 @@
 import Foundation
 
 struct BreedsNetworkServiceRequestSuccessMock {
-	static var success : String {
+	static var success: String {
 		"""
 		  [
 		  {
@@ -159,7 +159,7 @@ struct BreedsNetworkServiceRequestSuccessMock {
 }
 
 struct BreedsNetworkServiceRequestErrorMock {
-	static var failRequest : String {
+	static var failRequest: String {
 		"""
 		  {
 			 [

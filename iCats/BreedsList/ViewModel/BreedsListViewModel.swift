@@ -11,15 +11,17 @@ class BreedsListViewModel {
 	enum Destination {
 		case detail(BreedDetailViewModel)
 		case information
-//		case alert(AlertAction)
+		case alert(AlertState<AlertAction>)
 	}
-//	enum AlertAction: Identifiable {
-//		case confirmRetry
-//	}
+
+	enum AlertAction {
+		case confirmRetry
+		case cancel
+	}
 
 	let breedsNetworkService: BreedsListNetworkService
 
-	var page : Int = 0
+	var page: Int = 0
 
 	var searchQuery: String = ""
 
@@ -28,7 +30,7 @@ class BreedsListViewModel {
 		if searchQuery.isEmpty {
 			return breeds
 		} else {
-			return breeds.filter { $0.name.lowercased().contains(searchQuery.lowercased()) }
+			return breeds.filter { $0.name.lowercased().starts(with: searchQuery.lowercased()) }
 		}
 	}
 
@@ -39,7 +41,8 @@ class BreedsListViewModel {
 	func bind() {
 	}
 
-	func viewAppeared() async throws {
+	func onViewAppeared() async {
+		print("onViewAppeared")
 		await fetchMoreContent()
 	}
 
@@ -49,65 +52,103 @@ class BreedsListViewModel {
 	}
 
 	func fetchMoreContent() async {
+		print("fetchMoreContent")
 		do {
-			try await updateView(breeds: fetchBreeds())
-
+			try await updateView(with: fetchBreeds())
+			print("try await updateView(with: fetchBreeds())")
 		} catch {
-			// TODO: Implement Alert
-//			self.destination = .alert(.confirmRetry)
-			print("Error on Fetching More Content")
+			self.destination = .alert(.alertRetryFetch)
+			print("self.destination = .alert(.alertRetryFetch)")
 		}
 	}
 
-//	func alertButtonTapped(_ action: AlertAction) async {
-//		switch action {
-//		case .confirmRetry:
-//			await fetchMoreContent()
-//		}
-//	}
+	func alertButtonsTapped(action: AlertAction) {
+		switch action {
+		case .confirmRetry:
+			alertConfirmRetryButtonTapped()
+		case .cancel:
+			alertCancelButtonTapped()
+		}
+	}
 
-	func bottomReached() async {
-		// TODO: We typically don't want to load more content while the user is searching. How would you proceed to prevent that?
-		page+=1
-		await fetchMoreContent()
+	func alertConfirmRetryButtonTapped() {
+		print("alertConfirmRetryButtonTapped")
+		//		await fetchMoreContent()
+	}
+
+	func alertCancelButtonTapped() {
+		print("alertCancelButtonTapped")
+	}
+
+	func bottomReached() {
+		guard searchQuery.isEmpty else { return }
+		Task {
+			page+=1
+			await fetchMoreContent()
+		}
 	}
 
 	func cardTapped(breed: BreedModel) {
 		destination = .detail(BreedDetailViewModel(breed: breed))
 	}
 
-	func infoTapped() {
-
-	}
-
-	// TODO: suggestion: we could have external and internal names here to make it clear and distinguish these from the self.breeds
-	// ex: func updateView(with newBreeds: [BreedModel])
 	@MainActor
-	func updateView(breeds: [BreedModel]) {
-		// TODO: here you can do self.breeds.append(contentsOf: newBreeds)
-		// Tricky question... What would happen if we added a duplicated item here? 
-		// Meaning, a cat with the same id as one already in the array
-		_ = breeds.map { self.breeds.append($0) }
+	func updateView(with newBreeds: [BreedModel]) {
+		print("updatedView")
+		self.breeds.append(contentsOf: newBreeds)
 	}
-
 }
 
-// extension AlertState where Action == BreedsListViewModel.AlertAction {
-//	static let retry = AlertState {
-//		TextState("Retry Fetching More Content?")
-//	} actions: {
-//		.init(role: .cancel,
-//			  label: {
-//			TextState(
-//				"Nevermind"
-//			)
-//		})
-//	} message: {
-//		TextState(
-//			"Are you sure you want retry to fetch more content?"
-//		)
-//	}
-// }
+private extension ButtonState where Action == BreedsListViewModel.AlertAction {
+	static let confirmRetryButton: Self = ButtonState(
+		role: .cancel,
+		action: BreedsListViewModel.AlertAction.confirmRetry,
+		label: { TextState("Confirm Retry") }
+	)
+	static let dismissButton: Self = ButtonState(
+		role: .none,
+		action: BreedsListViewModel.AlertAction.cancel,
+		label: { TextState("Dismiss") }
+	)
+}
+
+private extension AlertState where Action == BreedsListViewModel.AlertAction {
+	static func alertRetryFetchDynamic(addCancelButton: Bool) -> Self {
+		var actionButtons : [ButtonState<BreedsListViewModel.AlertAction>] = []
+		if (addCancelButton == true) {
+			actionButtons.append(contentsOf: [.dismissButton, .confirmRetryButton])
+		} else {
+			actionButtons.append(.confirmRetryButton)
+		}
+
+		return AlertState(
+			title: { TextState("Do you want to retry to fetch breeds data?") },
+			actions: {
+				return actionButtons
+			},
+			message: { TextState("There was an error when fetching breeds data from the CatsAPI. You can try to fetch the data again by selecting the option.") }
+		)
+	}
+
+	static let alertRetryFetch: Self = AlertState(
+		title: { TextState("Do you want to retry to fetch breeds data?") },
+		actions: {
+			return [
+				ButtonState(
+					role: .none,
+					action: .cancel,
+					label: { TextState("Nevermind") }
+				),
+				ButtonState(
+					role: .cancel,
+					action: .confirmRetry,
+					label: { TextState("Confirm Retry") }
+				),
+			]
+		},
+		message: { TextState("There was an error when fetching breeds data from the CatsAPI. You can try to fetch the data again by selecting the option.") }
+	)
+}
 
 private extension Int {
 	static let limitItemsPerPage: Self = 8

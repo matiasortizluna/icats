@@ -2,12 +2,10 @@ import SwiftUI
 import SwiftUINavigation
 
 struct BreedsListView: View {
-
 	let columns = [
 		GridItem(.flexible()),
 		GridItem(.flexible())
 	]
-
 	@State var model: BreedsListViewModel
 
 	var body: some View {
@@ -18,14 +16,11 @@ struct BreedsListView: View {
 						Button {
 							model.cardTapped(breed: breed)
 						} label: {
-							CatCard(breed: breed)
+							CatCard(breedModel: breed)
 						}
-						.task{
-							// TODO: this 1 can be inside an extension Int { }. Naming suggestion: "bottomThreshold".
-							// TODO: I think this inequality is inverted no? We need to fetch more content after reaching
-							// a certain level. What increases here is the index
-							if index+1 < model.filteredBreeds.count {
-								await model.bottomReached()
+						.onAppear {
+							if index + Int.bottomThreshold > model.filteredBreeds.count {
+								model.bottomReached()
 							}
 						}
 					}
@@ -34,27 +29,29 @@ struct BreedsListView: View {
 					}
 				}
 				.padding()
-//				.alert(item: $model.destination.alert) { action in
-//					model.alertButtonTapped(action)
-//				}
 			}
-			.navigationTitle("Breeds")
+			.navigationTitle(String.breeds)
 			.navigationBarTitleDisplayMode(.large)
 			.searchable(text: $model.searchQuery)
-			.onAppear(perform: {
-				Task{
-					try await model.viewAppeared()
+			.task {
+				await model.onViewAppeared()
+			}
+			.alert(item: $model.destination.alert) { alert in
+				return Alert(alert) { action in
+					guard let unwrappedAction = action else { return }
+					model.alertButtonsTapped(action: unwrappedAction)
 				}
-			})
+			}
 		}
 	}
 }
 
-// TODO: could you add an extension String { } with the string literals in this file? Since we can reuse the strings elsewhere
-// it might be a good approach to create this extension in a separate file accessible to every view.
-
 private extension CGFloat {
 	static let gridSpacing: Self = 20
+}
+
+private extension Int {
+	static let bottomThreshold: Self = 3
 }
 
 struct BreedsView_Previews: PreviewProvider {

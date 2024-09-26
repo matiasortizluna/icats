@@ -1,46 +1,52 @@
-//
-//  Endpoint.swift
-//  iCats
-//
-//  Created by Matias Luna on 10/09/2024.
-//
-
 import Foundation
 import CoreFoundation
 
+private extension String {
+	static let version: Self = "v1"
+	static let breedsPath: Self = "breeds"
+	static let limit: Self = "limit"
+	static let page: Self = "page"
+}
+
 public enum Endpoint {
-	// TODO: could you remove this space?
 	case images(String)
 	case breeds(Int, Int)
 
-	// TODO: could you remove the spaces between the name and the colon : here and in the other lines here in this file?
-	var method : HTTPMethod {
+	var method: HTTPMethod {
 		switch self {
-		case .images : .get
-		case .breeds : .get
+		case .images: .get
+		case .breeds: .get
 		}
 	}
 
-	// TODO: could you add these strings to a private String extension in this file?
+	// Could you add these strings to a private String extension in this file?
 	// Note that these are not user readable, so they are typically not used in views (shared).
 	// Therefore, the extension can be private
-	var version : String {
-		"v1"
+	var version: String {
+		.version
 	}
 
-	var path : String {
+	var path: String {
 		switch self {
-		case .images(let id) : return "images/\(id)"
-		case .breeds : return "breeds"
+		case .images(let id): return "images/\(id)"
+		case .breeds: return .breedsPath
 		}
 	}
 
-	var queryItems : [APIQueryItem] {
+	var queryItems: [APIQueryItem] {
 		switch self {
-		case .images : return []
-		case .breeds(let limit, let page) : return [.keyValue(key: "limit", value: String(limit)), .keyValue(key: "page", value: String(page))]
+		case .images: return []
+		case .breeds(let limit, let page): return [.keyValue(key: .limit, value: String(limit)), .keyValue(key: String.page, value: String(page))]
 		}
 	}
+}
+
+private extension String {
+	static let get: Self = "GET"
+	static let post: Self = "POST"
+	static let put: Self = "PUT"
+	static let patch: Self = "PATCH"
+	static let delete: Self = "DELETE"
 }
 
 enum HTTPMethod: String {
@@ -51,7 +57,7 @@ enum HTTPMethod: String {
 	case delete = "DELETE"
 }
 
-enum NetworkError : Error, Equatable {
+enum NetworkError: Error, Equatable {
 	case serverError(Int)
 	case authenticationFailure
 	case unhandledHTTPStatus(Int)
@@ -64,20 +70,29 @@ enum APIQueryItem {
 	case keyValue(key: String, value: String)
 }
 
-enum Header : String {
+private extension String {
+	static let xApiKey: Self = "x-api-key"
+	static let contentType: Self = "Content-Type"
+}
+
+enum Header: String {
 	case xApiKey = "x-api-key"
 	case contentType = "Content-Type"
 }
 
-enum HeaderValue : String {
-	// TODO: could you remove this space?
+private extension String {
+	static let headerContentType: Self = "application/json"
+	static let headerXApiKey: Self = "live_ISll8gOWarTBCiBssIqrzkvhzuez2g72xz4WzKx1BkRLXoWIlXD1GTKNklz1ERUr"
+}
+
+enum HeaderValue: String {
 	case xApiKey
 	case contentType
 
 	var rawValue: String {
 		switch self {
-		case .contentType : "application/json"
-		case .xApiKey : "live_ISll8gOWarTBCiBssIqrzkvhzuez2g72xz4WzKx1BkRLXoWIlXD1GTKNklz1ERUr"
+		case .contentType: .headerContentType
+		case .xApiKey: .headerXApiKey
 		}
 	}
 }

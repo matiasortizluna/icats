@@ -1,10 +1,3 @@
-//
-//  Decoder.swift
-//  iCats
-//
-//  Created by Matias Luna on 11/09/2024.
-//
-
 import Foundation
 
 extension JSONDecoder {
