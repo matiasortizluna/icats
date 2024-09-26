@@ -39,7 +39,7 @@ struct BreedsListView: View {
 			.alert(item: $model.destination.alert) { alert in
 				return Alert(alert) { action in
 					guard let unwrappedAction = action else { return }
-					model.alertButtonsTapped(action: unwrappedAction)
+					await model.alertButtonsTapped(action: unwrappedAction)
 				}
 			}
 		}
@@ -51,7 +51,7 @@ private extension CGFloat {
 }
 
 private extension Int {
-	static let bottomThreshold: Self = 2
+	static let bottomThreshold: Self = 5
 }
 
 struct BreedsView_Previews: PreviewProvider {
