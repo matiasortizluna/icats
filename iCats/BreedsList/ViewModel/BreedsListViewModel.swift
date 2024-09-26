@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUINavigation
+import IdentifiedCollections
 
 @Observable
 class BreedsListViewModel {
@@ -25,8 +26,8 @@ class BreedsListViewModel {
 
 	var searchQuery: String = ""
 
-	private var breeds: [BreedModel] = []
-	var filteredBreeds: [BreedModel] {
+	private var breeds: IdentifiedArrayOf<BreedModel> = []
+	var filteredBreeds: IdentifiedArrayOf<BreedModel> {
 		if searchQuery.isEmpty {
 			return breeds
 		} else {

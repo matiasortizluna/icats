@@ -51,7 +51,7 @@ private extension CGFloat {
 }
 
 private extension Int {
-	static let bottomThreshold: Self = 3
+	static let bottomThreshold: Self = 2
 }
 
 struct BreedsView_Previews: PreviewProvider {
