@@ -7,8 +7,8 @@ public struct Breed: Decodable, Equatable {
 	let origin: String
 	let description: String
 	let lifeSpan: String
-	let referenceImageID: String
-	let image: CatImage
+	let referenceImageID: String?
+	let image: CatImage?
 
 	enum CodingKeys: String, CodingKey {
 		case id, name, temperament, origin, description

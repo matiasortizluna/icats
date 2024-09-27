@@ -8,21 +8,20 @@ struct BreedsDetailView: View {
 		VStack(spacing: .zero) {
 			ScrollView {
 				ZStack(alignment: .topTrailing) {
-					//					if let url = breed.image.url {
-					WebImage(url: URL(string: model.breed.image!.url)).resizable()
-						.aspectRatio(contentMode: .fill)
-						.frame(width: .webImageWidth, height: .webImageHeight)
-						.clipShape(RoundedRectangle(cornerRadius: .webImageCornerRadius))
-						.padding(.webImagePadding)
-
-					//                    } else {
-					//                        Image(systemName: "cat.fill")
-					//                            .resizable()
-					//                            .aspectRatio(contentMode: .fill)
-					//                            .frame(width: 200, height: 200)
-					//                            .clipShape(RoundedRectangle(cornerRadius: 15))
-					//                            .padding(5)
-					//                    }
+					if (model.breed.image != nil) {
+						WebImage(url: URL(string: model.breed.image!.url)).resizable()
+							.aspectRatio(contentMode: .fill)
+							.frame(width: .webImageWidth, height: .webImageHeight)
+							.clipShape(RoundedRectangle(cornerRadius: .webImageCornerRadius))
+							.padding(.webImagePadding)
+					} else {
+						Image(systemName: "cat")
+							.resizable()
+							.aspectRatio(contentMode: .fill)
+							.frame(width: 200, height: 200)
+							.clipShape(RoundedRectangle(cornerRadius: 15))
+							.padding(5)
+					}
 
 					StarButton(model: model)
 				}

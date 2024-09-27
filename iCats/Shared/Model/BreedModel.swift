@@ -38,12 +38,16 @@ struct BreedModel: Identifiable {
 		temperament = breedAPI.temperament
 		breedDescription = breedAPI.description
 		lifeSpan = LifespanModel(string: breedAPI.lifeSpan)
-		image = CatImageModel(
-			id: breedAPI.image.id,
-			width: breedAPI.image.width,
-			height: breedAPI.image.height,
-			url: breedAPI.image.url
-		)
+		if let unwrappedImage = breedAPI.image {
+			image = CatImageModel(
+				id: unwrappedImage.id,
+				width: unwrappedImage.width,
+				height: unwrappedImage.height,
+				url: unwrappedImage.url
+			)
+		} else {
+			image = nil
+		}
 		isFavorite = false
 	}
 }

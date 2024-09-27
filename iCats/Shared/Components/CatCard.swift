@@ -8,11 +8,19 @@ struct CatCard: View {
 		ZStack {
 			VStack(spacing: .zero) {
 				ZStack(alignment: .topTrailing) {
-					WebImage(url: URL(string: breedModel.image!.url)).resizable()
-						.aspectRatio(contentMode: .fill)
-						.frame(width: 120, height: 100)
-						.clipShape(RoundedRectangle(cornerRadius: 15))
-						.padding(5)
+					if (breedModel.image != nil) {
+						WebImage(url: URL(string: breedModel.image!.url)).resizable()
+							.aspectRatio(contentMode: .fill)
+							.frame(width: 120, height: 100)
+							.clipShape(RoundedRectangle(cornerRadius: 15))
+							.padding(5)
+					} else {
+						Image(systemName: "cat").resizable()
+							.aspectRatio(contentMode: .fill)
+							.frame(width: 120, height: 100)
+							.clipShape(RoundedRectangle(cornerRadius: 15))
+							.padding(5)
+					}
 				}
 				Text(breedModel.name)
 					.font(.system(size: 15))
