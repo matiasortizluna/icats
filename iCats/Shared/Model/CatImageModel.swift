@@ -1,6 +1,6 @@
 import Foundation
 
-struct CatImageModel {
+struct CatImageModel: Equatable {
 	let id: String
 	let width: Int
 	let height: Int

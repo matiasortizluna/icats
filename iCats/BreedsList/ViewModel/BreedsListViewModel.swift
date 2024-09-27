@@ -46,24 +46,6 @@ class BreedsListViewModel {
 		await fetchMoreContent()
 	}
 
-	func fetchBreeds() async throws -> [BreedModel] {
-		let breedsAPI = try await breedsNetworkService.fetchBreeds(.limitItemsPerPage, page)
-		return breedsAPI.map { BreedModel(breedAPI: $0) }
-	}
-
-	func fetchMoreContent() async {
-		do {
-			try await updateView(with: fetchBreeds())
-		} catch {
-			print("Unexpected error: \(error).")
-			if (.limitItemsPerPage > breeds.count) {
-				self.destination = .alert(.alertRetryFetchDynamic(addCancelButton: false))
-			} else {
-				self.destination = .alert(.alertRetryFetchDynamic(addCancelButton: true))
-			}
-		}
-	}
-
 	func alertButtonsTapped(action: AlertAction) async {
 		switch action {
 		case .confirmRetry:
@@ -71,13 +53,6 @@ class BreedsListViewModel {
 		case .cancel:
 			alertCancelButtonTapped()
 		}
-	}
-
-	func alertConfirmRetryButtonTapped() async {
-		await fetchMoreContent()
-	}
-
-	func alertCancelButtonTapped() {
 	}
 
 	func bottomReached() {
@@ -92,9 +67,33 @@ class BreedsListViewModel {
 		destination = .detail(BreedDetailViewModel(breed: breed))
 	}
 
+	private func alertConfirmRetryButtonTapped() async {
+		await fetchMoreContent()
+	}
+
+	private func alertCancelButtonTapped() { }
+
 	@MainActor
-	func updateView(with newBreeds: [BreedModel]) {
+	private func updateView(with newBreeds: [BreedModel]) {
 		self.breeds.append(contentsOf: newBreeds)
+	}
+
+	private func fetchBreeds() async throws -> [BreedModel] {
+		let breedsAPI = try await breedsNetworkService.fetchBreeds(.limitItemsPerPage, page)
+		return breedsAPI.map { BreedModel(breedAPI: $0) }
+	}
+
+	private func fetchMoreContent() async {
+		do {
+			try await updateView(with: fetchBreeds())
+		} catch {
+			print("Unexpected error: \(error).")
+			if (.limitItemsPerPage > breeds.count) {
+				self.destination = .alert(.alertRetryFetchDynamic(addCancelButton: false))
+			} else {
+				self.destination = .alert(.alertRetryFetchDynamic(addCancelButton: true))
+			}
+		}
 	}
 }
 

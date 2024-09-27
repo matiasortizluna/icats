@@ -1,6 +1,6 @@
 import Foundation
 
-struct LifespanModel {
+struct LifespanModel: Equatable {
 	let upperValue: Int
 	let lowerValue: Int
 

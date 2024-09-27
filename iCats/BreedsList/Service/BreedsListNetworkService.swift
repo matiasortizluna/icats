@@ -11,19 +11,21 @@ struct BreedsListNetworkService {
 		)
 	}
 
-	static func mock(networkService: NetworkService, response: NetworkServiceResponse) -> Self {
+	static func mock() -> Self {
 		.init(
-			fetchBreeds: { _, _ in
-				fatalError("Unimplemented submit closure")
-			}
+			fetchBreeds: { _, _ in return [Breed].breedsMock }
 		)
 	}
 
-	static func mockPreview() -> Self {
+	static func mockError() -> Self {
 		.init(
-			fetchBreeds: { _, _ in
-				return [Breed].breedsMock
-			}
+			fetchBreeds: { _, _ in throw NetworkError.serverError(503) }
+		)
+	}
+
+	static func notImplementedMock() -> Self {
+		.init(
+			fetchBreeds: { _, _ in return fatalError("Unimplemented submit closure") }
 		)
 	}
 }

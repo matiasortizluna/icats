@@ -43,6 +43,6 @@ private extension String {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-		ContentView(model: BreedsListViewModel(breedsNetworkService: BreedsListNetworkService.mockPreview()))
+		ContentView(model: BreedsListViewModel(breedsNetworkService: BreedsListNetworkService.mock()))
     }
 }
