@@ -15,7 +15,7 @@ final class BreedsNetworkServiceTests: XCTestCase {
 		let sut = BreedsListNetworkService.live(networkService: networkService)
 
 		do {
-			let response = try await sut.fetchBreeds(3, 0)
+			let response = try await sut.fetchBreeds(8, 0)
 			XCTAssertEqual(response, [Breed].breedsMock)
 
 		} catch {
@@ -36,7 +36,7 @@ final class BreedsNetworkServiceTests: XCTestCase {
 		let sut = BreedsListNetworkService.live(networkService: networkService)
 
 		do {
-			let response: [Breed] = try await sut.fetchBreeds(3, 0)
+			let _ = try await sut.fetchBreeds(3, 0)
 			XCTFail("This service call should throw an error instead.")
 
 		} catch {

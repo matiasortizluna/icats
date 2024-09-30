@@ -8,18 +8,6 @@ class BreedsListViewModel {
 		didSet { bind() }
 	}
 
-	@CasePathable
-	enum Destination {
-		case detail(BreedDetailViewModel)
-		case information
-		case alert(AlertState<AlertAction>)
-	}
-
-	enum AlertAction {
-		case confirmRetry
-		case cancel
-	}
-
 	let breedsNetworkService: BreedsListNetworkService
 
 	var page: Int = 0
@@ -55,9 +43,10 @@ class BreedsListViewModel {
 		}
 	}
 
-	func bottomReached() {
-		guard searchQuery.isEmpty else { return }
-		Task {
+	@discardableResult
+	func bottomReached() -> Task<(), Never>? {
+		guard searchQuery.isEmpty else { return nil }
+		return Task {
 			page+=1
 			await fetchMoreContent()
 		}
@@ -97,22 +86,34 @@ class BreedsListViewModel {
 	}
 }
 
-private extension ButtonState where Action == BreedsListViewModel.AlertAction {
+public extension ButtonState where Action == AlertAction {
 	static let confirmRetryButton: Self = ButtonState(
 		role: .cancel,
-		action: BreedsListViewModel.AlertAction.confirmRetry,
+		action: AlertAction.confirmRetry,
 		label: { TextState("Confirm Retry") }
 	)
 	static let dismissButton: Self = ButtonState(
 		role: .none,
-		action: BreedsListViewModel.AlertAction.cancel,
+		action: AlertAction.cancel,
 		label: { TextState("Dismiss") }
 	)
 }
 
-private extension AlertState where Action == BreedsListViewModel.AlertAction {
+@CasePathable
+public enum Destination: Equatable {
+	case detail(BreedDetailViewModel)
+	case information
+	case alert(AlertState<AlertAction>)
+}
+
+public enum AlertAction {
+	case confirmRetry
+	case cancel
+}
+
+public extension AlertState where Action == AlertAction {
 	static func alertRetryFetchDynamic(addCancelButton: Bool) -> Self {
-		var actionButtons : [ButtonState<BreedsListViewModel.AlertAction>] = []
+		var actionButtons : [ButtonState<AlertAction>] = []
 		if (addCancelButton == true) {
 			actionButtons.append(.dismissButton)
 		}
@@ -126,25 +127,6 @@ private extension AlertState where Action == BreedsListViewModel.AlertAction {
 			message: { TextState("There was an error when fetching breeds data from the CatsAPI. You can try to fetch the data again by selecting the option.") }
 		)
 	}
-
-//	static let alertRetryFetch: Self = AlertState(
-//		title: { TextState("Do you want to retry to fetch breeds data?") },
-//		actions: {
-//			return [
-//				ButtonState(
-//					role: .none,
-//					action: .cancel,
-//					label: { TextState("Nevermind") }
-//				),
-//				ButtonState(
-//					role: .cancel,
-//					action: .confirmRetry,
-//					label: { TextState("Confirm Retry") }
-//				),
-//			]
-//		},
-//		message: { TextState("There was an error when fetching breeds data from the CatsAPI. You can try to fetch the data again by selecting the option.") }
-//	)
 }
 
 private extension Int {
