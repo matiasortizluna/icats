@@ -23,8 +23,9 @@ class BreedsListViewModel {
 		}
 	}
 
-	init(breedsNetworkService: BreedsListNetworkService) {
+	init(breedsNetworkService: BreedsListNetworkService, destination: Destination? = nil) {
 		self.breedsNetworkService = breedsNetworkService
+		self.destination = destination
 	}
 
 	func bind() {
@@ -58,9 +59,14 @@ class BreedsListViewModel {
 
 	private func alertConfirmRetryButtonTapped() async {
 		await fetchMoreContent()
+		if (!breeds.isEmpty) {
+			destination = nil
+		}
 	}
 
-	private func alertCancelButtonTapped() { }
+	private func alertCancelButtonTapped() {
+		destination = nil
+	}
 
 	@MainActor
 	private func updateView(with newBreeds: [BreedModel]) {

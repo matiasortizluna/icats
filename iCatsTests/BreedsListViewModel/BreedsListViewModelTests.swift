@@ -42,16 +42,15 @@ class BreedsListViewModelTests: XCTestCase {
 	}
 
 
-	func testAlertButtonsTapped() async {
-		let sut = BreedsListViewModel(breedsNetworkService: .mockError())
-		await sut.onViewAppeared()
-
-		XCTAssertEqual(sut.destination, .alert(.alertRetryFetchDynamic(addCancelButton: false)))
+	func testAlertButtonsTapped_ShouldRetryFetch() async {
+		let sut = BreedsListViewModel(breedsNetworkService: .mock(), destination: Destination.alert(.alertRetryFetchDynamic(addCancelButton: false)))
 		XCTAssertTrue(sut.filteredBreeds.isEmpty)
+		XCTAssertEqual(sut.destination, .alert(.alertRetryFetchDynamic(addCancelButton: false)))
 
 		await sut.alertButtonsTapped(action: .confirmRetry)
 
 		XCTAssertEqual(sut.filteredBreeds, .expectedBreeds)
+		XCTAssertEqual(sut.destination, nil)
 	}
 
 	func testBottomReached_ShouldFetchMoreContent() async throws {
