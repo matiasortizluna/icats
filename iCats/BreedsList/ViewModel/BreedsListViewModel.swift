@@ -32,7 +32,7 @@ class BreedsListViewModel {
 	}
 
 	func onViewAppeared() async {
-		await fetchMoreContent()
+		try? await fetchMoreContent()
 	}
 
 	func alertButtonsTapped(action: AlertAction) async {
@@ -49,7 +49,7 @@ class BreedsListViewModel {
 		guard searchQuery.isEmpty else { return nil }
 		return Task {
 			page+=1
-			await fetchMoreContent()
+			try? await fetchMoreContent()
 		}
 	}
 
@@ -58,9 +58,13 @@ class BreedsListViewModel {
 	}
 
 	private func alertConfirmRetryButtonTapped() async {
-		await fetchMoreContent()
-		if (!breeds.isEmpty) {
+		do {
+			try await fetchMoreContent()
 			destination = nil
+		} catch BreedListError.emptyBreeds {
+			print(BreedListError.emptyBreeds.localizedDescription)
+		} catch {
+			print(error.localizedDescription)
 		}
 	}
 
@@ -78,9 +82,13 @@ class BreedsListViewModel {
 		return breedsAPI.map { BreedModel(breedAPI: $0) }
 	}
 
-	private func fetchMoreContent() async {
+	private func fetchMoreContent() async throws {
 		do {
-			try await updateView(with: fetchBreeds())
+			let breeds = try await fetchBreeds()
+			guard !breeds.isEmpty else { throw BreedListError.emptyBreeds }
+			await updateView(with: breeds)
+		} catch let error as BreedListError {
+			throw error
 		} catch {
 			print("Unexpected error: \(error).")
 			if (.limitItemsPerPage > breeds.count) {
@@ -89,6 +97,10 @@ class BreedsListViewModel {
 				self.destination = .alert(.alertRetryFetchDynamic(addCancelButton: true))
 			}
 		}
+	}
+
+	enum BreedListError: Error {
+		case emptyBreeds
 	}
 }
 
