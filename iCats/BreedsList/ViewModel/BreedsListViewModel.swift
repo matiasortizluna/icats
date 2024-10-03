@@ -14,6 +14,8 @@ class BreedsListViewModel {
 
 	var searchQuery: String = ""
 
+	var viewState: ViewState
+
 	private var breeds: IdentifiedArrayOf<BreedModel> = []
 	var filteredBreeds: IdentifiedArrayOf<BreedModel> {
 		if searchQuery.isEmpty {
@@ -23,16 +25,29 @@ class BreedsListViewModel {
 		}
 	}
 
-	init(breedsNetworkService: BreedsListNetworkService, destination: Destination? = nil) {
+	init(
+		breedsNetworkService: BreedsListNetworkService,
+		destination: Destination? = nil,
+		viewState: ViewState = .ready
+	) {
 		self.breedsNetworkService = breedsNetworkService
 		self.destination = destination
+		self.viewState = viewState
 	}
 
 	func bind() {
 	}
 
 	func onViewAppeared() async {
-		try? await fetchMoreContent()
+		await changeViewState(.fullScreenLoading)
+		do {
+			try await fetchMoreContent()
+		} catch BreedListError.emptyBreeds {
+			print(BreedListError.emptyBreeds.localizedDescription)
+		} catch {
+			print(error.localizedDescription)
+		}
+		await changeViewState(.ready)
 	}
 
 	func alertButtonsTapped(action: AlertAction) async {
@@ -46,10 +61,19 @@ class BreedsListViewModel {
 
 	@discardableResult
 	func bottomReached() -> Task<(), Never>? {
-		guard searchQuery.isEmpty else { return nil }
+		print("page \(page)")
+		guard searchQuery.isEmpty, viewState == .ready else { return nil }
+		viewState = .spinnerLoading
 		return Task {
 			page+=1
-			try? await fetchMoreContent()
+			do {
+				try await fetchMoreContent()
+				await changeViewState(.ready)
+			} catch BreedListError.emptyBreeds {
+				print(BreedListError.emptyBreeds.localizedDescription)
+			} catch {
+				print(error.localizedDescription)
+			}
 		}
 	}
 
@@ -57,10 +81,21 @@ class BreedsListViewModel {
 		destination = .detail(BreedDetailViewModel(breed: breed))
 	}
 
+	@MainActor
+	private func changeViewState(_ newState: ViewState) {
+		viewState = newState
+	}
+
 	private func alertConfirmRetryButtonTapped() async {
 		do {
-			try await fetchMoreContent()
 			destination = nil
+			if filteredBreeds.isEmpty {
+				await changeViewState(.fullScreenLoading)
+			} else {
+				await changeViewState(.spinnerLoading)
+			}
+			try await fetchMoreContent()
+			await changeViewState(.ready)
 		} catch BreedListError.emptyBreeds {
 			print(BreedListError.emptyBreeds.localizedDescription)
 		} catch {
@@ -72,9 +107,22 @@ class BreedsListViewModel {
 		destination = nil
 	}
 
-	@MainActor
-	private func updateView(with newBreeds: [BreedModel]) {
-		self.breeds.append(contentsOf: newBreeds)
+	private func fetchMoreContent() async throws {
+		do {
+			let breeds = try await fetchBreeds()
+			guard !breeds.isEmpty else { throw BreedListError.emptyBreeds }
+			await updateView(with: breeds)
+
+		} catch let error as BreedListError {
+			throw error
+
+		} catch {
+			if .limitItemsPerPage > breeds.count {
+				self.destination = .alert(.alertRetryFetchDynamic(addCancelButton: false))
+			} else {
+				self.destination = .alert(.alertRetryFetchDynamic(addCancelButton: true))
+			}
+		}
 	}
 
 	private func fetchBreeds() async throws -> [BreedModel] {
@@ -82,21 +130,9 @@ class BreedsListViewModel {
 		return breedsAPI.map { BreedModel(breedAPI: $0) }
 	}
 
-	private func fetchMoreContent() async throws {
-		do {
-			let breeds = try await fetchBreeds()
-			guard !breeds.isEmpty else { throw BreedListError.emptyBreeds }
-			await updateView(with: breeds)
-		} catch let error as BreedListError {
-			throw error
-		} catch {
-			print("Unexpected error: \(error).")
-			if (.limitItemsPerPage > breeds.count) {
-				self.destination = .alert(.alertRetryFetchDynamic(addCancelButton: false))
-			} else {
-				self.destination = .alert(.alertRetryFetchDynamic(addCancelButton: true))
-			}
-		}
+	@MainActor
+	private func updateView(with newBreeds: [BreedModel]) {
+		self.breeds.append(contentsOf: newBreeds)
 	}
 
 	enum BreedListError: Error {

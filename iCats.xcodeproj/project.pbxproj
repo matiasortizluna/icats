@@ -40,6 +40,7 @@
 		0FEAB7122C98610400F694F7 /* TextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEAB7112C98610400F694F7 /* TextButton.swift */; };
 		0FEAB7142C98659700F694F7 /* StarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEAB7132C98659700F694F7 /* StarButton.swift */; };
 		0FF0C8242C653E64006DE8DF /* BreedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF0C8232C653E64006DE8DF /* BreedDetailView.swift */; };
+		0FF4B9062CAD442D00B7B7F1 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF4B9052CAD442D00B7B7F1 /* ViewState.swift */; };
 		0FFC4D5E2CA1D33800309B9A /* BreedsListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FFC4D5D2CA1D33800309B9A /* BreedsListViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -85,6 +86,7 @@
 		0FEAB7112C98610400F694F7 /* TextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextButton.swift; sourceTree = "<group>"; };
 		0FEAB7132C98659700F694F7 /* StarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarButton.swift; sourceTree = "<group>"; };
 		0FF0C8232C653E64006DE8DF /* BreedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedDetailView.swift; sourceTree = "<group>"; };
+		0FF4B9052CAD442D00B7B7F1 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
 		0FFC4D5D2CA1D33800309B9A /* BreedsListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedsListViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,6 +116,7 @@
 		0F14CA5C2CA4394F00DA75A1 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				0FF4B9032CAD440700B7B7F1 /* ViewModel */,
 				0F14CA5E2CA4675E00DA75A1 /* Copies */,
 				0F86A06B2C9C552B00F3D14D /* Model */,
 				0F94FA882C618373009C8E27 /* Components */,
@@ -355,6 +358,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		0FF4B9032CAD440700B7B7F1 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				0FF4B9052CAD442D00B7B7F1 /* ViewState.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		0FFC4D5B2CA1D30D00309B9A /* BreedsNetworkService */ = {
 			isa = PBXGroup;
 			children = (
@@ -523,6 +534,7 @@
 				0FA48EFE2C932A350078CB0D /* BreedsListNetworkService.swift in Sources */,
 				0F57A9052C6532CB00471F56 /* BreedsFavoritesView.swift in Sources */,
 				0F86A0622C9B21BE00F3D14D /* BreedsListViewModel.swift in Sources */,
+				0FF4B9062CAD442D00B7B7F1 /* ViewState.swift in Sources */,
 				0F86A07F2C9DB0E200F3D14D /* BreedDetailViewModel.swift in Sources */,
 				0F86A06D2C9C5B3F00F3D14D /* CatImage.swift in Sources */,
 				0F86A0602C9B213900F3D14D /* BreedModel.swift in Sources */,
