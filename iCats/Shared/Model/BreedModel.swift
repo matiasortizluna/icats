@@ -50,6 +50,28 @@ struct BreedModel: Identifiable, Equatable {
 		}
 		isFavorite = false
 	}
+
+	init(
+		breedEntity: BreedEntity
+	) {
+		id = breedEntity.id!
+		name = breedEntity.name!
+		origin = breedEntity.origin!
+		temperament = breedEntity.temperament!
+		breedDescription = breedEntity.breedDescription!
+		lifeSpan = LifespanModel(string: breedEntity.lifeSpan!)
+		if let unwrappedImage = breedEntity.image {
+			image = CatImageModel(
+				id: breedEntity.image!.id!,
+				width: Int(breedEntity.image!.width),
+				height: Int(breedEntity.image!.height),
+				url: breedEntity.image!.url!
+			)
+		} else {
+			image = nil
+		}
+		isFavorite = false
+	}
 }
 
 extension BreedModel {

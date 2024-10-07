@@ -4,6 +4,7 @@ struct ContentView: View {
 	let model: BreedsListViewModel
 
     var body: some View {
+
 		TabView(selection: .constant(Int.tabSelection)) {
 			// Could you add private extension to the Ints and a add the string literals to the public String extension?
             BreedsFavoritesView()
@@ -43,6 +44,11 @@ private extension String {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-		ContentView(model: BreedsListViewModel(breedsNetworkService: BreedsListNetworkService.mock()))
+		ContentView(
+			model: BreedsListViewModel(
+				breedsNetworkService: BreedsListNetworkService.mock(),
+				databaseService: DatabaseService()
+			)
+		)
     }
 }
