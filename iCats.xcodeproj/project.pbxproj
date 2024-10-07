@@ -42,8 +42,8 @@
 		0FF0C8242C653E64006DE8DF /* BreedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF0C8232C653E64006DE8DF /* BreedDetailView.swift */; };
 		0FF4B9062CAD442D00B7B7F1 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF4B9052CAD442D00B7B7F1 /* ViewState.swift */; };
 		0FF4B9092CB047A200B7B7F1 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF4B9082CB047A200B7B7F1 /* DatabaseService.swift */; };
-		0FF4B90F2CB301C800B7B7F1 /* iCats.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0FF4B90D2CB301C800B7B7F1 /* iCats.xcdatamodeld */; };
 		0FFC4D5E2CA1D33800309B9A /* BreedsListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FFC4D5D2CA1D33800309B9A /* BreedsListViewModelTests.swift */; };
+		D65AE1682CB41EEA00823D51 /* iCats.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D65AE1662CB41EEA00823D51 /* iCats.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,8 +90,8 @@
 		0FF0C8232C653E64006DE8DF /* BreedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedDetailView.swift; sourceTree = "<group>"; };
 		0FF4B9052CAD442D00B7B7F1 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
 		0FF4B9082CB047A200B7B7F1 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
-		0FF4B90E2CB301C800B7B7F1 /* iCats.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = iCats.xcdatamodel; sourceTree = "<group>"; };
 		0FFC4D5D2CA1D33800309B9A /* BreedsListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedsListViewModelTests.swift; sourceTree = "<group>"; };
+		D65AE1672CB41EEA00823D51 /* iCats.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = iCats.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -357,9 +357,9 @@
 		0FEAB70B2C98371300F694F7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D65AE1662CB41EEA00823D51 /* iCats.xcdatamodeld */,
 				0FA316502C679B1F00928F58 /* BreedEntity.swift */,
 				0F9D696C2C6A3A5300849F38 /* CatImageEntity.swift */,
-				0FF4B90D2CB301C800B7B7F1 /* iCats.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -541,8 +541,8 @@
 				0FAA43BC2C91EC670051E904 /* JSONDecoder+Shared.swift in Sources */,
 				0F57A9032C65327500471F56 /* BreedsListView.swift in Sources */,
 				0FF4B9092CB047A200B7B7F1 /* DatabaseService.swift in Sources */,
+				D65AE1682CB41EEA00823D51 /* iCats.xcdatamodeld in Sources */,
 				0F9D696D2C6A3A5300849F38 /* CatImageEntity.swift in Sources */,
-				0FF4B90F2CB301C800B7B7F1 /* iCats.xcdatamodeld in Sources */,
 				0FEAB7142C98659700F694F7 /* StarButton.swift in Sources */,
 				0F94FA8A2C61838D009C8E27 /* CatCard.swift in Sources */,
 				0F94FA872C61831F009C8E27 /* iCatsApp.swift in Sources */,
@@ -900,14 +900,14 @@
 /* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
-		0FF4B90D2CB301C800B7B7F1 /* iCats.xcdatamodeld */ = {
+		D65AE1662CB41EEA00823D51 /* iCats.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				0FF4B90E2CB301C800B7B7F1 /* iCats.xcdatamodel */,
+				D65AE1672CB41EEA00823D51 /* iCats.xcdatamodel */,
 			);
-			currentVersion = 0FF4B90E2CB301C800B7B7F1 /* iCats.xcdatamodel */;
+			currentVersion = D65AE1672CB41EEA00823D51 /* iCats.xcdatamodel */;
 			name = iCats.xcdatamodeld;
-			path = "/Users/matiasluna/Desktop/Code Challenge/icats/iCats/Database/Model/iCats.xcdatamodeld";
+			path = "iCats.xcdatamodeld";
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
