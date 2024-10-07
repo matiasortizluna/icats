@@ -25,20 +25,25 @@ class BreedsListViewModel {
 		}
 	}
 
+	let databaseService: DatabaseService
+
 	init(
 		breedsNetworkService: BreedsListNetworkService,
 		destination: Destination? = nil,
-		viewState: ViewState = .ready
+		viewState: ViewState = .ready,
+		databaseService: DatabaseService? = nil
 	) {
 		self.breedsNetworkService = breedsNetworkService
 		self.destination = destination
 		self.viewState = viewState
+		self.databaseService = databaseService ?? DatabaseService()
 	}
 
 	func bind() {
 	}
 
 	func onViewAppeared() async {
+//		databaseService.cleanBD()
 		await changeViewState(.fullScreenLoading)
 		do {
 			try await fetchMoreContent()
@@ -126,8 +131,16 @@ class BreedsListViewModel {
 	}
 
 	private func fetchBreeds() async throws -> [BreedModel] {
-		let breedsAPI = try await breedsNetworkService.fetchBreeds(.limitItemsPerPage, page)
-		return breedsAPI.map { BreedModel(breedAPI: $0) }
+		let breeds = databaseService.fetchBreeds()
+		if (breeds.isEmpty) {
+			print("breeds.isEmpty \(breeds.isEmpty)")
+			let breedsAPI = try await breedsNetworkService.fetchBreeds(.limitItemsPerPage, page)
+			let breeds = breedsAPI.map { BreedModel(breedAPI: $0) }
+			databaseService.saveOnDisk(breeds: breeds)
+			print("breeds \(databaseService.fetchBreeds())")
+			return breeds
+		}
+		return breeds
 	}
 
 	@MainActor

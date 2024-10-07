@@ -7,8 +7,8 @@ struct CatsApp: App {
 			ContentView(
 				model: BreedsListViewModel(
 					breedsNetworkService: BreedsListNetworkService.live(
-						networkService: NetworkService.live()
-					)
+						networkService: NetworkService.live()),
+					databaseService: DatabaseService.shared
 				)
 			)
 		}

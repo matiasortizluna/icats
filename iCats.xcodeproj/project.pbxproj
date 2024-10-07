@@ -41,6 +41,8 @@
 		0FEAB7142C98659700F694F7 /* StarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEAB7132C98659700F694F7 /* StarButton.swift */; };
 		0FF0C8242C653E64006DE8DF /* BreedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF0C8232C653E64006DE8DF /* BreedDetailView.swift */; };
 		0FF4B9062CAD442D00B7B7F1 /* ViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF4B9052CAD442D00B7B7F1 /* ViewState.swift */; };
+		0FF4B9092CB047A200B7B7F1 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF4B9082CB047A200B7B7F1 /* DatabaseService.swift */; };
+		0FF4B90F2CB301C800B7B7F1 /* iCats.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0FF4B90D2CB301C800B7B7F1 /* iCats.xcdatamodeld */; };
 		0FFC4D5E2CA1D33800309B9A /* BreedsListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FFC4D5D2CA1D33800309B9A /* BreedsListViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -87,6 +89,8 @@
 		0FEAB7132C98659700F694F7 /* StarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarButton.swift; sourceTree = "<group>"; };
 		0FF0C8232C653E64006DE8DF /* BreedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedDetailView.swift; sourceTree = "<group>"; };
 		0FF4B9052CAD442D00B7B7F1 /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
+		0FF4B9082CB047A200B7B7F1 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
+		0FF4B90E2CB301C800B7B7F1 /* iCats.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = iCats.xcdatamodel; sourceTree = "<group>"; };
 		0FFC4D5D2CA1D33800309B9A /* BreedsListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedsListViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -203,6 +207,7 @@
 				0FEAB7072C9835CA00F694F7 /* BreedDetail */,
 				0FEAB7052C9835AE00F694F7 /* BreedsFavorites */,
 				0FEAB7012C98356E00F694F7 /* BreedsList */,
+				0FF4B9072CB044EA00B7B7F1 /* DatabaseService */,
 				0F3E01122C91AAEA0009804F /* NetworkService */,
 				0FB7CBCE2C626E4200798B53 /* Database */,
 				0F94FA862C61831F009C8E27 /* iCatsApp.swift */,
@@ -354,6 +359,7 @@
 			children = (
 				0FA316502C679B1F00928F58 /* BreedEntity.swift */,
 				0F9D696C2C6A3A5300849F38 /* CatImageEntity.swift */,
+				0FF4B90D2CB301C800B7B7F1 /* iCats.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -364,6 +370,14 @@
 				0FF4B9052CAD442D00B7B7F1 /* ViewState.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		0FF4B9072CB044EA00B7B7F1 /* DatabaseService */ = {
+			isa = PBXGroup;
+			children = (
+				0FF4B9082CB047A200B7B7F1 /* DatabaseService.swift */,
+			);
+			path = DatabaseService;
 			sourceTree = "<group>";
 		};
 		0FFC4D5B2CA1D30D00309B9A /* BreedsNetworkService */ = {
@@ -526,7 +540,9 @@
 				0FF0C8242C653E64006DE8DF /* BreedDetailView.swift in Sources */,
 				0FAA43BC2C91EC670051E904 /* JSONDecoder+Shared.swift in Sources */,
 				0F57A9032C65327500471F56 /* BreedsListView.swift in Sources */,
+				0FF4B9092CB047A200B7B7F1 /* DatabaseService.swift in Sources */,
 				0F9D696D2C6A3A5300849F38 /* CatImageEntity.swift in Sources */,
+				0FF4B90F2CB301C800B7B7F1 /* iCats.xcdatamodeld in Sources */,
 				0FEAB7142C98659700F694F7 /* StarButton.swift in Sources */,
 				0F94FA8A2C61838D009C8E27 /* CatCard.swift in Sources */,
 				0F94FA872C61831F009C8E27 /* iCatsApp.swift in Sources */,
@@ -882,6 +898,20 @@
 			productName = SwiftyJSON;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		0FF4B90D2CB301C800B7B7F1 /* iCats.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				0FF4B90E2CB301C800B7B7F1 /* iCats.xcdatamodel */,
+			);
+			currentVersion = 0FF4B90E2CB301C800B7B7F1 /* iCats.xcdatamodel */;
+			name = iCats.xcdatamodeld;
+			path = "/Users/matiasluna/Desktop/Code Challenge/icats/iCats/Database/Model/iCats.xcdatamodeld";
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 0F94FA4F2C613680009C8E27 /* Project object */;
 }
