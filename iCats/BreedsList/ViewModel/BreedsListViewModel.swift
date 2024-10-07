@@ -133,11 +133,9 @@ class BreedsListViewModel {
 	private func fetchBreeds() async throws -> [BreedModel] {
 		let breeds = databaseService.fetchBreeds()
 		if (breeds.isEmpty) {
-			print("breeds.isEmpty \(breeds.isEmpty)")
 			let breedsAPI = try await breedsNetworkService.fetchBreeds(.limitItemsPerPage, page)
 			let breeds = breedsAPI.map { BreedModel(breedAPI: $0) }
 			databaseService.saveOnDisk(breeds: breeds)
-			print("breeds \(databaseService.fetchBreeds())")
 			return breeds
 		}
 		return breeds
