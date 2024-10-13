@@ -3,12 +3,16 @@ import SwiftUI
 @main
 struct CatsApp: App {
 	var body: some Scene {
+		let databaseService = DatabaseService.live()
 		WindowGroup {
 			ContentView(
-				model: BreedsListViewModel(
+				breedsListViewModel: BreedsListViewModel(
 					breedsNetworkService: BreedsListNetworkService.live(
 						networkService: NetworkService.live()),
-					databaseService: DatabaseService.live()
+					databaseService: databaseService
+				),
+				aboutViewModel: AboutViewModel(
+					databaseService: databaseService
 				)
 			)
 		}

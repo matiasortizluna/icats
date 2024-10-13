@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct AboutView: View {
+
+	@State var model: AboutViewModel
+
     var body: some View {
         NavigationView {
 			VStack(spacing: .zero) {
@@ -15,14 +18,26 @@ struct AboutView: View {
 
 				Text(String.developerEmail)
 					.padding()
+
+				TextButton(
+					label: "Clear Database",
+					labelColor: .white,
+					rectangleColor: .red,
+					action: {
+						model.clearDatabaseButtonTapped()
+					}
+				)
             }
-            .navigationTitle("About")
+			.navigationTitle(String.about)
             .navigationBarTitleDisplayMode(.large)
         }
     }
 }
-// could you add a extension String { } with the string literals in this file? Since we can reuse t he strings elsewhere
-// it might be a good approach to create this extension in a separate file accessible to every view.
+
 #Preview {
-	AboutView()
+	AboutView(
+		model: AboutViewModel(
+			databaseService: DatabaseService.mock()
+		)
+	)
 }

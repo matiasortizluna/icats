@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct ContentView: View {
-	let model: BreedsListViewModel
+	let breedsListViewModel: BreedsListViewModel
+	let aboutViewModel: AboutViewModel
 
     var body: some View {
 
@@ -12,13 +13,13 @@ struct ContentView: View {
                 }
 				.tag(Int.tabFavorites)
 
-			BreedsListView(model: model)
+			BreedsListView(model: breedsListViewModel)
                 .tabItem {
 					Label(String.breeds, systemImage: String.tabBreedsSymbol)
                 }
 				.tag(Int.tabBreeds)
 
-            AboutView()
+			AboutView(model: aboutViewModel)
                 .tabItem {
 					Label(String.about, systemImage: String.tabAboutSymbol)
                 }
@@ -44,8 +45,11 @@ private extension String {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
 		ContentView(
-			model: BreedsListViewModel(
+			breedsListViewModel: BreedsListViewModel(
 				breedsNetworkService: BreedsListNetworkService.mock(),
+				databaseService: DatabaseService.mock()
+			),
+			aboutViewModel: AboutViewModel(
 				databaseService: DatabaseService.mock()
 			)
 		)

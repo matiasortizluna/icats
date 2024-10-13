@@ -5,4 +5,5 @@ public enum DatabaseEntity: String, Equatable {
 
 enum DatabaseServiceError: Error, Equatable {
 	case empty
+	case wrongTransformation
 }

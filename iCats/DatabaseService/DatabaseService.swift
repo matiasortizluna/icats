@@ -67,23 +67,12 @@ extension DatabaseService {
 						return $0
 					}
 					.compactMap { try? managedContext.fetch($0) }
-				//				.flatMap(identity)
+//					.flatMap(identity)
 					.compactMap { $0 as? NSManagedObject }
 					.forEach(managedContext.delete(_:))
 
 				saveChanges(managedContext)
 			}
-//			do {
-//				let breeds = try fetchData()
-//				for breed in breeds {
-//					try persistentContainer.viewContext.performAndWait {
-//						persistentContainer.viewContext.delete(breed)
-//						try saveContext()
-//					}
-//				}
-//			} catch {
-//				print("Error cleaning DB \(error.localizedDescription)")
-//			}
 		} delete: { object in
 			managedContext.performAndWait {
 				managedContext.delete(object)

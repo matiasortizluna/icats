@@ -1,12 +1,13 @@
-
 import Foundation
 
 extension DatabaseService {
 
 	func fetchBreeds() -> [BreedModel] {
 		do {
-			let breedsEntity = try fetchObjects(DatabaseEntity.breed, nil)
-			return breedsEntity.map { BreedModel(breedEntity: $0 as! BreedEntity) }
+			guard let breedsEntity = try fetchObjects(DatabaseEntity.breed, nil) as? [BreedEntity] else {
+				throw DatabaseServiceError.wrongTransformation
+			}
+			return breedsEntity.map { BreedModel(breedEntity: $0 ) }
 		} catch {
 			print("Error fetching breed: \(error.localizedDescription)")
 		}
@@ -15,8 +16,9 @@ extension DatabaseService {
 
 	func insertBreed(_ breed: BreedModel) {
 		do {
-			print("insert")
-			let newBreed: BreedEntity = try self.createObject(DatabaseEntity.breed) as! BreedEntity
+			guard let newBreed: BreedEntity = try self.createObject(DatabaseEntity.breed) as? BreedEntity else {
+				throw DatabaseServiceError.wrongTransformation
+			}
 			newBreed.id = breed.id
 			newBreed.name = breed.name
 			newBreed.origin = breed.origin
@@ -26,7 +28,6 @@ extension DatabaseService {
 			newBreed.isFavorite = breed.isFavorite
 			newBreed.image = nil
 			try save()
-			print("saved")
 		} catch {
 			print("Error saving breeds on disk: \(error.localizedDescription)")
 		}
