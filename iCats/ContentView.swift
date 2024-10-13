@@ -46,7 +46,7 @@ struct ContentView_Previews: PreviewProvider {
 		ContentView(
 			model: BreedsListViewModel(
 				breedsNetworkService: BreedsListNetworkService.mock(),
-				databaseService: DatabaseService.live()
+				databaseService: DatabaseService.mock()
 			)
 		)
     }

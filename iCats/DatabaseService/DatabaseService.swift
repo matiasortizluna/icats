@@ -16,19 +16,21 @@ extension DatabaseService {
 		return persitentContainer
 	}
 
-	public static func initializePersistentContainer(persistentContainer: NSPersistentContainer) {
+	public static func mockContainer(_ persistentContainerName: String) -> NSPersistentContainer {
+		let persitentContainer = NSPersistentContainer(name: persistentContainerName)
+		let description = NSPersistentStoreDescription(url: URL(fileURLWithPath: "/dev/null"))
+		persitentContainer.persistentStoreDescriptions = [description]
+		initializePersistentContainer(persistentContainer: persitentContainer)
+		return persitentContainer
+	}
+
+	private static func initializePersistentContainer(persistentContainer: NSPersistentContainer) {
 		persistentContainer.loadPersistentStores { _, error in
 			if let error {
 				fatalError("Failed to load persistent stores: \(error.localizedDescription)")
 			}
 		}
 	}
-
-//	public func mockContainer() {
-//		let persitentContainer = NSPersistentContainer(name: "persistentContainerName")
-//		initializePersistentContainer(persistentContainer: persitentContainer)
-//		return persitentContainer
-//	}
 
 	public static func live(persistentContainer: NSPersistentContainer = liveContainer("iCats")) -> Self {
 		let managedContext: NSManagedObjectContext = persistentContainer.viewContext
@@ -88,11 +90,67 @@ extension DatabaseService {
 				saveChanges(managedContext)
 			}
 		}
-
 	}
 
-	public static func mock() {
+	public static func mock(persistentContainer: NSPersistentContainer = mockContainer("iCats")) -> Self {
+		// TODO: Implement Mocks
+		let managedContext: NSManagedObjectContext = persistentContainer.viewContext
 
+		return .init { entity, _ in
+			managedContext.performAndWait {
+				return fetchObjectsRequest(
+					entity: entity,
+					managedContext: managedContext
+				)
+			}
+		} createObject: { entity in
+			managedContext.performAndWait {
+				if let entity = NSEntityDescription.entity(forEntityName: entity.rawValue, in: managedContext) {
+					let object = NSManagedObject(entity: entity, insertInto: managedContext)
+					//					completion(.success(object))
+					return object
+				} else {
+					//					completion(.failure(DatabaseServiceError.noEntity))
+				}
+				return []
+			}
+		} save: {
+			managedContext.performAndWait {
+				saveChanges(managedContext)
+			}
+		} deleteAll: { entities in
+			managedContext.performAndWait {
+				entities
+					.map(\.rawValue)
+					.map(NSFetchRequest<NSFetchRequestResult>.init(entityName:))
+					.map {
+						$0.includesPropertyValues = false
+						return $0
+					}
+					.compactMap { try? managedContext.fetch($0) }
+				//				.flatMap(identity)
+					.compactMap { $0 as? NSManagedObject }
+					.forEach(managedContext.delete(_:))
+
+				saveChanges(managedContext)
+			}
+			//			do {
+			//				let breeds = try fetchData()
+			//				for breed in breeds {
+			//					try persistentContainer.viewContext.performAndWait {
+			//						persistentContainer.viewContext.delete(breed)
+			//						try saveContext()
+			//					}
+			//				}
+			//			} catch {
+			//				print("Error cleaning DB \(error.localizedDescription)")
+			//			}
+		} delete: { object in
+			managedContext.performAndWait {
+				managedContext.delete(object)
+				saveChanges(managedContext)
+			}
+		}
 	}
 }
 
