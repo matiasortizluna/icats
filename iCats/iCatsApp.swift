@@ -8,7 +8,7 @@ struct CatsApp: App {
 				model: BreedsListViewModel(
 					breedsNetworkService: BreedsListNetworkService.live(
 						networkService: NetworkService.live()),
-					databaseService: DatabaseService.shared
+					databaseService: DatabaseService.live()
 				)
 			)
 		}

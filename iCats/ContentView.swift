@@ -6,7 +6,6 @@ struct ContentView: View {
     var body: some View {
 
 		TabView(selection: .constant(Int.tabSelection)) {
-			// Could you add private extension to the Ints and a add the string literals to the public String extension?
             BreedsFavoritesView()
                 .tabItem {
 					Label(String.favorites, systemImage: String.tabFavoritesSymbol)
@@ -47,7 +46,7 @@ struct ContentView_Previews: PreviewProvider {
 		ContentView(
 			model: BreedsListViewModel(
 				breedsNetworkService: BreedsListNetworkService.mock(),
-				databaseService: DatabaseService()
+				databaseService: DatabaseService.live()
 			)
 		)
     }

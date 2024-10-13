@@ -1,86 +1,135 @@
 import Foundation
 import CoreData
 
-@Observable
-class DatabaseService {
-	static let shared = DatabaseService()
+public struct DatabaseService {
+	public let fetchObjects: (_ entity: DatabaseEntity, _ sort: [NSSortDescriptor]?) throws -> [Any]
+	public let createObject: (_ entity: DatabaseEntity) throws -> Any
+	public let save: () throws -> Void
+	public let deleteAll: (_ entities: [DatabaseEntity]) throws -> Void
+	public let delete: (_ object: NSManagedObject) throws -> Void
+}
 
-	var persistentContainer: NSPersistentContainer = {
-		let container = NSPersistentContainer(name: "iCats")
+extension DatabaseService {
+	public static func liveContainer(_ persistentContainerName: String) -> NSPersistentContainer {
+		let persitentContainer = NSPersistentContainer(name: persistentContainerName)
+		initializePersistentContainer(persistentContainer: persitentContainer)
+		return persitentContainer
+	}
 
-		container.loadPersistentStores { _, error in
+	public static func initializePersistentContainer(persistentContainer: NSPersistentContainer) {
+		persistentContainer.loadPersistentStores { _, error in
 			if let error {
 				fatalError("Failed to load persistent stores: \(error.localizedDescription)")
 			}
 		}
-		return container
-	}()
-
-	init() { }
-
-	func fetchBreeds() -> [BreedModel] {
-		do {
-			let breedsEntity = try fetchData()
-			return breedsEntity.map { BreedModel(breedEntity: $0) }
-		} catch {
-			print("Error fetching breed: \(error.localizedDescription)")
-		}
-		return []
 	}
 
-	func saveOnDisk(breeds: [BreedModel]) {
-		do {
-			for breed in breeds {
-				let newBreed = BreedEntity(context: persistentContainer.viewContext)
-				newBreed.id = breed.id
-				newBreed.name = breed.name
-				newBreed.origin = breed.origin
-				newBreed.temperament = breed.temperament
-				newBreed.breedDescription = breed.breedDescription
-				newBreed.lifeSpan = "\(String(breed.lifeSpan!.lowerValue)) - \(String(breed.lifeSpan!.upperValue))"
-				newBreed.isFavorite = breed.isFavorite
-				newBreed.image = nil
-				try saveContext()
+//	public func mockContainer() {
+//		let persitentContainer = NSPersistentContainer(name: "persistentContainerName")
+//		initializePersistentContainer(persistentContainer: persitentContainer)
+//		return persitentContainer
+//	}
+
+	public static func live(persistentContainer: NSPersistentContainer = liveContainer("iCats")) -> Self {
+		let managedContext: NSManagedObjectContext = persistentContainer.viewContext
+
+		return .init { entity, _ in
+			managedContext.performAndWait {
+				return fetchObjectsRequest(
+					entity: entity,
+					managedContext: managedContext
+				)
 			}
-		} catch {
-			print("Error saving breeds on disk: \(error.localizedDescription)")
-		}
-	}
-
-	func updateBreed(breed: Breed) {
-		do {
-			// update breed
-			try saveContext()
-		} catch {
-			print("Error updating breed: \(error.localizedDescription)")
-		}
-	}
-
-	func cleanBD() {
-		do {
-			let breeds = try fetchData()
-			for breed in breeds {
-				persistentContainer.viewContext.delete(breed)
-				try saveContext()
+		} createObject: { entity in
+			managedContext.performAndWait {
+				if let entity = NSEntityDescription.entity(forEntityName: entity.rawValue, in: managedContext) {
+					let object = NSManagedObject(entity: entity, insertInto: managedContext)
+//					completion(.success(object))
+					return object
+				} else {
+//					completion(.failure(DatabaseServiceError.noEntity))
+				}
+				return []
 			}
-		} catch {
-			print("Error cleaning DB \(error.localizedDescription)")
+		} save: {
+			managedContext.performAndWait {
+				saveChanges(managedContext)
+			}
+		} deleteAll: { entities in
+			managedContext.performAndWait {
+				entities
+					.map(\.rawValue)
+					.map(NSFetchRequest<NSFetchRequestResult>.init(entityName:))
+					.map {
+						$0.includesPropertyValues = false
+						return $0
+					}
+					.compactMap { try? managedContext.fetch($0) }
+				//				.flatMap(identity)
+					.compactMap { $0 as? NSManagedObject }
+					.forEach(managedContext.delete(_:))
+
+				saveChanges(managedContext)
+			}
+//			do {
+//				let breeds = try fetchData()
+//				for breed in breeds {
+//					try persistentContainer.viewContext.performAndWait {
+//						persistentContainer.viewContext.delete(breed)
+//						try saveContext()
+//					}
+//				}
+//			} catch {
+//				print("Error cleaning DB \(error.localizedDescription)")
+//			}
+		} delete: { object in
+			managedContext.performAndWait {
+				managedContext.delete(object)
+				saveChanges(managedContext)
+			}
 		}
+
 	}
 
-	private func fetchData() throws -> [BreedEntity] {
-		let request: NSFetchRequest<BreedEntity> = BreedEntity.fetchRequest()
-		let breedsEntity = try persistentContainer.viewContext.fetch(request)
-		return breedsEntity
+	public static func mock() {
+
+	}
+}
+
+// private func saveChanges(_ managedContext: NSManagedObjectContext, _ completion: DatabaseCompletion?) {
+private func saveChanges(_ managedContext: NSManagedObjectContext) {
+	guard managedContext.hasChanges else {
+//		completion?(.success(()))
+		return
 	}
 
-	private func saveContext() throws {
-		guard persistentContainer.viewContext.hasChanges else { return }
+	managedContext.performAndWait {
 		do {
-			persistentContainer.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-			try persistentContainer.viewContext.save()
+			try managedContext.save()
+//			completion?(.success(()))
 		} catch {
-			print("Core Data error: \(error.localizedDescription)")
+//			completion?(.failure(error))
 		}
 	}
 }
+
+private func fetchObjectsRequest(
+	entity: DatabaseEntity,
+	sortDescriptors: [NSSortDescriptor]? = nil,
+	managedContext: NSManagedObjectContext
+	//		completion: @escaping DatabaseObjectsCompletion
+) -> [Any] {
+	let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity.rawValue)
+	//		fetchRequest.sortDescriptors = sortDescriptors
+
+	return managedContext.performAndWait {
+		do {
+			let objects = try managedContext.fetch(fetchRequest)
+			return objects
+			//				completion(.success(objects))
+		} catch {
+			//				completion(.failure(error))
+		}
+		return []
+	}
+	}

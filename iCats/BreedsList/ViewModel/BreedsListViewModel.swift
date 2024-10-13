@@ -31,12 +31,12 @@ class BreedsListViewModel {
 		breedsNetworkService: BreedsListNetworkService,
 		destination: Destination? = nil,
 		viewState: ViewState = .ready,
-		databaseService: DatabaseService? = nil
+		databaseService: DatabaseService
 	) {
 		self.breedsNetworkService = breedsNetworkService
 		self.destination = destination
 		self.viewState = viewState
-		self.databaseService = databaseService ?? DatabaseService()
+		self.databaseService = databaseService
 	}
 
 	func bind() {
@@ -66,7 +66,6 @@ class BreedsListViewModel {
 
 	@discardableResult
 	func bottomReached() -> Task<(), Never>? {
-		print("page \(page)")
 		guard searchQuery.isEmpty, viewState == .ready else { return nil }
 		viewState = .spinnerLoading
 		return Task {
@@ -131,14 +130,25 @@ class BreedsListViewModel {
 	}
 
 	private func fetchBreeds() async throws -> [BreedModel] {
-		let breeds = databaseService.fetchBreeds()
-		if (breeds.isEmpty) {
-			let breedsAPI = try await breedsNetworkService.fetchBreeds(.limitItemsPerPage, page)
-			let breeds = breedsAPI.map { BreedModel(breedAPI: $0) }
-			databaseService.saveOnDisk(breeds: breeds)
+		do {
+			let breedsFromNetwork = try await breedsNetworkService.fetchBreeds(.limitItemsPerPage, page)
+
+			let breeds: [BreedModel] = breedsFromNetwork.map { BreedModel(breedAPI: $0) }
+			for breed in breeds {
+				databaseService.insertBreed(breed)
+			}
 			return breeds
+
+		} catch {
+
+			let breedsFromDatabase = databaseService.fetchBreeds()
+
+			if (breedsFromDatabase.isEmpty) {
+				throw DatabaseServiceError.empty
+			}
+
+			return breedsFromDatabase
 		}
-		return breeds
 	}
 
 	@MainActor
