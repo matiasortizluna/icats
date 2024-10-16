@@ -6,20 +6,29 @@ import SwiftUINavigation
 
 class BreedsListViewModelTests: XCTestCase {
 	func testInit() {
-		let sut = BreedsListViewModel(breedsNetworkService: .mock())
+		let sut = BreedsListViewModel(
+			breedsNetworkService: .mock(),
+			databaseService: .mock()
+		)
 		XCTAssertTrue(sut.filteredBreeds.isEmpty)
 		XCTAssertTrue(sut.searchQuery.isEmpty)
 	}
 
 	func testOnViewAppeared_WhenSucceeds_ShouldFetchAndUpdateBreeds() async throws {
-		let sut = BreedsListViewModel(breedsNetworkService: .mock())
+		let sut = BreedsListViewModel(
+			breedsNetworkService: .mock(),
+			databaseService: .mock()
+		)
 
 		await sut.onViewAppeared()
 		XCTAssertEqual(sut.filteredBreeds, .expectedBreeds)
 	}
 
 	func testOnViewAppeared_WhenFails_ShouldShowAlert() async throws {
-		let sut = BreedsListViewModel(breedsNetworkService: .mockError())
+		let sut = BreedsListViewModel(
+			breedsNetworkService: .mockError(),
+			databaseService: .mock()
+		)
 		await sut.onViewAppeared()
 
 		XCTAssertEqual(sut.destination, .alert(.alertRetryFetchDynamic(addCancelButton: false)))
@@ -27,7 +36,10 @@ class BreedsListViewModelTests: XCTestCase {
 	}
 
 	func testFilteredBreeds_ShouldShowItemsWhenSearchQueryIsNotEmpty() async throws {
-		let sut = BreedsListViewModel(breedsNetworkService: .mock())
+		let sut = BreedsListViewModel(
+			breedsNetworkService: .mock(),
+			databaseService: .mock()
+		)
 		await sut.onViewAppeared()
 		XCTAssertEqual(sut.filteredBreeds, .expectedBreeds)
 
@@ -43,7 +55,15 @@ class BreedsListViewModelTests: XCTestCase {
 
 
 	func testAlertButtonsTapped_ShouldRetryFetch() async {
-		let sut = BreedsListViewModel(breedsNetworkService: .mock(), destination: Destination.alert(.alertRetryFetchDynamic(addCancelButton: false)))
+		let sut = BreedsListViewModel(
+			breedsNetworkService: .mock(),
+			destination: Destination.alert(
+				.alertRetryFetchDynamic(
+					addCancelButton: false
+				)
+			),
+			databaseService: .mock()
+		)
 		XCTAssertTrue(sut.filteredBreeds.isEmpty)
 		XCTAssertEqual(sut.destination, .alert(.alertRetryFetchDynamic(addCancelButton: false)))
 
@@ -63,7 +83,10 @@ class BreedsListViewModelTests: XCTestCase {
 			return [Breed].breedsMock
 		}
 
-		let sut = BreedsListViewModel(breedsNetworkService: service)
+		let sut = BreedsListViewModel(
+			breedsNetworkService: service,
+			databaseService: .mock()
+		)
 
 		await sut.bottomReached()?.value
 
@@ -73,7 +96,10 @@ class BreedsListViewModelTests: XCTestCase {
 	}
 
 	func testCardTapped_ShouldShowBreedDetailView() async throws {
-		let sut = BreedsListViewModel(breedsNetworkService: .mock())
+		let sut = BreedsListViewModel(
+			breedsNetworkService: .mock(),
+			databaseService: .mock()
+		)
 		await sut.onViewAppeared()
 
 		sut.cardTapped(breed: .breedMock)

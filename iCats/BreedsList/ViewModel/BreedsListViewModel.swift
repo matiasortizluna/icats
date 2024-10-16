@@ -4,13 +4,15 @@ import IdentifiedCollections
 
 @Observable
 class BreedsListViewModel {
-	var destination: Destination? {
-		didSet { bind() }
-	}
+	var destination: Destination?
 
 	let breedsNetworkService: BreedsListNetworkService
+	let databaseService: DatabaseService
 
-	var page: Int = 0
+	var page: Int {
+		return breeds.count / .limitItemsPerPage
+	}
+	var endContent: Bool = false
 
 	var searchQuery: String = ""
 
@@ -28,26 +30,38 @@ class BreedsListViewModel {
 	init(
 		breedsNetworkService: BreedsListNetworkService,
 		destination: Destination? = nil,
-		viewState: ViewState = .ready
+		viewState: ViewState = .ready,
+		databaseService: DatabaseService
 	) {
 		self.breedsNetworkService = breedsNetworkService
 		self.destination = destination
 		self.viewState = viewState
-	}
-
-	func bind() {
+		self.databaseService = databaseService
 	}
 
 	func onViewAppeared() async {
-		await changeViewState(.fullScreenLoading)
+		let databaseBreedsCount = await getBreedsCount()
+		if (databaseBreedsCount < breeds.count) {
+			breeds = []
+		}
+		await fetchMoreContent()
+	}
+
+	private func getBreedsCount() async -> Int {
 		do {
-			try await fetchMoreContent()
-		} catch BreedListError.emptyBreeds {
-			print(BreedListError.emptyBreeds.localizedDescription)
+			return try await databaseService.count(DatabaseEntity.breed)
 		} catch {
 			print(error.localizedDescription)
 		}
-		await changeViewState(.ready)
+		return -1
+	}
+
+	@discardableResult
+	func bottomReached() -> Task<(), Never>? {
+		//		guard searchQuery.isEmpty, viewState == .ready else { return nil }
+		return Task {
+			await fetchMoreContent()
+		}
 	}
 
 	func alertButtonsTapped(action: AlertAction) async {
@@ -59,64 +73,24 @@ class BreedsListViewModel {
 		}
 	}
 
-	@discardableResult
-	func bottomReached() -> Task<(), Never>? {
-		print("page \(page)")
-		guard searchQuery.isEmpty, viewState == .ready else { return nil }
-		viewState = .spinnerLoading
-		return Task {
-			page+=1
-			do {
-				try await fetchMoreContent()
-				await changeViewState(.ready)
-			} catch BreedListError.emptyBreeds {
-				print(BreedListError.emptyBreeds.localizedDescription)
-			} catch {
-				print(error.localizedDescription)
-			}
-		}
-	}
-
 	func cardTapped(breed: BreedModel) {
 		destination = .detail(BreedDetailViewModel(breed: breed))
 	}
 
-	@MainActor
-	private func changeViewState(_ newState: ViewState) {
-		viewState = newState
-	}
-
-	private func alertConfirmRetryButtonTapped() async {
+	private func fetchMoreContent() async {
 		do {
-			destination = nil
-			if filteredBreeds.isEmpty {
-				await changeViewState(.fullScreenLoading)
-			} else {
-				await changeViewState(.spinnerLoading)
+			if (!endContent) {
+				let breeds = try await fetchBreeds()
+				guard !breeds.isEmpty else {
+					// Handle of Product related errors
+					// vmaos fazer update da variavel de controle
+					return
+				}
+				await updateView(with: breeds)
 			}
-			try await fetchMoreContent()
-			await changeViewState(.ready)
-		} catch BreedListError.emptyBreeds {
-			print(BreedListError.emptyBreeds.localizedDescription)
-		} catch {
-			print(error.localizedDescription)
-		}
-	}
-
-	private func alertCancelButtonTapped() {
-		destination = nil
-	}
-
-	private func fetchMoreContent() async throws {
-		do {
-			let breeds = try await fetchBreeds()
-			guard !breeds.isEmpty else { throw BreedListError.emptyBreeds }
-			await updateView(with: breeds)
-
-		} catch let error as BreedListError {
-			throw error
 
 		} catch {
+			// Handle of Service related errors
 			if .limitItemsPerPage > breeds.count {
 				self.destination = .alert(.alertRetryFetchDynamic(addCancelButton: false))
 			} else {
@@ -126,17 +100,51 @@ class BreedsListViewModel {
 	}
 
 	private func fetchBreeds() async throws -> [BreedModel] {
-		let breedsAPI = try await breedsNetworkService.fetchBreeds(.limitItemsPerPage, page)
-		return breedsAPI.map { BreedModel(breedAPI: $0) }
+		let breedsFromDatabase = try await databaseService.readBreeds()
+
+		print("breedsFromDatabase.isEmpty \(breedsFromDatabase.isEmpty)")
+		print("endContent \(endContent)")
+		guard breedsFromDatabase.isEmpty || endContent else {
+			return breedsFromDatabase
+		}
+
+		breeds.isEmpty ? await changeViewState(.fullScreenLoading) : await changeViewState(.spinnerLoading)
+
+		let breedsFromNetwork = try await breedsNetworkService.fetch(.limitItemsPerPage, page)
+		if (breedsFromNetwork.isEmpty && page>0) {
+			endContent = true
+		}
+		let breeds: [BreedModel] = breedsFromNetwork.map { BreedModel(breedAPI: $0) }
+		try await saveBreedsOnDisk(breeds)
+
+		await changeViewState(.ready)
+		return breeds
+	}
+
+	private func saveBreedsOnDisk(_ breeds: [BreedModel]) async throws {
+		for breed in breeds {
+			try await databaseService.insertBreed(breed)
+		}
+		try await databaseService.save()
+	}
+
+	@MainActor
+	private func changeViewState(_ newState: ViewState) {
+		viewState = newState
+	}
+
+	private func alertConfirmRetryButtonTapped() async {
+		destination = nil
+		await fetchMoreContent()
+	}
+
+	private func alertCancelButtonTapped() {
+		destination = nil
 	}
 
 	@MainActor
 	private func updateView(with newBreeds: [BreedModel]) {
 		self.breeds.append(contentsOf: newBreeds)
-	}
-
-	enum BreedListError: Error {
-		case emptyBreeds
 	}
 }
 
