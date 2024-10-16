@@ -24,7 +24,9 @@ struct AboutView: View {
 					labelColor: .white,
 					rectangleColor: .red,
 					action: {
-						model.clearDatabaseButtonTapped()
+						Task {
+							try await model.clearDatabaseButtonTapped()
+						}
 					}
 				)
             }

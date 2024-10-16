@@ -1,11 +1,11 @@
 import Foundation
 
 struct BreedsListNetworkService {
-	var fetchBreeds: (_ limit: Int, _ page: Int) async throws -> [Breed]
+	var fetch: (_ limit: Int, _ page: Int) async throws -> [Breed]
 
 	static func live(networkService: NetworkService) -> Self {
 		.init(
-			fetchBreeds: { limit, page in
+			fetch: { limit, page in
 				try await networkService.call(.breeds(limit, page))
 			}
 		)
@@ -13,19 +13,19 @@ struct BreedsListNetworkService {
 
 	static func mock() -> Self {
 		.init(
-			fetchBreeds: { _, _ in return [Breed].breedsMock }
+			fetch: { _, _ in return [Breed].breedsMock }
 		)
 	}
 
 	static func mockError() -> Self {
 		.init(
-			fetchBreeds: { _, _ in throw NetworkError.serverError(503) }
+			fetch: { _, _ in throw NetworkError.serverError(503) }
 		)
 	}
 
 	static func notImplementedMock() -> Self {
 		.init(
-			fetchBreeds: { _, _ in return fatalError("Unimplemented submit closure") }
+			fetch: { _, _ in return fatalError("Unimplemented submit closure") }
 		)
 	}
 }

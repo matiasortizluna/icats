@@ -2,23 +2,18 @@ import Foundation
 
 extension DatabaseService {
 
-	func fetchBreeds() -> [BreedModel] {
-		do {
-			guard let breedsEntity = try fetchObjects(DatabaseEntity.breed, nil) as? [BreedEntity] else {
-				throw DatabaseServiceError.wrongTransformation
-			}
-			return breedsEntity.map { BreedModel(breedEntity: $0 ) }
-		} catch {
-			print("Error fetching breed: \(error.localizedDescription)")
+	func readBreeds() async throws -> [BreedModel] {
+		guard let breedsEntity = try await fetchObjects(DatabaseEntity.breed, nil) as? [BreedEntity] else {
+			throw DatabaseServiceError.wrongTransformation
 		}
-		return []
+		return breedsEntity.map { BreedModel(breedEntity: $0 ) }
 	}
 
-	func insertBreed(_ breed: BreedModel) {
-		do {
-			guard let newBreed: BreedEntity = try self.createObject(DatabaseEntity.breed) as? BreedEntity else {
-				throw DatabaseServiceError.wrongTransformation
-			}
+	func insertBreed(_ breed: BreedModel) async throws {
+		guard let newBreed: BreedEntity = try await self.createObject(DatabaseEntity.breed) as? BreedEntity, let context = newBreed.managedObjectContext else {
+			throw DatabaseServiceError.wrongTransformation
+		}
+		context.performAndWait {
 			newBreed.id = breed.id
 			newBreed.name = breed.name
 			newBreed.origin = breed.origin
@@ -27,9 +22,6 @@ extension DatabaseService {
 			newBreed.lifeSpan = "\(String(breed.lifeSpan!.lowerValue)) - \(String(breed.lifeSpan!.upperValue))"
 			newBreed.isFavorite = breed.isFavorite
 			newBreed.image = nil
-			try save()
-		} catch {
-			print("Error saving breeds on disk: \(error.localizedDescription)")
 		}
 	}
 }

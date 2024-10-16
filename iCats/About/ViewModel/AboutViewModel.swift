@@ -10,9 +10,10 @@ class AboutViewModel {
 		self.databaseService = databaseService
 	}
 
-	func clearDatabaseButtonTapped() {
+	@MainActor
+	func clearDatabaseButtonTapped() async throws {
 		do {
-			try databaseService.deleteAll([DatabaseEntity.breed, DatabaseEntity.catImage])
+			try await databaseService.deleteAll([DatabaseEntity.breed, DatabaseEntity.catImage])
 		} catch {
 			print("Error when clearDatabaseButtonTapped() \(error.localizedDescription)")
 		}

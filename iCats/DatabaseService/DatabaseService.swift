@@ -2,11 +2,11 @@ import Foundation
 import CoreData
 
 public struct DatabaseService {
-	public let fetchObjects: (_ entity: DatabaseEntity, _ sort: [NSSortDescriptor]?) throws -> [Any]
-	public let createObject: (_ entity: DatabaseEntity) throws -> Any
-	public let save: () throws -> Void
-	public let deleteAll: (_ entities: [DatabaseEntity]) throws -> Void
-	public let delete: (_ object: NSManagedObject) throws -> Void
+	public let fetchObjects: (_ entity: DatabaseEntity, _ sort: [NSSortDescriptor]?) async throws -> [Any]
+	public let createObject: (_ entity: DatabaseEntity) async throws -> Any
+	public let save: () async throws -> Void
+	public let deleteAll: (_ entities: [DatabaseEntity]) async throws -> Void
+	public let count: (_ entity: DatabaseEntity) async throws -> Int
 }
 
 extension DatabaseService {
@@ -43,15 +43,11 @@ extension DatabaseService {
 				)
 			}
 		} createObject: { entity in
-			managedContext.performAndWait {
-				if let entity = NSEntityDescription.entity(forEntityName: entity.rawValue, in: managedContext) {
-					let object = NSManagedObject(entity: entity, insertInto: managedContext)
-//					completion(.success(object))
-					return object
-				} else {
-//					completion(.failure(DatabaseServiceError.noEntity))
+			try managedContext.performAndWait {
+				guard let entity = NSEntityDescription.entity(forEntityName: entity.rawValue, in: managedContext) else {
+					throw DatabaseServiceError.noEntity
 				}
-				return []
+				return NSManagedObject(entity: entity, insertInto: managedContext)
 			}
 		} save: {
 			managedContext.performAndWait {
@@ -67,16 +63,14 @@ extension DatabaseService {
 						return $0
 					}
 					.compactMap { try? managedContext.fetch($0) }
-//					.flatMap(identity)
+					.flatMap(identity)
 					.compactMap { $0 as? NSManagedObject }
 					.forEach(managedContext.delete(_:))
-
 				saveChanges(managedContext)
 			}
-		} delete: { object in
-			managedContext.performAndWait {
-				managedContext.delete(object)
-				saveChanges(managedContext)
+		} count: { entity in
+			try managedContext.performAndWait {
+				return try managedContext.count(for: NSFetchRequest(entityName: entity.rawValue))
 			}
 		}
 	}
@@ -96,10 +90,7 @@ extension DatabaseService {
 			managedContext.performAndWait {
 				if let entity = NSEntityDescription.entity(forEntityName: entity.rawValue, in: managedContext) {
 					let object = NSManagedObject(entity: entity, insertInto: managedContext)
-					//					completion(.success(object))
 					return object
-				} else {
-					//					completion(.failure(DatabaseServiceError.noEntity))
 				}
 				return []
 			}
@@ -117,45 +108,29 @@ extension DatabaseService {
 						return $0
 					}
 					.compactMap { try? managedContext.fetch($0) }
-				//				.flatMap(identity)
 					.compactMap { $0 as? NSManagedObject }
 					.forEach(managedContext.delete(_:))
 
 				saveChanges(managedContext)
 			}
-			//			do {
-			//				let breeds = try fetchData()
-			//				for breed in breeds {
-			//					try persistentContainer.viewContext.performAndWait {
-			//						persistentContainer.viewContext.delete(breed)
-			//						try saveContext()
-			//					}
-			//				}
-			//			} catch {
-			//				print("Error cleaning DB \(error.localizedDescription)")
-			//			}
-		} delete: { object in
-			managedContext.performAndWait {
-				managedContext.delete(object)
-				saveChanges(managedContext)
+		} count: { entity in
+			try managedContext.performAndWait {
+				return try managedContext.count(for: NSFetchRequest(entityName: entity.rawValue))
 			}
 		}
 	}
 }
 
-// private func saveChanges(_ managedContext: NSManagedObjectContext, _ completion: DatabaseCompletion?) {
 private func saveChanges(_ managedContext: NSManagedObjectContext) {
 	guard managedContext.hasChanges else {
-//		completion?(.success(()))
 		return
 	}
 
 	managedContext.performAndWait {
 		do {
 			try managedContext.save()
-//			completion?(.success(()))
 		} catch {
-//			completion?(.failure(error))
+			print("Error managedContext.save() \(error.localizedDescription)")
 		}
 	}
 }
@@ -164,19 +139,18 @@ private func fetchObjectsRequest(
 	entity: DatabaseEntity,
 	sortDescriptors: [NSSortDescriptor]? = nil,
 	managedContext: NSManagedObjectContext
-	//		completion: @escaping DatabaseObjectsCompletion
 ) -> [Any] {
 	let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity.rawValue)
-	//		fetchRequest.sortDescriptors = sortDescriptors
 
 	return managedContext.performAndWait {
 		do {
 			let objects = try managedContext.fetch(fetchRequest)
 			return objects
-			//				completion(.success(objects))
 		} catch {
-			//				completion(.failure(error))
+			print("Error managedContext.fetch(fetchRequest) \(error.localizedDescription)")
 		}
 		return []
 	}
-	}
+}
+
+public func identity<A>(_ a: A) -> A { a }  // swiftlint:disable:this identifier_name
