@@ -112,8 +112,6 @@ class BreedsListViewModel {
 		for breed in breeds {
 			try await databaseService.insertBreed(breed)
 		}
-
-		try await databaseService.save()
 	}
 
 	@MainActor

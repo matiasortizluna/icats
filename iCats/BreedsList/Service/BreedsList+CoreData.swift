@@ -1,3 +1,4 @@
+import CoreData
 import Foundation
 
 extension DatabaseService {
@@ -8,13 +9,14 @@ extension DatabaseService {
 		return breedsEntity.map { BreedModel(breedEntity: $0 ) }
 	}
 
-	@MainActor
 	func insertBreed(_ breed: BreedModel) async throws {
-		guard let newBreed: BreedEntity = try await self.createObject(DatabaseEntity.breed) as? BreedEntity, let context = newBreed.managedObjectContext else {
-			throw DatabaseServiceError.wrongTransformation
-		}
+		let context = try await self.newBackgroundContext()
+		try context.performAndWait {
+			guard
+				let entity = NSEntityDescription.entity(forEntityName: DatabaseEntity.breed.rawValue, in: context),
+				let newBreed = NSManagedObject(entity: entity, insertInto: context) as? BreedEntity
+			else { throw DatabaseServiceError.noEntity }
 
-		context.performAndWait {
 			newBreed.id = breed.id
 			newBreed.name = breed.name
 			newBreed.origin = breed.origin
@@ -24,6 +26,12 @@ extension DatabaseService {
 			newBreed.lifeSpanUpperValue = breed.lifeSpan != nil ? Int16(breed.lifeSpan!.upperValue) : Int16(99)
 			newBreed.isFavorite = breed.isFavorite
 			newBreed.image = nil
+
+			do {
+				try context.save()
+			} catch {
+				assertionFailure("1st: Error managedContext.save() \(error) \(error.localizedDescription)")
+			}
 		}
 	}
 }
