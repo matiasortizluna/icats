@@ -126,14 +126,11 @@ private func saveChanges(_ managedContext: NSManagedObjectContext) {
 	guard managedContext.hasChanges else {
 		return
 	}
-
-	managedContext.performAndWait {
 		do {
 			try managedContext.save()
 		} catch {
-			assertionFailure("Error managedContext.save() \(error) \(error.localizedDescription)")
+			assertionFailure("1st: Error managedContext.save() \(error) \(error.localizedDescription)")
 		}
-	}
 }
 
 private func fetchObjectsRequest(

@@ -8,6 +8,7 @@ extension DatabaseService {
 		return breedsEntity.map { BreedModel(breedEntity: $0 ) }
 	}
 
+	@MainActor
 	func insertBreed(_ breed: BreedModel) async throws {
 		guard let newBreed: BreedEntity = try await self.createObject(DatabaseEntity.breed) as? BreedEntity, let context = newBreed.managedObjectContext else {
 			throw DatabaseServiceError.wrongTransformation
