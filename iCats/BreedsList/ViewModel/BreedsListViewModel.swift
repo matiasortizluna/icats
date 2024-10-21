@@ -4,19 +4,11 @@ import IdentifiedCollections
 
 @Observable
 class BreedsListViewModel {
+	var viewState: ViewState
+
 	var destination: Destination?
 
-	let breedsNetworkService: BreedsListNetworkService
-	let databaseService: DatabaseService
-
-	var page: Int {
-		return breeds.count / .limitItemsPerPage
-	}
-	var endContent: Bool = false
-
 	var searchQuery: String = ""
-
-	var viewState: ViewState
 
 	private var breeds: IdentifiedArrayOf<BreedModel> = []
 	var filteredBreeds: IdentifiedArrayOf<BreedModel> {
@@ -26,6 +18,14 @@ class BreedsListViewModel {
 			return breeds.filter { $0.name.lowercased().starts(with: searchQuery.lowercased()) }
 		}
 	}
+
+	private let breedsNetworkService: BreedsListNetworkService
+	private let databaseService: DatabaseService
+
+	private var page: Int {
+		return breeds.count / .limitItemsPerPage
+	}
+	private var endContent: Bool = false
 
 	init(
 		breedsNetworkService: BreedsListNetworkService,
@@ -40,25 +40,20 @@ class BreedsListViewModel {
 	}
 
 	func onViewAppeared() async {
-		let databaseBreedsCount = await getBreedsCount()
-		if (databaseBreedsCount < breeds.count) {
-			breeds = []
+		let breedsFromDatabase = (try? await databaseService.readBreeds()) ?? []
+		if breedsFromDatabase.isEmpty {
+			if !breeds.isEmpty {
+				breeds = []
+				endContent = false
+			}
+			await fetchMoreContent()
 		}
-		await fetchMoreContent()
-	}
-
-	private func getBreedsCount() async -> Int {
-		do {
-			return try await databaseService.count(DatabaseEntity.breed)
-		} catch {
-			print(error.localizedDescription)
-		}
-		return -1
+		await updateView(with: breedsFromDatabase)
 	}
 
 	@discardableResult
 	func bottomReached() -> Task<(), Never>? {
-		//		guard searchQuery.isEmpty, viewState == .ready else { return nil }
+		guard searchQuery.isEmpty, viewState == .ready else { return nil }
 		return Task {
 			await fetchMoreContent()
 		}
@@ -79,52 +74,45 @@ class BreedsListViewModel {
 
 	private func fetchMoreContent() async {
 		do {
-			if (!endContent) {
-				let breeds = try await fetchBreeds()
-				guard !breeds.isEmpty else {
-					// Handle of Product related errors
-					// vmaos fazer update da variavel de controle
-					return
+			if !endContent {
+				let breeds = try await fetchBreedsPerPage()
+				if breeds.count < .limitItemsPerPage {
+					endContent = true
 				}
+				try await saveBreedsOnDisk(breeds)
 				await updateView(with: breeds)
 			}
-
 		} catch {
-			// Handle of Service related errors
-			if .limitItemsPerPage > breeds.count {
-				self.destination = .alert(.alertRetryFetchDynamic(addCancelButton: false))
-			} else {
+			if breeds.isEmpty {
 				self.destination = .alert(.alertRetryFetchDynamic(addCancelButton: true))
+			} else {
+				self.destination = .alert(.alertRetryFetchDynamic(addCancelButton: false))
 			}
 		}
 	}
 
-	private func fetchBreeds() async throws -> [BreedModel] {
-		let breedsFromDatabase = try await databaseService.readBreeds()
-
-		print("breedsFromDatabase.isEmpty \(breedsFromDatabase.isEmpty)")
-		print("endContent \(endContent)")
-		guard breedsFromDatabase.isEmpty || endContent else {
-			return breedsFromDatabase
-		}
-
+	private func fetchBreedsPerPage() async throws -> [BreedModel] {
 		breeds.isEmpty ? await changeViewState(.fullScreenLoading) : await changeViewState(.spinnerLoading)
 
 		let breedsFromNetwork = try await breedsNetworkService.fetch(.limitItemsPerPage, page)
-		if (breedsFromNetwork.isEmpty && page>0) {
-			endContent = true
+
+		guard !breedsFromNetwork.isEmpty else {
+			await changeViewState(.ready)
+			return []
 		}
-		let breeds: [BreedModel] = breedsFromNetwork.map { BreedModel(breedAPI: $0) }
-		try await saveBreedsOnDisk(breeds)
+		let breeds : [BreedModel] = breedsFromNetwork.map { BreedModel(breedAPI: $0) }
 
 		await changeViewState(.ready)
 		return breeds
 	}
 
 	private func saveBreedsOnDisk(_ breeds: [BreedModel]) async throws {
+		guard !breeds.isEmpty else { return }
+
 		for breed in breeds {
 			try await databaseService.insertBreed(breed)
 		}
+
 		try await databaseService.save()
 	}
 
@@ -176,7 +164,7 @@ public enum AlertAction {
 public extension AlertState where Action == AlertAction {
 	static func alertRetryFetchDynamic(addCancelButton: Bool) -> Self {
 		var actionButtons : [ButtonState<AlertAction>] = []
-		if (addCancelButton == true) {
+		if addCancelButton == true {
 			actionButtons.append(.dismissButton)
 		}
 		actionButtons.append(.confirmRetryButton)

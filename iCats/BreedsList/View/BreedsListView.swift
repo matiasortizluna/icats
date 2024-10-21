@@ -44,7 +44,7 @@ struct BreedsListView: View {
 						}
 					}
 					.padding()
-					if (model.viewState == .spinnerLoading) {
+					if model.viewState == .spinnerLoading {
 						ProgressView()
 							.padding(.bottom, .paddingSpacing)
 					}

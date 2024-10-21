@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct AboutView: View {
-
 	@State var model: AboutViewModel
 
     var body: some View {
@@ -25,7 +24,7 @@ struct AboutView: View {
 					rectangleColor: .red,
 					action: {
 						Task {
-							try await model.clearDatabaseButtonTapped()
+							await model.clearDatabaseButtonTapped()
 						}
 					}
 				)

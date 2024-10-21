@@ -35,10 +35,11 @@ extension DatabaseService {
 	public static func live(persistentContainer: NSPersistentContainer = liveContainer("iCats")) -> Self {
 		let managedContext: NSManagedObjectContext = persistentContainer.viewContext
 
-		return .init { entity, _ in
+		return .init { entity, sortDescriptors in
 			managedContext.performAndWait {
 				return fetchObjectsRequest(
 					entity: entity,
+					sortDescriptors: sortDescriptors,
 					managedContext: managedContext
 				)
 			}
@@ -130,7 +131,7 @@ private func saveChanges(_ managedContext: NSManagedObjectContext) {
 		do {
 			try managedContext.save()
 		} catch {
-			print("Error managedContext.save() \(error.localizedDescription)")
+			assertionFailure("Error managedContext.save() \(error) \(error.localizedDescription)")
 		}
 	}
 }
@@ -141,13 +142,14 @@ private func fetchObjectsRequest(
 	managedContext: NSManagedObjectContext
 ) -> [Any] {
 	let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity.rawValue)
+	fetchRequest.sortDescriptors = sortDescriptors
 
 	return managedContext.performAndWait {
 		do {
 			let objects = try managedContext.fetch(fetchRequest)
 			return objects
 		} catch {
-			print("Error managedContext.fetch(fetchRequest) \(error.localizedDescription)")
+			assertionFailure("Error managedContext.fetch(fetchRequest) \(error.localizedDescription)")
 		}
 		return []
 	}

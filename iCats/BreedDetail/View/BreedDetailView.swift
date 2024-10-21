@@ -8,7 +8,7 @@ struct BreedsDetailView: View {
 		VStack(spacing: .zero) {
 			ScrollView {
 				ZStack(alignment: .topTrailing) {
-					if (model.breed.image != nil) {
+					if model.breed.image != nil {
 						WebImage(url: URL(string: model.breed.image!.url)).resizable()
 							.aspectRatio(contentMode: .fill)
 							.frame(width: .webImageWidth, height: .webImageHeight)

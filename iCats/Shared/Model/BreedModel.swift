@@ -59,7 +59,7 @@ struct BreedModel: Identifiable, Equatable {
 		origin = breedEntity.origin!
 		temperament = breedEntity.temperament!
 		breedDescription = breedEntity.breedDescription!
-		lifeSpan = LifespanModel(string: breedEntity.lifeSpan!)
+		lifeSpan = LifespanModel(upperValue: Int(breedEntity.lifeSpanUpperValue), lowerValue: Int(breedEntity.lifeSpanLowerValue))
 		if let unwrappedImage = breedEntity.image {
 			image = CatImageModel(
 				id: breedEntity.image!.id!,

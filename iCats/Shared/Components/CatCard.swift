@@ -8,7 +8,7 @@ struct CatCard: View {
 		ZStack {
 			VStack(spacing: .zero) {
 				ZStack(alignment: .topTrailing) {
-					if (breedModel.image != nil) {
+					if breedModel.image != nil {
 						WebImage(url: URL(string: breedModel.image!.url)).resizable()
 							.aspectRatio(contentMode: .fill)
 							.frame(width: 120, height: 100)

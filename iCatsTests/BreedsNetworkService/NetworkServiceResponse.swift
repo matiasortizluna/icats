@@ -1,10 +1,3 @@
-//
-//  NetworkResponse.swift
-//  iCats
-//
-//  Created by Matias Luna on 13/09/2024.
-//
-
 @testable import iCats
 import Foundation
 

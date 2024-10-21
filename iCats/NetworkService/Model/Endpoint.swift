@@ -19,9 +19,6 @@ public enum Endpoint {
 		}
 	}
 
-	// Could you add these strings to a private String extension in this file?
-	// Note that these are not user readable, so they are typically not used in views (shared).
-	// Therefore, the extension can be private
 	var version: String {
 		.version
 	}

@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23G93" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23H124" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="BreedEntity" representedClassName="BreedEntity" syncable="YES" codeGenerationType="class">
         <attribute name="breedDescription" attributeType="String"/>
         <attribute name="id" attributeType="String"/>
         <attribute name="isFavorite" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="lifeSpan" attributeType="String"/>
+        <attribute name="lifeSpanLowerValue" attributeType="Integer 16" usesScalarValueType="YES"/>
+        <attribute name="lifeSpanUpperValue" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="origin" attributeType="String"/>
         <attribute name="temperament" attributeType="String"/>
-        <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CatImageEntity"/>
+        <relationship name="image" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CatImageEntity" inverseName="breed" inverseEntity="CatImageEntity"/>
     </entity>
     <entity name="CatImageEntity" representedClassName="CatImageEntity" syncable="YES" codeGenerationType="class">
         <attribute name="height" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="String"/>
         <attribute name="url" attributeType="String"/>
         <attribute name="width" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="breed" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BreedEntity" inverseName="image" inverseEntity="BreedEntity"/>
     </entity>
 </model>

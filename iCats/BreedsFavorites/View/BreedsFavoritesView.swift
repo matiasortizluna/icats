@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 
+// TODO: Implement BreedsFavoritesView with ViewModel architecture.
 struct BreedsFavoritesView: View {
     var favoriteBreeds: [BreedModel] = []
     let columns = [

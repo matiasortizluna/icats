@@ -8,8 +8,6 @@ struct StarButton: View {
 		Button(action: {
 			model.addFavorites()
 		}, label: {
-			// Could you add these values to an extension? It might be a good idea to have a file with font types
-			// But we can do this later
 			Image.star
 				.font(.starImageFont)
 				.foregroundColor(model.breed.isFavorite ? .symbolFavoriteTrueColor : .symbolFavoriteFalseColor)

@@ -78,7 +78,7 @@ extension NetworkService {
 			return request
 
 		} catch NetworkError.invalidURL {
-			print(NetworkError.invalidURL.localizedDescription)
+			assertionFailure(NetworkError.invalidURL.localizedDescription)
 		}
 
 		return nil
@@ -93,7 +93,7 @@ extension NetworkService {
 
 		baseURL = baseURL.appendingPathComponent(endpoint.path)
 
-		if (endpoint.queryItems.isEmpty) {
+		if endpoint.queryItems.isEmpty {
 			return baseURL
 		}
 
