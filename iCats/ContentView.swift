@@ -47,10 +47,10 @@ struct ContentView_Previews: PreviewProvider {
 		ContentView(
 			breedsListViewModel: BreedsListViewModel(
 				breedsNetworkService: BreedsListNetworkService.mock(),
-				databaseService: DatabaseService.mock()
+				databaseService: DatabaseService.live()
 			),
 			aboutViewModel: AboutViewModel(
-				databaseService: DatabaseService.mock()
+				databaseService: DatabaseService.live()
 			)
 		)
     }

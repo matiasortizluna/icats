@@ -78,7 +78,7 @@ struct BreedsView_Previews: PreviewProvider {
 		BreedsListView(
 			model: BreedsListViewModel(
 				breedsNetworkService: BreedsListNetworkService.mock(),
-				databaseService: DatabaseService.mock()
+				databaseService: DatabaseService.live()
 			)
 		)
 	}

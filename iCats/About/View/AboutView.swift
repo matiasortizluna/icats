@@ -38,7 +38,7 @@ struct AboutView: View {
 #Preview {
 	AboutView(
 		model: AboutViewModel(
-			databaseService: DatabaseService.mock()
+			databaseService: DatabaseService.live()
 		)
 	)
 }

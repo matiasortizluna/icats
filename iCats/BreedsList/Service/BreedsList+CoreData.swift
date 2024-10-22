@@ -2,14 +2,14 @@ import CoreData
 import Foundation
 
 extension DatabaseService {
-	func readBreeds() async throws -> [BreedModel] {
+	internal func readBreeds() async throws -> [BreedModel] {
 		guard let breedsEntity = try await fetchObjects(DatabaseEntity.breed, [NSSortDescriptor(key: "name", ascending: true)]) as? [BreedEntity] else {
 			throw DatabaseServiceError.wrongTransformation
 		}
 		return breedsEntity.map { BreedModel(breedEntity: $0 ) }
 	}
 
-	func insertBreed(_ breed: BreedModel) async throws {
+	internal func insertBreed(_ breed: BreedModel) async throws {
 		let context = try await self.newBackgroundContext()
 		try context.performAndWait {
 			guard

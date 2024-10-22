@@ -9,6 +9,6 @@ class AboutViewModel {
 	}
 
 	func clearDatabaseButtonTapped() async {
-		try? await databaseService.deleteAll([DatabaseEntity.breed, DatabaseEntity.catImage])
+		try? await databaseService.deleteObjects(DatabaseEntity.breed)
 	}
 }

@@ -8,8 +8,11 @@ class BreedsListViewModelTests: XCTestCase {
 	func testInit() {
 		let sut = BreedsListViewModel(
 			breedsNetworkService: .mock(),
-			databaseService: .mock()
+			databaseService: .live()
 		)
+		
+		XCTAssertEqual(sut.destination, nil)
+		XCTAssertEqual(sut.viewState, ViewState.ready)
 		XCTAssertTrue(sut.filteredBreeds.isEmpty)
 		XCTAssertTrue(sut.searchQuery.isEmpty)
 	}
@@ -17,7 +20,7 @@ class BreedsListViewModelTests: XCTestCase {
 	func testOnViewAppeared_WhenSucceeds_ShouldFetchAndUpdateBreeds() async throws {
 		let sut = BreedsListViewModel(
 			breedsNetworkService: .mock(),
-			databaseService: .mock()
+			databaseService: .live()
 		)
 
 		await sut.onViewAppeared()
@@ -27,7 +30,7 @@ class BreedsListViewModelTests: XCTestCase {
 	func testOnViewAppeared_WhenFails_ShouldShowAlert() async throws {
 		let sut = BreedsListViewModel(
 			breedsNetworkService: .mockError(),
-			databaseService: .mock()
+			databaseService: .live()
 		)
 		await sut.onViewAppeared()
 
@@ -38,7 +41,7 @@ class BreedsListViewModelTests: XCTestCase {
 	func testFilteredBreeds_ShouldShowItemsWhenSearchQueryIsNotEmpty() async throws {
 		let sut = BreedsListViewModel(
 			breedsNetworkService: .mock(),
-			databaseService: .mock()
+			databaseService: .live()
 		)
 		await sut.onViewAppeared()
 		XCTAssertEqual(sut.filteredBreeds, .expectedBreeds)
@@ -62,7 +65,7 @@ class BreedsListViewModelTests: XCTestCase {
 					addCancelButton: false
 				)
 			),
-			databaseService: .mock()
+			databaseService: .live()
 		)
 		XCTAssertTrue(sut.filteredBreeds.isEmpty)
 		XCTAssertEqual(sut.destination, .alert(.alertRetryFetchDynamic(addCancelButton: false)))
@@ -85,7 +88,7 @@ class BreedsListViewModelTests: XCTestCase {
 
 		let sut = BreedsListViewModel(
 			breedsNetworkService: service,
-			databaseService: .mock()
+			databaseService: .live()
 		)
 
 		await sut.bottomReached()?.value
@@ -98,7 +101,7 @@ class BreedsListViewModelTests: XCTestCase {
 	func testCardTapped_ShouldShowBreedDetailView() async throws {
 		let sut = BreedsListViewModel(
 			breedsNetworkService: .mock(),
-			databaseService: .mock()
+			databaseService: .live()
 		)
 		await sut.onViewAppeared()
 
